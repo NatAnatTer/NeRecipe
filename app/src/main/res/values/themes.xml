@@ -13,4 +13,15 @@
         <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Widget.AppTheme.FavoritesCheckbox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="icon">@drawable/ic_favorites_24</item>
+        <item name="iconTint">@color/recipe_favorites_tint</item>
+        <item name="android:minWidth">@dimen/icon_button_min_size</item>
+        <item name="android:minHeight">@dimen/icon_button_min_size</item>
+        <item name="backgroundTint">@color/favorites_button_check_background</item>
+        <item name="android:textColor">@color/favorites_color_tint</item>
+    </style>
+
+
 </resources>

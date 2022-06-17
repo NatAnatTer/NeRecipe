@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">NeRecipe</string>
     <string name="add_recipe">Add new recipe</string>
+    <string name="author">Author:</string>
+    <string name="option" translatable="false">Menu</string>
+    <string name="favorites">Favorites</string>
 </resources>
