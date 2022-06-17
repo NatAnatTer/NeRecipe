@@ -2,11 +2,20 @@ package ru.netology.nerecipe.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import ru.netology.nerecipe.dto.CategoryOfRecipe
 
 
-@Entity(tableName = "recipe")
+@Entity(
+    tableName = "recipe", foreignKeys = [ForeignKey(
+        entity = UserEntity::class,
+        parentColumns = ["user_id"], childColumns = ["author_id"]
+    ), ForeignKey(
+        entity = CategoryOfRecipeEntity::class,
+        parentColumns = ["category_id"], childColumns = ["category_id"]
+    )]
+
+)
 class RecipeEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "recipe_id")

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/posts_avatar_size"
+        android:layout_height="@dimen/posts_avatar_size"
+        android:contentDescription="@string/post_avatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_netology" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/authorName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/date"
+        app:layout_constraintEnd_toStartOf="@id/menu"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintTop_toTopOf="@id/avatar"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp"
+        tools:text="Нетология. Университет интернет-профессий" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/avatar"
+        app:layout_constraintEnd_toStartOf="@id/menu"
+        app:layout_constraintStart_toStartOf="@id/authorName"
+        app:layout_constraintTop_toBottomOf="@id/authorName"
+
+        tools:ignore="MissingConstraints,SmallSp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:text="28.04.2022" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/option"
+        android:src="@drawable/ic_option_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/header_barrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="avatar, date, menu" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/postBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top"
+        android:autoLink="web"
+        android:linksClickable="true"
+        android:textIsSelectable="true"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/header_barrier"
+        tools:ignore="MissingConstraints,SmallSp"
+        tools:text="@tools:sample/lorem/random" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/video_preview"
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:contentDescription="@string/videoAttachment"
+        android:scaleType="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/postBody" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/video_preview_button_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/videoAttachment"
+        android:scaleType="center"
+        android:src="@drawable/ic_baseline_play_arrow_48"
+        app:layout_constraintBottom_toBottomOf="@id/video_preview"
+        app:layout_constraintEnd_toEndOf="@id/video_preview"
+        app:layout_constraintStart_toStartOf="@id/video_preview"
+        app:layout_constraintTop_toTopOf="@id/video_preview"
+        tools:srcCompat="@drawable/ic_baseline_play_arrow_48" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/video_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingBottom="@dimen/margin_top"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/video_preview"
+
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp"
+        tools:text="Нетология. Университет интернет-профессий Нетология. Университет интернет-профессий Нетология. Университет интернет-профессий" />
+
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/body_barrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="video_title" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/like"
+        style="@style/Widget.AppTheme.LikeCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkable="true"
+        android:contentDescription="@string/likes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/body_barrier"
+        tools:text="10700" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/reposts"
+        style="@style/Widget.AppTheme.Repost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/share"
+        app:layout_constraintStart_toEndOf="@+id/like"
+        app:layout_constraintTop_toBottomOf="@id/body_barrier"
+        tools:text="10700" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/users_views"
+        style="@style/Widget.AppTheme.View"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkable="false"
+        android:contentDescription="@string/views"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/body_barrier"
+        tools:text="10700" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,12 +46,14 @@ fun Steps.toEntity() = StepsEntity(
 )
 
 fun FavoritesEntity.toModel() = Favorites(
+    favoritesId = favoritesId,
     recipeId = recipeId,
     userId = userId
 
 )
 
 fun Favorites.toEntity() = FavoritesEntity(
+    favoritesId = favoritesId,
     recipeId = recipeId,
     userId = userId
 )
