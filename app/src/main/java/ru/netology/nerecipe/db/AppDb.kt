@@ -15,7 +15,7 @@ import androidx.room.RoomDatabase
     version = 1
 )
 abstract class AppDb : RoomDatabase() {
-    abstract val RecipeDao: RecipeDao
+    abstract val recipeDao: RecipeDao
 
     companion object {
         @Volatile

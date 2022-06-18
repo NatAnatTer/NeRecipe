@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/feedFragment">
+
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="ru.netology.nerecipe.ui.FeedFragment"
+        tools:layout="@layout/feed_fragment">
+        <action
+            android:id="@+id/to_postContentFragment"
+            app:destination="@id/postContentFragment" />
+        <action
+            android:id="@+id/to_postShowContentFragment"
+            app:destination="@id/postShowContentFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/postContentFragment"
+        android:name="ru.netology.nerecipe.ui.PostContentFragment">
+        <argument
+            android:name="initialContent"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/to_postShowContentFragment"
+            app:destination="@id/postShowContentFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/postShowContentFragment"
+        android:name="ru.netology.nerecipe.ui.PostShowContentFragment">
+        <argument
+            android:name="idPost"
+            app:argType="long"
+            app:nullable="false" />
+        <action
+            android:id="@+id/to_feedFragment"
+            app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/to_postContentFragment"
+            app:destination="@id/postContentFragment" />
+    </fragment>
 
 </navigation>
+

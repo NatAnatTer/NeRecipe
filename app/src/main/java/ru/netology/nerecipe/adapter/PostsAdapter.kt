@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import android.widget.ScrollView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +14,7 @@ import java.text.DecimalFormat
 
 
 internal class PostsAdapter(
-    private val interactionListener: PostInteractionListener
+    private val interactionListener: RecipeIterationListener
 ) : ListAdapter<Post, PostsAdapter.ViewHolder>(DiffCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,7 +29,7 @@ internal class PostsAdapter(
 
      class ViewHolder(
         private val binding: PostListItemBinding,
-        private val listener: PostInteractionListener
+        private val listener: RecipeIterationListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var post: Post

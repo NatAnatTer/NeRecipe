@@ -1,15 +1,15 @@
 package ru.netology.nerecipe.data
 
 import androidx.lifecycle.map
-import ru.netology.nmedia.data.PostRepository
-import ru.netology.nmedia.db.PostDao
-import ru.netology.nmedia.db.toEntity
-import ru.netology.nmedia.db.toModel
-import ru.netology.nmedia.dto.Post
+import ru.netology.nerecipe.db.RecipeDao
+import ru.netology.nerecipe.db.toEntity
+import ru.netology.nerecipe.db.toModel
+import ru.netology.nmedia.data.RecipeRepository
 
-class PostRepositoryImpl(
-    private val dao: PostDao
-) : PostRepository {
+
+class RecipeRepositoryImpl(
+    private val dao: RecipeDao
+) : RecipeRepository {
 
     override val data = dao.getAll().map { entities ->
         entities.map {
@@ -25,7 +25,7 @@ class PostRepositoryImpl(
     }
 
     override fun save(post: Post) {
-        if (post.id == PostRepository.NEW_POST_ID) dao.insert(post.toEntity())
+        if (post.id == RecipeRepository.NEW_POST_ID) dao.insert(post.toEntity())
         else dao.updateContentById(post.id, post.content)
     }
 
