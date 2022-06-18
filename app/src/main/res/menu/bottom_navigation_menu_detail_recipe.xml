@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/back"
+        android:enabled="true"
+        android:icon="@drawable/ic_arrow_back_24"
+        android:title="@string/back"/>
+    <item
+        android:id="@+id/favorites_button"
+        android:enabled="true"
+        android:icon="@drawable/ic_favorite_24"
+        android:title="@string/favorites"/>
+    <item
+        android:id="@+id/edit_recipe"
+        android:enabled="true"
+        android:icon="@drawable/ic_edit_24"
+        android:title="@string/edit_recipe"/>
+    <item
+        android:id="@+id/remove_recipe"
+        android:enabled="true"
+        android:icon="@drawable/ic_delete_24"
+        android:title="@string/remove"/>
+
+</menu>

@@ -4,44 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.RecipeShowDetailFragment">
+    tools:context=".ui.RecipeChangeContentFragment">
 
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/recipeName"
-        android:layout_width="0dp"
+    <EditText
+        android:id="@+id/insert_recipe_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:autofillHints="@string/recipe_name_hint"
+        android:hint="@string/recipe_name_hint"
+        android:inputType="textMultiLine"
+        android:lineSpacingExtra="8dp"
+        android:padding="@dimen/common_spacing"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/category"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="16dp"
-        tools:text="Салат греческий" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <Spinner
         android:id="@+id/category"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textColorHint="colorSecondaryVariant"
-        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recipeName"
+        app:layout_constraintTop_toBottomOf="@id/insert_recipe_name"
+        tools:Text="kitchen category" />
 
-        tools:ignore="MissingConstraints,SmallSp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:text="Средиземноморская" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/author"
@@ -56,6 +47,7 @@
         app:layout_constraintEnd_toStartOf="@id/authorName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/category" />
+
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/authorName"
@@ -83,6 +75,19 @@
         tools:layout_editor_absoluteX="40dp"
         tools:layout_editor_absoluteY="126dp" />
 
+    <EditText
+        android:id="@+id/insert_step_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="@string/recipe_step_description_hint"
+        android:hint="@string/recipe_step_description_hint"
+        android:inputType="textMultiLine"
+        android:lineSpacingExtra="8dp"
+        android:padding="@dimen/common_spacing"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/author" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipeListRecyclerView"
@@ -90,11 +95,22 @@
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintTop_toBottomOf="@id/barrier"
+        app:layout_constraintTop_toBottomOf="@id/insert_step_description"
         tools:ignore="NotSibling"
         tools:listitem="@layout/recipe_steps">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:contentDescription="@string/add_step"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_detail_recipe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_add_24dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_detail_recipe"
@@ -103,7 +119,7 @@
         android:layout_height="wrap_content"
         android:gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_navigation_menu_detail_recipe"
+        app:menu="@menu/bottom_navigation_edit_recipe"
         tools:ignore="MissingConstraints" />
 
 

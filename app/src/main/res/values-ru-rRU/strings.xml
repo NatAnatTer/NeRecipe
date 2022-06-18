@@ -9,4 +9,13 @@
     <string name="recipe">Рецепт</string>
     <string name="search">Поиск</string>
     <string name="filter">Фльтр</string>
+    <string name="step">Шаг</string>
+    <string name="image_of_recipe">Изображение шага</string>
+    <string name="back">Назад</string>
+    <string name="edit_recipe">Редактировать</string>
+    <string name="insertRecipeName">Название рецепта</string>
+    <string name="recipe_name_hint">введите название рецепта</string>
+    <string name="add_step">Добавить шаг</string>
+    <string name="recipe_step_description_hint">Введите шаг рецепта</string>
+    <string name="save">Сохранить</string>
 </resources>

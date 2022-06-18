@@ -9,4 +9,13 @@
     <string name="recipe">Recipe</string>
     <string name="search">Search</string>
     <string name="filter">Filter</string>
+    <string name="step">Step</string>
+    <string name="image_of_recipe">Image of step</string>
+    <string name="back">Back</string>
+    <string name="edit_recipe">Edit recipe</string>
+    <string name="insertRecipeName">Insert recipe name</string>
+    <string name="recipe_name_hint">enter recipe name</string>
+    <string name="add_step">Add step</string>
+    <string name="recipe_step_description_hint">Enter recipe step</string>
+    <string name="save">Save</string>
 </resources>
