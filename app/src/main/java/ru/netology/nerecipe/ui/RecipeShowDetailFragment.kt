@@ -4,21 +4,17 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.fragment.app.*
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.PostsAdapter
-import ru.netology.nmedia.adapter.getTextViewCount
 import ru.netology.nmedia.databinding.PostShowContentDetailFragmentBinding
-import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.postViewModel.PostViewModel
 
 
-class PostShowContentFragment : Fragment() {
+class RecipeShowDetailFragment : Fragment() {
 
     private val args by navArgs<PostShowContentFragmentArgs>()
     private val viewModel by viewModels<PostViewModel>(ownerProducer = ::requireParentFragment)
@@ -57,10 +53,10 @@ class PostShowContentFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        setFragmentResultListener(requestKey = PostContentFragment.REQUEST_KEY) { requestKey, bundle ->
-            if (requestKey != PostContentFragment.REQUEST_KEY) return@setFragmentResultListener
+        setFragmentResultListener(requestKey = RecipeChangeContentFragment.REQUEST_KEY) { requestKey, bundle ->
+            if (requestKey != RecipeChangeContentFragment.REQUEST_KEY) return@setFragmentResultListener
             val newPostContent =
-                bundle.getString(PostContentFragment.RESULT_KEY) ?: return@setFragmentResultListener
+                bundle.getString(RecipeChangeContentFragment.RESULT_KEY) ?: return@setFragmentResultListener
             viewModel.onSaveButtonClicked(newPostContent)
         }
 

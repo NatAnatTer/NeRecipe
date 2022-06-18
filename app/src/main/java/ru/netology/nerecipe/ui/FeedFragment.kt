@@ -1,8 +1,6 @@
 package ru.netology.nerecipe.ui
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -42,10 +40,10 @@ class FeedFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        setFragmentResultListener(requestKey = PostContentFragment.REQUEST_KEY) { requestKey, bundle ->
-            if (requestKey != PostContentFragment.REQUEST_KEY) return@setFragmentResultListener
+        setFragmentResultListener(requestKey = RecipeChangeContentFragment.REQUEST_KEY) { requestKey, bundle ->
+            if (requestKey != RecipeChangeContentFragment.REQUEST_KEY) return@setFragmentResultListener
             val newPostContent =
-                bundle.getString(PostContentFragment.RESULT_KEY) ?: return@setFragmentResultListener
+                bundle.getString(RecipeChangeContentFragment.RESULT_KEY) ?: return@setFragmentResultListener
             viewModel.onSaveButtonClicked(newPostContent)
         }
 

@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/postContentFragment"
-        android:name="ru.netology.nerecipe.ui.PostContentFragment">
+        android:name="ru.netology.nerecipe.ui.RecipeChangeContentFragment">
         <argument
             android:name="initialContent"
             app:argType="string"
@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/postShowContentFragment"
-        android:name="ru.netology.nerecipe.ui.PostShowContentFragment">
+        android:name="ru.netology.nerecipe.ui.RecipeShowDetailFragment">
         <argument
             android:name="idPost"
             app:argType="long"
