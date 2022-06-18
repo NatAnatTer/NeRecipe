@@ -10,40 +10,23 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import ru.netology.nerecipe.databinding.FeedFragmentBinding
+import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
 
 class FeedFragment : Fragment() {
 
-    private val viewModel by viewModels<PostViewModel>(ownerProducer = ::requireParentFragment)
+    private val viewModel by viewModels<RecipeViewModel>(ownerProducer = ::requireParentFragment)
 
     @SuppressLint("QueryPermissionsNeeded")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.sharePostContent.observe(this) { postContent ->
-            val intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, postContent)
-                type = "text/plain"
-            }
-            val shareIntent = Intent.createChooser(intent, getString(R.string.chooser_share_post))
-            startActivity(shareIntent)
-        }
-
-        viewModel.videoLinkPlay.observe(this) { videoLink ->
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                val uri = Uri.parse(videoLink)
-                data = uri
-            }
-            val openVideoIntent =
-                Intent.createChooser(intent, getString(R.string.chooser_play_video))
-            startActivity(openVideoIntent)
-        }
 
 
 
 
-        viewModel.navigateToPostContentScreenEvent.observe(this) { initialContent ->
-            val direction = FeedFragmentDirections.toPostContentFragment(initialContent)
+        viewModel.navigateToRecipeContentScreenEvent.observe(this) { recipeId ->
+            val direction = FeedFragmentDirections.toPostContentFragment(recipeId)
             findNavController().navigate(direction)
 
         }

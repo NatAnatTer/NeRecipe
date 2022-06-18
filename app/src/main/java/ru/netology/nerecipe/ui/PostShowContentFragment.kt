@@ -1,4 +1,4 @@
-package ru.netology.nmedia.ui
+package ru.netology.nerecipe.ui
 
 import android.content.Intent
 import android.net.Uri

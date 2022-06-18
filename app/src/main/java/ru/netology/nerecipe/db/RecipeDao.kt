@@ -5,15 +5,16 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import ru.netology.nerecipe.dto.Steps
 
 
 @Dao
 interface RecipeDao {
 
 
-//    @Query("SELECT * FROM posts ORDER BY id DESC")
-//    fun getAll(): LiveData<List<PostEntity>>
-//
+    @Query("SELECT * FROM recipe ORDER BY recipe_id DESC")
+    fun getAll(): LiveData<Map<List<RecipeEntity>, List<StepsEntity>, List<UserEntity>, List<CategoryOfRecipeEntity>, List<FavoritesEntity>>>
+
 //
 //    @Query("SELECT * FROM posts WHERE id = :id")
 //    fun getById(id: Long): PostEntity

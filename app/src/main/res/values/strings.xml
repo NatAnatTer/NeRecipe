@@ -4,4 +4,9 @@
     <string name="author">Author:</string>
     <string name="option" translatable="false">Menu</string>
     <string name="favorites">Favorites</string>
+    <string name="remove">Remove</string>
+    <string name="menu_edit">Edit</string>
+    <string name="recipe">Recipe</string>
+    <string name="search">Search</string>
+    <string name="filter">Filter</string>
 </resources>

@@ -4,12 +4,21 @@ import androidx.lifecycle.map
 import ru.netology.nerecipe.db.RecipeDao
 import ru.netology.nerecipe.db.toEntity
 import ru.netology.nerecipe.db.toModel
+import ru.netology.nerecipe.dto.Recipe
+import ru.netology.nerecipe.dto.Steps
 import ru.netology.nmedia.data.RecipeRepository
 
 
 class RecipeRepositoryImpl(
     private val dao: RecipeDao
 ) : RecipeRepository {
+
+
+
+
+
+
+
 
     override val data = dao.getAll().map { entities ->
         entities.map {
@@ -22,6 +31,10 @@ class RecipeRepositoryImpl(
 
     override fun delete(postId: Long) {
         dao.removeById(postId)
+    }
+
+    override fun save(recipe: Recipe, steps: Array<Steps>) {
+        TODO("Not yet implemented")
     }
 
     override fun save(post: Post) {

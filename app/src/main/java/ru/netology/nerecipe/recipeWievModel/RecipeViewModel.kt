@@ -6,9 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import ru.netology.nerecipe.data.RecipeRepositoryImpl
 import ru.netology.nerecipe.db.AppDb
 import ru.netology.nerecipe.dto.Recipe
+import ru.netology.nerecipe.dto.Steps
 import ru.netology.nerecipe.util.SingleLiveEvent
 import ru.netology.nmedia.adapter.RecipeInteractionListener
 import ru.netology.nmedia.data.RecipeRepository
+import ru.netology.nmedia.data.RecipeRepository.Companion.NEW_POST_ID
+import java.util.*
 
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application),
@@ -19,53 +22,45 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     val data by repository::data
     private val currentRecipe = MutableLiveData<Recipe?>(null)
 
-    //val sharePostContent = SingleLiveEvent<String>()
-   // val videoLinkPlay = SingleLiveEvent<String>()
-    private val navigateToRecipeContentScreenEvent = SingleLiveEvent<String>()
+    val navigateToRecipeContentScreenEvent = SingleLiveEvent<Long>()
     private val navigateToShowRecipe = SingleLiveEvent<Long>()
 
 
     override fun onFavoriteClicked(recipe: Recipe) = repository.favorite(recipe.recipeId)
     override fun onRemoveClicked(recipe: Recipe) = repository.delete(recipe.recipeId)
-    override fun onEditClicked(recipe: Recipe){}
-    override fun onShowRecipeClicked(recipe: Recipe){
+    override fun onEditClicked(recipe: Recipe) {
+        currentRecipe.value = recipe
+        navigateToRecipeContentScreenEvent.value = recipe.recipeId
+    }
+
+    override fun onShowRecipeClicked(recipe: Recipe) {
         navigateToShowRecipe.value = recipe.recipeId
     }
 
-        fun onAddButtonClicked() {
+    fun onAddButtonClicked() {
         navigateToRecipeContentScreenEvent.call()
     }
 
+    fun onSaveButtonClicked(
+        recipeName: String,
+        authorId: Long,
+        categoryId: Long,
+        steps: Array<Steps>
+    ) {
+        if (steps.isEmpty()) return
 
+        val newRecipe = currentRecipe.value?.copy(
+            recipeName = recipeName,
+            categoryId = categoryId,
 
-
-//    override fun onRemoveClicked(post: Post) = repository.delete(post.id)
-//    override fun onEditClicked(post: Post) {
-//        currentPost.value = post
-//        navigateToPostContentScreenEvent.value = post.content
-//    }
-//
-//    override fun onPlayVideoClicked(post: Post) {
-//        videoLinkPlay.value = post.urlVideo!!
-//    }
-//
-//
-//    fun onSaveButtonClicked(content: String) {
-//        if (content.isBlank()) return
-//
-//        val newPost = currentPost.value?.copy(
-//            content = content
-//        ) ?: Post(
-//            id = PostRepository.NEW_POST_ID,
-//            author = "Me",
-//            content = content,
-//            published = "Now",
-//            avatar = R.drawable.ic_new_avatar_48,
-//            videoAttachmentCover = null,
-//            videoAttachmentHeader = null,
-//            urlVideo = null
-//        )
-//        repository.save(newPost)
-//        currentPost.value = null
-//    }
+            ) ?: Recipe(
+            recipeId = NEW_POST_ID,
+            recipeName = recipeName,
+            categoryId = categoryId,
+            authorId = authorId
+        )
+    //    repository.saveSteps(steps)
+        repository.save(newRecipe, steps)
+        currentRecipe.value = null
+    }
 }

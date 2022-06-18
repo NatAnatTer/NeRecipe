@@ -1,21 +1,20 @@
 package ru.netology.nmedia.data
 
 import androidx.lifecycle.LiveData
-import ru.netology.nmedia.dto.Post
+import ru.netology.nerecipe.dto.Recipe
+import ru.netology.nerecipe.dto.Steps
+
 
 interface RecipeRepository {
 
-    val data: LiveData<List<Post>>
+    val data: LiveData<List<Recipe>>
 
-    fun like(postId: Long)
 
-    fun repost(postId: Long)
+    fun delete(recipeId: Long)
 
-    fun delete(postId: Long)
+    fun save(recipe: Recipe, steps: Array<Steps>)
 
-    fun save(post: Post)
-
-    fun getPost(postId: Long): Post?
+  // fun getPost(postId: Long): Post?
 
     companion object {
         const val NEW_POST_ID = 0L
