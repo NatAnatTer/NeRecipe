@@ -10,8 +10,7 @@ import ru.netology.nerecipe.dto.Steps
 import ru.netology.nerecipe.util.SingleLiveEvent
 import ru.netology.nmedia.adapter.RecipeInteractionListener
 import ru.netology.nmedia.data.RecipeRepository
-import ru.netology.nmedia.data.RecipeRepository.Companion.NEW_POST_ID
-import java.util.*
+import ru.netology.nmedia.data.RecipeRepository.Companion.NEW_RECIPE_ID
 
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application),
@@ -26,7 +25,10 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     private val navigateToShowRecipe = SingleLiveEvent<Long>()
 
 
-    override fun onFavoriteClicked(recipe: Recipe){TODO()} //= repository.favorite(recipe.recipeId)
+    override fun onFavoriteClicked(recipe: Recipe) {
+        TODO()
+    } //= repository.favorite(recipe.recipeId)
+
     override fun onRemoveClicked(recipe: Recipe) = repository.delete(recipe.recipeId)
     override fun onEditClicked(recipe: Recipe) {
         currentRecipe.value = recipe
@@ -54,13 +56,23 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
             categoryId = categoryId,
 
             ) ?: Recipe(
-            recipeId = NEW_POST_ID,
+            recipeId = NEW_RECIPE_ID,
             recipeName = recipeName,
             categoryId = categoryId,
             authorId = authorId
         )
-    //    repository.saveSteps(steps)
-        repository.save(newRecipe, steps)
+        steps.forEach {
+            Steps(
+                stepId = 0L,
+                numberOfStep = it.numberOfStep,
+                contentOfStep = it.contentOfStep,
+                recipeId = it.recipeId,
+                imageUrl = it.imageUrl
+            )
+            repository.saveSteps(it)
+        }
+        // repository.saveSteps(steps)
+        repository.save(newRecipe)
         currentRecipe.value = null
     }
 }

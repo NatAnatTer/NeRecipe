@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nerecipe.databinding.FeedFragmentBinding
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
+import ru.netology.nmedia.adapter.RecipeAdapter
 
 class FeedFragment : Fragment() {
 
@@ -21,9 +22,9 @@ class FeedFragment : Fragment() {
 
 
     }
-}
 
-//
+
+    //
 //        viewModel.navigateToRecipeContentScreenEvent.observe(this) { recipeId ->
 //            val direction = FeedFragmentDirections.toPostContentFragment(recipeId)
 //            findNavController().navigate(direction)
@@ -50,22 +51,23 @@ class FeedFragment : Fragment() {
 //
 //    }
 //
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ) = FeedFragmentBinding.inflate(layoutInflater, container, false).also { binding ->
-//        val adapter = PostsAdapter(viewModel)
-//        binding.postRecyclerView.adapter = adapter
-//        viewModel.data.observe(viewLifecycleOwner) { posts ->
-//            adapter.submitList(posts)
-//        }
-//
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) = FeedFragmentBinding.inflate(layoutInflater, container, false).also { binding ->
+        val adapter = RecipeAdapter(viewModel)
+        binding.recipeListRecyclerView.adapter = adapter
+        viewModel.data.observe(viewLifecycleOwner) { recipe ->
+            adapter.submitList(recipe)
+        }
+
 //        binding.fab.setOnClickListener {
 //            viewModel.onAddButtonClicked()
 //        }
-//
-//    }.root
+
+    }.root
+}
 //
 //    companion object {
 //        const val TAG = "FeedFragment"

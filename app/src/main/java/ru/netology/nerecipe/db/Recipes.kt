@@ -67,4 +67,9 @@ fun CategoryOfRecipe.toEntity() = CategoryOfRecipeEntity(
     categoryName = categoryName
 )
 
+//fun RecipeWithInfo.tiModel() = RecipeWithInfo(
+//
+//
+//)
+
 

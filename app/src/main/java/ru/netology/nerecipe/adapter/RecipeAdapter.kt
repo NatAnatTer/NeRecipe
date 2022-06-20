@@ -1,56 +1,59 @@
 package ru.netology.nmedia.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-
+import ru.netology.nerecipe.R
+import ru.netology.nerecipe.databinding.RecipeListItemBinding
+import ru.netology.nerecipe.dto.Recipe
+import ru.netology.nerecipe.dto.RecipeWithInfo
 import java.text.DecimalFormat
 
 
-internal class RecipeAdapter()
-//    private val interactionListener: RecipeIterationListener
-//) : ListAdapter<Post, PostsAdapter.ViewHolder>(DiffCallBack) {
-//
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-//        val inflater = LayoutInflater.from(parent.context)
-//        val binding = PostListItemBinding.inflate(inflater, parent, false)
-//        return ViewHolder(binding, interactionListener)
-//    }
-//
-//    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        holder.bind(getItem(position))
-//    }
-//
-//     class ViewHolder(
-//        private val binding: PostListItemBinding,
-//        private val listener: RecipeIterationListener
-//    ) : RecyclerView.ViewHolder(binding.root) {
-//
-//        private lateinit var post: Post
-//        private val popupMenu by lazy {
-//            PopupMenu(itemView.context, binding.menu).apply {
-//                inflate(R.menu.options_post)
-//                setOnMenuItemClickListener { menuItem ->
-//                    when (menuItem.itemId) {
-//                        R.id.remove -> {
-//                            listener.onRemoveClicked(post)
-//                            true
-//                        }
-//                        R.id.edit -> {
-//                            listener.onEditClicked(post)
-//                            true
-//                        }
-//                        else -> false
-//                    }
-//                }
-//            }
-//        }
-//
-//        init {
+internal class RecipeAdapter(
+
+    private val interactionListener: RecipeInteractionListener
+) : ListAdapter<RecipeWithInfo, RecipeAdapter.ViewHolder>(DiffCallBack) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = RecipeListItemBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding, interactionListener)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+
+    class ViewHolder(
+        private val binding: RecipeListItemBinding,
+        private val listener: RecipeInteractionListener
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        private lateinit var recipe: RecipeWithInfo
+        private val popupMenu by lazy {
+            PopupMenu(itemView.context, binding.menu).apply {
+                inflate(R.menu.options_recipe)
+                setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.remove -> {
+                            listener.onRemoveClicked(recipe.recipe)
+                            true
+                        }
+                        R.id.edit -> {
+                            listener.onEditClicked(recipe.recipe)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            }
+        }
+
+        init {
 //            binding.like.setOnClickListener { listener.onLikeClicked(post) }
 //            binding.reposts.setOnClickListener { listener.onRepostClicked(post) }
 //            binding.menu.setOnClickListener { popupMenu.show() }
@@ -58,9 +61,18 @@ internal class RecipeAdapter()
 //            binding.videoPreviewButtonPlay.setOnClickListener { listener.onPlayVideoClicked(post) }
 //            binding.date.setOnClickListener { listener.onShowPostClicked(post) }
 //            binding.postBody.setOnClickListener { listener.onShowPostClicked(post) }
-//        }
-//
-//
+        }
+
+        fun bind(recipe: RecipeWithInfo) {
+            this.recipe = recipe
+            with(binding) {
+                recipeName.text = recipe.recipe.recipeName
+                category.text = recipe.category.categoryName
+                authorName.text = recipe.user.userName
+                //  favorites.isChecked = TODO()
+            }
+
+        }
 //        fun bind(post: Post) {
 //            this.post = post
 //            with(binding) {
@@ -86,18 +98,18 @@ internal class RecipeAdapter()
 //
 //            }
 //        }
-//
-//    }
-//
-//    private object DiffCallBack : DiffUtil.ItemCallback<Post>() {
-//        override fun areItemsTheSame(oldItem: Post, newItem: Post) =
-//            oldItem.id == newItem.id
-//
-//        override fun areContentsTheSame(oldItem: Post, newItem: Post) =
-//            oldItem == newItem
-//
-//    }
-//}
+
+    }
+
+    private object DiffCallBack : DiffUtil.ItemCallback<Recipe>() {
+        override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe) =
+            oldItem.recipeId == newItem.recipeId
+
+        override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe) =
+            oldItem == newItem
+
+    }
+}
 
 fun getTextViewCount(count: Int): String {
     val df1 = DecimalFormat("#.#")

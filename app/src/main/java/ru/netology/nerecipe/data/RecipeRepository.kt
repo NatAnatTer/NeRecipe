@@ -13,11 +13,11 @@ interface RecipeRepository {
 
     fun delete(recipeId: Long)
 
-    fun save(recipe: Recipe, steps: Array<Steps>)
+    fun save(recipe: Recipe)
+    fun saveSteps(step: Steps)
 
-  // fun getPost(postId: Long): Post?
 
     companion object {
-        const val NEW_POST_ID = 0L
+        const val NEW_RECIPE_ID = 0L
     }
 }

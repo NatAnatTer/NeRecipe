@@ -1,10 +1,8 @@
 package ru.netology.nerecipe.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
 import ru.netology.nerecipe.db.RecipeDao
 import ru.netology.nerecipe.db.toEntity
-import ru.netology.nerecipe.db.toModel
 import ru.netology.nerecipe.dto.Recipe
 import ru.netology.nerecipe.dto.RecipeWithInfo
 import ru.netology.nerecipe.dto.Steps
@@ -19,10 +17,18 @@ class RecipeRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override fun save(recipe: Recipe, steps: Array<Steps>) {
-        TODO("Not yet implemented")
+
+    override fun save(recipe: Recipe) {
+        if (recipe.recipeId == RecipeRepository.NEW_RECIPE_ID) dao.insert(recipe.toEntity())
+       // steps.forEach { dao.insertSteps(it.toEntity()) }
     }
+    fun saveSteps(step: Steps){
+        dao.insertSteps(step.toEntity())
+    }
+    //else dao.updateContentById(recipe.recipeId, recipe.recipeName)
+
 }
+
 
 //
 //
