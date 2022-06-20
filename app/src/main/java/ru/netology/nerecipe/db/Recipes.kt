@@ -18,13 +18,13 @@ fun Recipe.toEntity() = RecipeEntity(
 )
 
 fun UserEntity.toModel() = User(
-    userId = userId,
+    authorId = authorId,
     userName = userName
 
 )
 
 fun User.toEntity() = UserEntity(
-    userId = userId,
+    authorId = authorId,
     userName = userName
 )
 
@@ -46,14 +46,12 @@ fun Steps.toEntity() = StepsEntity(
 )
 
 fun FavoritesEntity.toModel() = Favorites(
-    favoritesId = favoritesId,
     recipeId = recipeId,
     userId = userId
 
 )
 
 fun Favorites.toEntity() = FavoritesEntity(
-    favoritesId = favoritesId,
     recipeId = recipeId,
     userId = userId
 )
@@ -68,3 +66,5 @@ fun CategoryOfRecipe.toEntity() = CategoryOfRecipeEntity(
     categoryId = categoryId,
     categoryName = categoryName
 )
+
+

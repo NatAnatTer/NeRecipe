@@ -26,7 +26,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     private val navigateToShowRecipe = SingleLiveEvent<Long>()
 
 
-    override fun onFavoriteClicked(recipe: Recipe) = repository.favorite(recipe.recipeId)
+    override fun onFavoriteClicked(recipe: Recipe){TODO()} //= repository.favorite(recipe.recipeId)
     override fun onRemoveClicked(recipe: Recipe) = repository.delete(recipe.recipeId)
     override fun onEditClicked(recipe: Recipe) {
         currentRecipe.value = recipe

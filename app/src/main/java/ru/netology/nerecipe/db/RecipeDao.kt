@@ -2,10 +2,8 @@ package ru.netology.nerecipe.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import ru.netology.nerecipe.dto.Steps
+import ru.netology.nerecipe.dto.RecipeWithInfo
 
 
 @Dao
@@ -13,8 +11,16 @@ interface RecipeDao {
 
 
     @Query("SELECT * FROM recipe ORDER BY recipe_id DESC")
-    fun getAll(): LiveData<Map<List<RecipeEntity>, List<StepsEntity>, List<UserEntity>, List<CategoryOfRecipeEntity>, List<FavoritesEntity>>>
+    fun getAll(): LiveData<List<RecipeWithInfo>>
 
+// ____________________________---
+//    @Dao
+//    interface DepartmentDao {
+//        // ...
+//        @get:Query("SELECT id, name from department")
+//        val departmentsWithEmployees: List<Any?>?
+//    }
+//    ________________________________
 //
 //    @Query("SELECT * FROM posts WHERE id = :id")
 //    fun getById(id: Long): PostEntity
