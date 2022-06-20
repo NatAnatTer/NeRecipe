@@ -1,8 +1,8 @@
 package ru.netology.nmedia.data
 
 import androidx.lifecycle.LiveData
-import ru.netology.nerecipe.db.RecipeWithInfo
 import ru.netology.nerecipe.dto.Recipe
+import ru.netology.nerecipe.dto.RecipeWithInfo
 import ru.netology.nerecipe.dto.Steps
 
 

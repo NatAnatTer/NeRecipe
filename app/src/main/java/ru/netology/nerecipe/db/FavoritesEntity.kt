@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
     tableName = "favorites", primaryKeys = ["recipe_id", "user_id"],
     foreignKeys = [ForeignKey(
         entity = UserEntity::class,
-        parentColumns = ["author_id"], childColumns = ["user_id"],
+        parentColumns = ["user_id"], childColumns = ["user_id"],
         onDelete = CASCADE
     ), ForeignKey(
         entity = RecipeEntity::class,

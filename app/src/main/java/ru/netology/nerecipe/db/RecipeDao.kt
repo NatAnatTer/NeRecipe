@@ -9,9 +9,15 @@ import ru.netology.nerecipe.dto.RecipeWithInfo
 @Dao
 interface RecipeDao {
 
-
-    @Query("SELECT * FROM recipe ORDER BY recipe_id DESC")
+//@Query("SELECT recipe.recipe_id, recipe.recipe_name, recipe.author_id, recipe.category_id, user.user_name, category_of_recipe.category_name" +
+//        " FROM recipe, user, category_of_recipe" +
+//    " where recipe.author_id = user.user_id AND recipe.category_id = category_of_recipe.category_id")
+    @Query("SELECT * FROM recipe")
     fun getAll(): LiveData<List<RecipeWithInfo>>
+
+    //    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    fun insert(post: PostEntity)
+
 
 // ____________________________---
 //    @Dao

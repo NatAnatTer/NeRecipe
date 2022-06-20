@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "recipe", foreignKeys = [ForeignKey(
         entity = UserEntity::class,
-        parentColumns = ["author_id"], childColumns = ["author_id"]
+        parentColumns = ["user_id"], childColumns = ["author_id"]
     ), ForeignKey(
         entity = CategoryOfRecipeEntity::class,
         parentColumns = ["category_id"], childColumns = ["category_id"]

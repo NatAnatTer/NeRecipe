@@ -3,10 +3,10 @@ package ru.netology.nerecipe.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import ru.netology.nerecipe.db.RecipeDao
-import ru.netology.nerecipe.db.RecipeWithInfo
 import ru.netology.nerecipe.db.toEntity
 import ru.netology.nerecipe.db.toModel
 import ru.netology.nerecipe.dto.Recipe
+import ru.netology.nerecipe.dto.RecipeWithInfo
 import ru.netology.nerecipe.dto.Steps
 import ru.netology.nmedia.data.RecipeRepository
 

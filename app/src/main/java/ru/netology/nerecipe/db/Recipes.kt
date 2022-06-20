@@ -18,13 +18,13 @@ fun Recipe.toEntity() = RecipeEntity(
 )
 
 fun UserEntity.toModel() = User(
-    authorId = authorId,
+    userId = userId,
     userName = userName
 
 )
 
 fun User.toEntity() = UserEntity(
-    authorId = authorId,
+    userId = userId,
     userName = userName
 )
 
