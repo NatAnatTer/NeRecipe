@@ -8,9 +8,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [RecipeEntity::class,
-        UserEntity::class,
         StepsEntity::class,
-        FavoritesEntity::class,
         CategoryOfRecipeEntity::class],
     version = 1
 )

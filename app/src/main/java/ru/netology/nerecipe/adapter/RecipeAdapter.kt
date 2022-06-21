@@ -54,13 +54,16 @@ internal class RecipeAdapter(
         }
 
         init {
-//            binding.like.setOnClickListener { listener.onLikeClicked(post) }
+            binding.favorites.setOnClickListener { listener.onFavoriteClicked(recipe.recipe) }
 //            binding.reposts.setOnClickListener { listener.onRepostClicked(post) }
             binding.menu.setOnClickListener { popupMenu.show() }
 //            binding.videoPreview.setOnClickListener { listener.onPlayVideoClicked(post) }
 //            binding.videoPreviewButtonPlay.setOnClickListener { listener.onPlayVideoClicked(post) }
-//            binding.date.setOnClickListener { listener.onShowPostClicked(post) }
-//            binding.postBody.setOnClickListener { listener.onShowPostClicked(post) }
+            binding.recipeName.setOnClickListener { listener.onShowRecipeClicked(recipe.recipe) }
+            binding.category.setOnClickListener { listener.onShowRecipeClicked(recipe.recipe) }
+            binding.author.setOnClickListener { listener.onShowRecipeClicked(recipe.recipe) }
+            binding.authorName.setOnClickListener { listener.onShowRecipeClicked(recipe.recipe) }
+
         }
 
         fun bind(recipe: RecipeWithInfo) {
@@ -68,8 +71,8 @@ internal class RecipeAdapter(
             with(binding) {
                 recipeName.text = recipe.recipe.recipeName
                 category.text = recipe.category.categoryName
-                authorName.text = recipe.user.userName
-                //  favorites.isChecked = TODO()
+                authorName.text = recipe.recipe.authorName
+                favorites.isChecked = recipe.recipe.isFavorites
             }
 
         }

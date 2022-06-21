@@ -42,9 +42,11 @@ class RecipeRepositoryImpl(
         if (categoryList.isEmpty()) dao.insertCategory(category.map{it.toEntity()})
     }
 
-    override fun createUser(user: User) = dao.insertUser(user.toEntity())
+    override fun favoritesByMe(recipeId: Long) = dao.favorite(recipeId)
 
-    override fun getCurrentUser(userName: String): User = dao.getMeUsers(userName).toModel()
+//    override fun createUser(user: User) = dao.insertUser(user.toEntity())
+//
+//    override fun getCurrentUser(userName: String): User = dao.getMeUsers(userName).toModel()
 
     //else dao.updateContentById(recipe.recipeId, recipe.recipeName)
 

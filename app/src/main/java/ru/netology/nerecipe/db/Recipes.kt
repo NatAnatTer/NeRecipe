@@ -5,28 +5,29 @@ import ru.netology.nerecipe.dto.*
 fun RecipeEntity.toModel() = Recipe(
     recipeId = recipeId,
     recipeName = recipeName,
-    authorId = authorId,
-    categoryId = categoryId
-
+    authorName = authorName,
+    categoryId = categoryId,
+isFavorites = isFavorites
 )
 
 fun Recipe.toEntity() = RecipeEntity(
     recipeId = recipeId,
     recipeName = recipeName,
-    authorId = authorId,
-    categoryId = categoryId
+    authorName = authorName,
+    categoryId = categoryId,
+    isFavorites = isFavorites
 )
 
-fun UserEntity.toModel() = User(
-    userId = userId,
-    userName = userName
-
-)
-
-fun User.toEntity() = UserEntity(
-    userId = userId,
-    userName = userName
-)
+//fun UserEntity.toModel() = User(
+//    userId = userId,
+//    userName = userName
+//
+//)
+//
+//fun User.toEntity() = UserEntity(
+//    userId = userId,
+//    userName = userName
+//)
 
 fun StepsEntity.toModel() = Steps(
     stepId = stepId,
@@ -45,16 +46,16 @@ fun Steps.toEntity() = StepsEntity(
     imageUrl = imageUrl
 )
 
-fun FavoritesEntity.toModel() = Favorites(
-    recipeId = recipeId,
-    userId = userId
+//fun FavoritesEntity.toModel() = Favorites(
+//    recipeId = recipeId,
+//    userId = userId
+//
+//)
 
-)
-
-fun Favorites.toEntity() = FavoritesEntity(
-    recipeId = recipeId,
-    userId = userId
-)
+//fun Favorites.toEntity() = FavoritesEntity(
+//    recipeId = recipeId,
+//    userId = userId
+//)
 
 fun CategoryOfRecipeEntity.toModel() = CategoryOfRecipe(
     categoryId = categoryId,
@@ -70,17 +71,15 @@ fun CategoryOfRecipe.toEntity() = CategoryOfRecipeEntity(
 
 
 fun RecipeWithInfoEntity.toModel(): RecipeWithInfo {
-
-
     val recipeTarget: Recipe = recipe.toModel()
     val categoryTarget: CategoryOfRecipe = category.toModel()
    val stepsTarget: List<Steps> = steps.map { it.toModel() }
-    val userTarget: User = user.toModel()
+    //val userTarget: User = user.toModel()
    return RecipeWithInfo(
         recipe = recipeTarget,
         category = categoryTarget,
         steps = stepsTarget,
-        user = userTarget
+      //  user = userTarget
         )
 }
 

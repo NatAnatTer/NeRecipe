@@ -85,17 +85,22 @@
         tools:layout_editor_absoluteY="126dp" />
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recipeListRecyclerView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintTop_toBottomOf="@id/barrier"
-        tools:ignore="NotSibling"
-        tools:listitem="@layout/recipe_steps">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-186dp"
+        tools:layout_editor_absoluteY="-203dp">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <include
+            android:id="@+id/recipe_steps_list"
+            layout="@layout/recipe_steps"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+            app:layout_constraintTop_toBottomOf="@id/barrier" />
+    </ScrollView>
+
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_detail_recipe"

@@ -17,11 +17,13 @@ interface RecipeRepository {
 
     fun createCategory(category: List<CategoryOfRecipe>)
 
-    fun createUser(user: User)
+    fun favoritesByMe(recipeId: Long)
 
-
-
-    fun getCurrentUser(userName: String): User
+//    fun createUser(user: User)
+//
+//
+//
+//    fun getCurrentUser(userName: String): User
 
     companion object {
         const val NEW_RECIPE_ID = 0L

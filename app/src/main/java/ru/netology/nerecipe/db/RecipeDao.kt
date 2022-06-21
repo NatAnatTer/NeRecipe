@@ -42,14 +42,15 @@ interface RecipeDao {
 
 
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertUser(user: UserEntity)
+//    @Insert(onConflict = OnConflictStrategy.IGNORE)
+//    fun insertUser(user: UserEntity)
+//
+//    @Query("SELECT * FROM user")
+//    fun getAllUsers(): List<UserEntity>
+//
+//    @Query("SELECT * FROM user WHERE user_name = :userName")
+//    fun getMeUsers(userName: String): UserEntity
 
-    @Query("SELECT * FROM user")
-    fun getAllUsers(): List<UserEntity>
-
-    @Query("SELECT * FROM user WHERE user_name = :userName")
-    fun getMeUsers(userName: String): UserEntity
 
 
 
@@ -58,15 +59,20 @@ interface RecipeDao {
     fun removeRecipeById(id: Long)
     @Query("DELETE FROM steps WHERE recipe_id = :id")
     fun removeStepsById(id: Long)
-    @Query("DELETE FROM favorites WHERE recipe_id = :id")
-    fun removeFavoritesById(id: Long)
+
 
     @Transaction
     fun removeRecipe(idRecipe: Long){
         removeStepsById(idRecipe)
-        removeFavoritesById(idRecipe)
         removeRecipeById(idRecipe)
     }
+
+    @Query("""
+            UPDATE recipe SET
+            is_favorites =  CASE WHEN is_favorites THEN 0 ELSE 1 END
+            WHERE recipe_id = :recipeId
+        """)
+    fun favorite(recipeId: Long)
 
 //
 //    @Query("SELECT * FROM posts WHERE id = :id")

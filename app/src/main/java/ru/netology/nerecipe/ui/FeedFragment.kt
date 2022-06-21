@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import ru.netology.nerecipe.databinding.FeedFragmentBinding
 import ru.netology.nerecipe.dto.CategoryOfRecipe
 import ru.netology.nerecipe.dto.Recipe
 import ru.netology.nerecipe.dto.Steps
-import ru.netology.nerecipe.dto.User
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
 import ru.netology.nmedia.adapter.RecipeAdapter
 import ru.netology.nmedia.data.RecipeRepository
@@ -57,17 +58,15 @@ class FeedFragment : Fragment() {
         )
         viewModel.createCategory(categoryList)
 
-        viewModel.createUser(User(userId = RecipeRepository.NEW_RECIPE_ID,
-        userName = "Me"))
 
         ////// Zaglushka
 
-        val currentUser = viewModel.getCurrentUser("Me")
         val recipe = Recipe(
             recipeId = RecipeRepository.NEW_RECIPE_ID,
             recipeName = "First recipe",
             categoryId = 1L,
-            authorId = currentUser.userId
+            authorName = "Me",
+            isFavorites = false
 
         )
         val stepsList = listOf(
@@ -92,35 +91,37 @@ class FeedFragment : Fragment() {
         ///// Zaglushka
 
 
-
         //
-//        viewModel.navigateToRecipeContentScreenEvent.observe(this) { recipeId ->
-//            val direction = FeedFragmentDirections.toPostContentFragment(recipeId)
-//            findNavController().navigate(direction)
-//
-//        }
-//        viewModel.navigateToShowPost.observe(this) { idPost ->
-//            val direction = idPost?.let { FeedFragmentDirections.toPostShowContentFragment(it) }
-//            if (direction != null) {
-//                findNavController().navigate(direction)
-//            }
-//        }
-//
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//
-//        setFragmentResultListener(requestKey = RecipeChangeContentFragment.REQUEST_KEY) { requestKey, bundle ->
-//            if (requestKey != RecipeChangeContentFragment.REQUEST_KEY) return@setFragmentResultListener
-//            val newPostContent =
-//                bundle.getString(RecipeChangeContentFragment.RESULT_KEY) ?: return@setFragmentResultListener
-//            viewModel.onSaveButtonClicked(newPostContent)
-//        }
-//
-//    }
-//
+        viewModel.navigateToRecipeChangeContentScreenEvent.observe(this) { recipeId ->
+            val direction = recipeId?.let { FeedFragmentDirections.toRecipeShowDetailFragment(it) }
+            if (direction != null) {
+                findNavController().navigate(direction)
+            }
+
+        }
+        viewModel.navigateToShowRecipe.observe(this) { idPost ->
+            val direction = idPost?.let { FeedFragmentDirections.toRecipeShowDetailFragment(it) }
+            if (direction != null) {
+                findNavController().navigate(direction)
+            }
+        }
+
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        setFragmentResultListener(requestKey = RecipeChangeContentFragment.REQUEST_KEY) { requestKey, bundle ->
+            if (requestKey != RecipeChangeContentFragment.REQUEST_KEY) return@setFragmentResultListener
+            val newPostContent =
+                bundle.getString(RecipeChangeContentFragment.RESULT_KEY)
+                    ?: return@setFragmentResultListener
+          //  viewModel.onSaveButtonClicked(newPostContent)
+        }
+
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -138,8 +139,3 @@ class FeedFragment : Fragment() {
 
     }.root
 }
-//
-//    companion object {
-//        const val TAG = "FeedFragment"
-//    }
-//}

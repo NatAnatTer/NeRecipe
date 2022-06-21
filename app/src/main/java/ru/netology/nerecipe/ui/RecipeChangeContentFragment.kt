@@ -7,7 +7,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 
-class RecipeChangeContentFragment : Fragment() {}
+class RecipeChangeContentFragment : Fragment() {
+
+    companion object {
+        const val RESULT_KEY = "postNewContent"
+        const val REQUEST_KEY = "requestKey"
+
+    }
+}
 //
 //
 //    private val args by navArgs<PostContentFragmentArgs>()

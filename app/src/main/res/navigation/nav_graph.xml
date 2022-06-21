@@ -9,40 +9,43 @@
         android:id="@+id/feedFragment"
         android:name="ru.netology.nerecipe.ui.FeedFragment"
         tools:layout="@layout/feed_fragment">
+
         <action
-            android:id="@+id/to_postContentFragment"
-            app:destination="@id/postContentFragment" />
+            android:id="@+id/to_recipeShowDetailFragment"
+            app:destination="@id/recipe_show_detail_fragment" />
         <action
-            android:id="@+id/to_postShowContentFragment"
-            app:destination="@id/postShowContentFragment" />
+            android:id="@+id/to_change_content_fragmet"
+            app:destination="@id/recipe_change_content_fragment" />
 
     </fragment>
     <fragment
-        android:id="@+id/postContentFragment"
-        android:name="ru.netology.nerecipe.ui.RecipeChangeContentFragment">
-        <argument
-            android:name="initialContent"
-            app:argType="string"
-            app:nullable="true" />
-        <action
-            android:id="@+id/to_postShowContentFragment"
-            app:destination="@id/postShowContentFragment" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/postShowContentFragment"
+        android:id="@+id/recipe_show_detail_fragment"
         android:name="ru.netology.nerecipe.ui.RecipeShowDetailFragment">
         <argument
-            android:name="idPost"
+            android:name="initialContent"
             app:argType="long"
             app:nullable="false" />
         <action
             android:id="@+id/to_feedFragment"
             app:destination="@id/feedFragment" />
         <action
-            android:id="@+id/to_postContentFragment"
-            app:destination="@id/postContentFragment" />
+            android:id="@+id/to_change_content_fragmet"
+            app:destination="@id/recipe_change_content_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/recipe_change_content_fragment"
+        android:name="ru.netology.nerecipe.ui.RecipeChangeContentFragment">
+        <argument
+            android:name="idRecipe"
+            app:argType="long"
+            app:nullable="false" />
+        <action
+            android:id="@+id/to_feedFragment"
+            app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/to_recipe_show_detail_fragment"
+            app:destination="@id/recipe_show_detail_fragment" />
     </fragment>
 
 </navigation>

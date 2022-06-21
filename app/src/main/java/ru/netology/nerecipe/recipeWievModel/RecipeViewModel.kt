@@ -8,7 +8,6 @@ import ru.netology.nerecipe.db.AppDb
 import ru.netology.nerecipe.dto.CategoryOfRecipe
 import ru.netology.nerecipe.dto.Recipe
 import ru.netology.nerecipe.dto.Steps
-import ru.netology.nerecipe.dto.User
 import ru.netology.nerecipe.util.SingleLiveEvent
 import ru.netology.nmedia.adapter.RecipeInteractionListener
 import ru.netology.nmedia.data.RecipeRepository
@@ -24,12 +23,12 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     val data by repository::data
     private val currentRecipe = MutableLiveData<Recipe?>(null)
 
-    val navigateToRecipeContentScreenEvent = SingleLiveEvent<Long>()
-    private val navigateToShowRecipe = SingleLiveEvent<Long>()
+    val navigateToRecipeChangeContentScreenEvent = SingleLiveEvent<Long>()
+    val navigateToShowRecipe = SingleLiveEvent<Long>()
 
 
     override fun onFavoriteClicked(recipe: Recipe) {
-        TODO()
+        repository.favoritesByMe(recipe.recipeId)
     } //= repository.favorite(recipe.recipeId)
 
     override fun onRemoveClicked(recipe: Recipe) = repository.delete(recipe.recipeId)
@@ -49,10 +48,10 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     fun createCategory(category: List<CategoryOfRecipe>) {
         repository.createCategory(category)
     }
-    fun createUser(user: User){
-        repository.createUser(user)
-    }
-    fun getCurrentUser(userName: String) = repository.getCurrentUser(userName)
+//    fun createUser(user: User){
+//        repository.createUser(user)
+//    }
+//    fun getCurrentUser(userName: String) = repository.getCurrentUser(userName)
 
 
     fun onSaveButtonClicked(
@@ -69,7 +68,8 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
             recipeId = NEW_RECIPE_ID,
             recipeName = recipe.recipeName,
             categoryId = recipe.categoryId,
-            authorId = recipe.authorId
+            authorName = recipe.authorName,
+            isFavorites = false
         )
          val recipeNewId = repository.save(newRecipe)
         steps.forEach {
