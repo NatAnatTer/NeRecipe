@@ -49,35 +49,37 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     }
 
     fun onSaveButtonClicked(
-        recipeName: String,
-        authorId: Long,
-        categoryId: Long,
-        steps: Array<Steps>
+//        recipeName: String,
+//        authorId: Long,
+//        categoryId: Long,
+        recipe: Recipe,
+        steps: List<Steps>
     ) {
         if (steps.isEmpty()) return
 
         val newRecipe = currentRecipe.value?.copy(
-            recipeName = recipeName,
-            categoryId = categoryId,
+            recipeName = recipe.recipeName,
+            categoryId = recipe.categoryId,
 
             ) ?: Recipe(
             recipeId = NEW_RECIPE_ID,
-            recipeName = recipeName,
-            categoryId = categoryId,
-            authorId = authorId
+            recipeName = recipe.recipeName,
+            categoryId = recipe.categoryId,
+            authorId = recipe.authorId
         )
+       val recipeNewId = repository.save(newRecipe)
         steps.forEach {
             Steps(
                 stepId = 0L,
                 numberOfStep = it.numberOfStep,
                 contentOfStep = it.contentOfStep,
-                recipeId = it.recipeId,
+                recipeId = recipeNewId,
                 imageUrl = it.imageUrl
             )
             repository.saveSteps(it)
         }
         // repository.saveSteps(steps)
-        repository.save(newRecipe)
+
         currentRecipe.value = null
     }
 }

@@ -24,6 +24,6 @@ class StepsEntity(
     @ColumnInfo(name = "recipe_id")
     val recipeId: Long,
     @ColumnInfo(name = "image_url")
-    val imageUrl: String
+    val imageUrl: String?
 
 )

@@ -19,7 +19,7 @@ interface RecipeDao {
     fun getAll(): LiveData<List<RecipeWithInfoEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(recipe: RecipeEntity)
+    fun insert(recipe: RecipeEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSteps(steps: StepsEntity)

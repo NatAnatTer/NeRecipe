@@ -5,5 +5,5 @@ data class Steps(
     val numberOfStep: Int,
     val contentOfStep: String,
     val recipeId: Long,
-    val imageUrl: String
+    val imageUrl: String?
     )

@@ -22,6 +22,8 @@ class FeedFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+//        //_________Zaglushka
         val categoryList = listOf(
             CategoryOfRecipe(
                 categoryId = RecipeRepository.NEW_RECIPE_ID,
@@ -58,50 +60,35 @@ class FeedFragment : Fragment() {
         ////// Zaglushka
         val recipe = Recipe(
             recipeId = RecipeRepository.NEW_RECIPE_ID,
-            recipeName = "Firs",
-            categoryId = 0L,
+            recipeName = "First recipe",
+            categoryId = 1L,
             authorId = 0L
 
         )
-
-        fun onSaveButtonClicked(
-            recipeName: String,
-            authorId: Long,
-            categoryId: Long,
-            steps: Array<Steps>
-        ) {
-            if (steps.isEmpty()) return
-
-            val newRecipe = currentRecipe.value?.copy(
-                recipeName = recipeName,
-                categoryId = categoryId,
-
-                ) ?: Recipe(
-                recipeId = RecipeRepository.NEW_RECIPE_ID,
-                recipeName = recipeName,
-                categoryId = categoryId,
-                authorId = authorId
+        val stepsList = listOf(
+            Steps(
+                stepId = 0L,
+                numberOfStep = 1,
+                contentOfStep = "firstStep",
+                recipeId = 0L,
+                imageUrl = null
+            ),
+            Steps(
+                stepId = 0L,
+                numberOfStep = 2,
+                contentOfStep = "secondStep",
+                recipeId = 0L,
+                imageUrl = null
             )
-            steps.forEach {
-                Steps(
-                    stepId = 0L,
-                    numberOfStep = it.numberOfStep,
-                    contentOfStep = it.contentOfStep,
-                    recipeId = it.recipeId,
-                    imageUrl = it.imageUrl
-                )
-                repository.saveSteps(it)
-            }
-            // repository.saveSteps(steps)
-            repository.save(newRecipe)
-            currentRecipe.value = null
-        }
+        )
+        viewModel.onSaveButtonClicked(recipe, stepsList)
+
+
         ///// Zaglushka
 
-    }
 
 
-    //
+        //
 //        viewModel.navigateToRecipeContentScreenEvent.observe(this) { recipeId ->
 //            val direction = FeedFragmentDirections.toPostContentFragment(recipeId)
 //            findNavController().navigate(direction)
@@ -128,6 +115,7 @@ class FeedFragment : Fragment() {
 //
 //    }
 //
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

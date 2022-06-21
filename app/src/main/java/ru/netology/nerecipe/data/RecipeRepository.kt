@@ -11,7 +11,7 @@ interface RecipeRepository {
 
     fun delete(recipeId: Long)
 
-    fun save(recipe: Recipe)
+    fun save(recipe: Recipe):Long
     fun saveSteps(step: Steps)
 
     fun createCategory(category: List<CategoryOfRecipe>)

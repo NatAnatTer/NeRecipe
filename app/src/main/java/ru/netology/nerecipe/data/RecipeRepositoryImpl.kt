@@ -24,10 +24,10 @@ class RecipeRepositoryImpl(
     }
 
 
-    override fun save(recipe: Recipe) {
-        if (recipe.recipeId == RecipeRepository.NEW_RECIPE_ID) dao.insert(recipe.toEntity())
-       // steps.forEach { dao.insertSteps(it.toEntity()) }
-    }
+    override fun save(recipe: Recipe): Long =
+        if (recipe.recipeId == RecipeRepository.NEW_RECIPE_ID) dao.insert(recipe.toEntity()) else 0L
+    // steps.forEach { dao.insertSteps(it.toEntity()) }
+
     override fun saveSteps(step: Steps){
         dao.insertSteps(step.toEntity())
     }
