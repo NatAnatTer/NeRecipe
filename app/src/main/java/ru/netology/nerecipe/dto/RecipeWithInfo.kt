@@ -15,5 +15,5 @@ data class RecipeWithInfo(
     val category: CategoryOfRecipe,
 
     @Relation(parentColumn = "recipe_id", entityColumn = "recipe_id")
-    val steps: List<Steps>
+    var steps: List<Steps>
 )

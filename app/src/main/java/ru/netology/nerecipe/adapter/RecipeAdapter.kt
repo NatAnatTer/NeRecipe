@@ -1,4 +1,4 @@
-package ru.netology.nmedia.adapter
+package ru.netology.nerecipe.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nerecipe.R
 import ru.netology.nerecipe.databinding.RecipeListItemBinding
-import ru.netology.nerecipe.dto.Recipe
+import ru.netology.nerecipe.databinding.RecipeStepsBinding
 import ru.netology.nerecipe.dto.RecipeWithInfo
-import java.text.DecimalFormat
+import ru.netology.nerecipe.dto.Steps
+import ru.netology.nmedia.adapter.RecipeInteractionListener
 
 
 internal class RecipeAdapter(
@@ -76,33 +77,31 @@ internal class RecipeAdapter(
             }
 
         }
-//        fun bind(post: Post) {
-//            this.post = post
-//            with(binding) {
-//                authorName.text = post.author
-//                date.text = post.published
-//                post.content.also { postBody.text = it }
-//                like.text = getTextViewCount(post.likes)
-//                like.isChecked = post.likedByMe
-//                usersViews.text = getTextViewCount(post.views)
-//                reposts.text = getTextViewCount(post.reposts)
-//                avatar.setImageResource(post.avatar)
-//                if (post.videoAttachmentCover != null) {
-//                    videoPreview.setImageResource(post.videoAttachmentCover.toInt())
-//                    videoTitle.text = post.videoAttachmentHeader
-//                    videoPreview.visibility = View.VISIBLE
-//                    videoTitle.visibility = View.VISIBLE
-//                    videoPreviewButtonPlay.visibility = View.VISIBLE
-//                } else {
-//                    videoPreview.visibility = View.GONE
-//                    videoTitle.visibility = View.GONE
-//                    videoPreviewButtonPlay.visibility = View.GONE
-//                }
-//
-//            }
-//        }
+
 
     }
+
+//    class ViewHolderSteps(
+//        private val binding: RecipeStepsBinding
+//    ) : RecyclerView.ViewHolder(binding.root) {
+//
+//        private lateinit var steps: Steps
+//
+//
+//        fun bind(recipe: RecipeWithInfo) {
+//            this.steps = recipe.steps.get(steps)
+//            with(binding) {
+//                nameOfStep.text = recipe.steps.
+//                recipeName.text = recipe.recipe.recipeName
+//                category.text = recipe.category.categoryName
+//                authorName.text = recipe.recipe.authorName
+//                favorites.isChecked = recipe.recipe.isFavorites
+//            }
+//
+//        }
+//
+//
+//    }
 
     private object DiffCallBack : DiffUtil.ItemCallback<RecipeWithInfo>() {
         override fun areItemsTheSame(oldItem: RecipeWithInfo, newItem: RecipeWithInfo) =
@@ -113,4 +112,6 @@ internal class RecipeAdapter(
 
     }
 }
+
+
 

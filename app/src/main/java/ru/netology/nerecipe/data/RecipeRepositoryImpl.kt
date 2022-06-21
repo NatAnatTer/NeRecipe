@@ -2,58 +2,54 @@ package ru.netology.nerecipe.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import androidx.lifecycle.switchMap
-import androidx.room.Query
-import ru.netology.nerecipe.db.*
-import ru.netology.nerecipe.dto.*
-import ru.netology.nmedia.data.RecipeRepository
+import ru.netology.nerecipe.db.RecipeDao
+import ru.netology.nerecipe.db.toEntity
+import ru.netology.nerecipe.db.toModel
+import ru.netology.nerecipe.dto.CategoryOfRecipe
+import ru.netology.nerecipe.dto.Recipe
+import ru.netology.nerecipe.dto.RecipeWithInfo
+import ru.netology.nerecipe.dto.Steps
 
 
 class RecipeRepositoryImpl(
     private val dao: RecipeDao,
-  //  private val daoRecipeSteps: RecipeStepDao
 ) : RecipeRepository {
-    override val data: LiveData<List<RecipeWithInfo>> = dao.getAll().map{it.map{it2 -> it2.toModel()}}
 
+    override val data: LiveData<List<RecipeWithInfo>> =
+        dao.getAll().map { it.map { it2 -> it2.toModel() } }
+
+  //  override val dataSteps: LiveData<Steps> = dao.getStepsByRecipeId()
 
     override fun delete(recipeId: Long) = dao.removeRecipe(recipeId)
 
 
-//    override fun saveRecipeSteps(recipe: Recipe, steps: List<Steps>) {
-//        dao.insertRecipeSteps(recipe.toEntity(), steps.map{it.toEntity()})
-//    }
-
     override fun save(recipe: Recipe): Long {
-       val idrec =  dao.insert(recipe.toEntity())
+        val idrec = dao.insert(recipe.toEntity())
         return idrec
     }
-    //    if (recipe.recipeId == RecipeRepository.NEW_RECIPE_ID) dao.insert(recipe.toEntity()) else 0L
 
-
-    override fun saveSteps(step: Steps){
-      //  val insertedStep = step.
+    override fun saveSteps(step: Steps) {
+        //  val insertedStep = step.
         dao.insertStepsTry(step.toEntity())
     }
 
 
-    override fun createCategory(category: List<CategoryOfRecipe>){
-        val categoryList = dao.getAllCategory().map{it.toModel()}
+    override fun createCategory(category: List<CategoryOfRecipe>) {
+        val categoryList = dao.getAllCategory().map { it.toModel() }
 
-        if (categoryList.isEmpty()) dao.insertCategory(category.map{it.toEntity()})
+        if (categoryList.isEmpty()) dao.insertCategory(category.map { it.toEntity() })
     }
 
     override fun favoritesByMe(recipeId: Long) = dao.favorite(recipeId)
 
-//    override fun createUser(user: User) = dao.insertUser(user.toEntity())
-//
-//    override fun getCurrentUser(userName: String): User = dao.getMeUsers(userName).toModel()
 
-    //else dao.updateContentById(recipe.recipeId, recipe.recipeName)
-
+    override fun getStepsByRecipeId(recipeId: Long): List<Steps> = dao.getStepsByRecipeId(recipeId).map{it.toModel()}
 
 
 }
 
+
+//else dao.updateContentById(recipe.recipeId, recipe.recipeName)
 
 //
 //

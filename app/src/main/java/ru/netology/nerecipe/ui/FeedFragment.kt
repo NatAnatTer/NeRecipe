@@ -13,8 +13,8 @@ import ru.netology.nerecipe.dto.CategoryOfRecipe
 import ru.netology.nerecipe.dto.Recipe
 import ru.netology.nerecipe.dto.Steps
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
-import ru.netology.nmedia.adapter.RecipeAdapter
-import ru.netology.nmedia.data.RecipeRepository
+import ru.netology.nerecipe.adapter.RecipeAdapter
+import ru.netology.nerecipe.data.RecipeRepository
 
 class FeedFragment : Fragment() {
 
@@ -75,14 +75,14 @@ class FeedFragment : Fragment() {
                 numberOfStep = 1,
                 contentOfStep = "firstStep",
                 recipeId = 0L,
-                imageUrl = null
+                imageUrl = "https://coderlessons.com/wp-content/uploads/2019/07/sample_image-5.jpg"
             ),
             Steps(
                 stepId = 0L,
                 numberOfStep = 2,
                 contentOfStep = "secondStep",
                 recipeId = 0L,
-                imageUrl = null
+                imageUrl = "https://img1.freepng.ru/20171220/ide/donut-png-5a3ac1b8c33b25.9691611515138001207997.jpg"
             )
         )
         viewModel.onSaveButtonClicked(recipe, stepsList)
@@ -118,6 +118,8 @@ class FeedFragment : Fragment() {
                     ?: return@setFragmentResultListener
           //  viewModel.onSaveButtonClicked(newPostContent)
         }
+
+
 
     }
 

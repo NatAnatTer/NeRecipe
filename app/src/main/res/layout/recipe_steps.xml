@@ -52,13 +52,14 @@
         tools:text="Coocking dinner" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/video_preview"
+        android:id="@+id/image_of_step"
         android:layout_width="match_parent"
         android:layout_height="256dp"
         android:contentDescription="@string/image_of_recipe"
         android:scaleType="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/description_of_step" />
+        app:layout_constraintTop_toBottomOf="@id/description_of_step"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

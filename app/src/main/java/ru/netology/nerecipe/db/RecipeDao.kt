@@ -74,6 +74,9 @@ interface RecipeDao {
         """)
     fun favorite(recipeId: Long)
 
+    @Query("SELECT * FROM steps WHERE recipe_id = :id")
+    fun getStepsByRecipeId(id: Long): List<StepsEntity>
+
 //
 //    @Query("SELECT * FROM posts WHERE id = :id")
 //    fun getById(id: Long): PostEntity

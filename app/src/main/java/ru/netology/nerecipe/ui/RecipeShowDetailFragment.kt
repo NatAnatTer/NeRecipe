@@ -8,7 +8,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ru.netology.nerecipe.databinding.RecipeShowDetailFragmentBinding
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
-import ru.netology.nmedia.adapter.RecipeAdapter
+import ru.netology.nerecipe.adapter.RecipeAdapter
+import ru.netology.nerecipe.adapter.RecipeStepsAdapter
 
 
 class RecipeShowDetailFragment : Fragment() {
@@ -26,6 +27,8 @@ class RecipeShowDetailFragment : Fragment() {
             }
 
         }
+
+
     }
 
         override fun onResume() {
@@ -36,7 +39,7 @@ class RecipeShowDetailFragment : Fragment() {
                 val newPostContent =
                     bundle.getString(RecipeChangeContentFragment.RESULT_KEY)
                         ?: return@setFragmentResultListener
-                //  viewModel.onSaveButtonClicked(newPostContent)
+               //   viewModel.onSaveButtonClicked(newPostContent)
             }
 
         }
@@ -47,19 +50,60 @@ class RecipeShowDetailFragment : Fragment() {
             savedInstanceState: Bundle?
         ) = RecipeShowDetailFragmentBinding.inflate(inflater, container, false)
             .also { binding ->
-                val viewHolder = RecipeAdapter.ViewHolder(binding.recipeListItem, viewModel)
+
+                val viewHolder = RecipeAdapter.ViewHolder(binding.recipeContentDetail, viewModel)
                 viewModel.data.observe(viewLifecycleOwner) { recipe ->
-                    val recipe = recipe.find { it.recipe.recipeId == args.idRecipe } ?: run {
+                    val recipeCurrent = recipe.find { it.recipe.recipeId == args.initialContent } ?: run {
                         findNavController().navigateUp() // the post was deleted, close the fragment
                         return@observe
                     }
-                    viewHolder.bind(recipe)
+                    viewHolder.bind(recipeCurrent)
                 }
+
+                val adapter = RecipeStepsAdapter()
+                binding.recipeStepsListRecyclerView.adapter = adapter
+                viewModel.data.observe(viewLifecycleOwner) {
+                    val stepsOfRecipe = viewModel.getStepsByRecipeId(args.initialContent)
+                    adapter.submitList(stepsOfRecipe)
+                }
+
+
             }.root
 
-    }
 
 
+}
+
+
+//<com.google.android.material.bottomnavigation.BottomNavigationView
+//android:id="@+id/bottom_navigation_detail_recipe"
+//style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+//android:layout_width="match_parent"
+//android:layout_height="wrap_content"
+//android:gravity="bottom"
+//app:layout_constraintBottom_toBottomOf="parent"
+//app:menu="@menu/bottom_navigation_menu_detail_recipe"
+//tools:ignore="MissingConstraints" />
+
+
+//
+//<ScrollView
+//android:layout_width="match_parent"
+//android:layout_height="match_parent"
+//app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+//app:layout_constraintTop_toBottomOf="@id/barrier"
+//tools:layout_editor_absoluteX="-186dp"
+//tools:layout_editor_absoluteY="-203dp"
+//tools:ignore="NotSibling">
+//
+//<include
+//android:id="@+id/recipe_steps_list"
+//layout="@layout/recipe_steps"
+//android:layout_width="match_parent"
+//android:layout_height="0dp"
+//app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+//app:layout_constraintTop_toBottomOf="@id/barrier" />
+//</ScrollView>
 
 //<androidx.recyclerview.widget.RecyclerView
 //android:id="@+id/recipeListRecyclerView"
@@ -71,66 +115,67 @@ class RecipeShowDetailFragment : Fragment() {
 //tools:ignore="NotSibling"
 //tools:listitem="@layout/recipe_steps">
 //
-//</androidx.recyclerview.widget.RecyclerView>
+//<androidx.appcompat.widget.AppCompatTextView
+//android:id="@+id/recipeName"
+//android:layout_width="0dp"
+//android:layout_height="wrap_content"
+//android:layout_marginStart="16dp"
+//android:layout_marginEnd="8dp"
+//android:ellipsize="end"
+//android:singleLine="true"
+//android:textSize="24sp"
+//android:textStyle="bold"
+//app:layout_constraintBottom_toTopOf="@id/category"
+//app:layout_constraintEnd_toEndOf="parent"
+//app:layout_constraintStart_toStartOf="parent"
+//app:layout_constraintTop_toTopOf="parent"
+//tools:ignore="MissingConstraints"
+//tools:layout_editor_absoluteX="16dp"
+//tools:text="Салат греческий" />
 //
-//    private val args by navArgs<PostShowContentFragmentArgs>()
-//    private val viewModel by viewModels<PostViewModel>(ownerProducer = ::requireParentFragment)
+//<androidx.appcompat.widget.AppCompatTextView
+//android:id="@+id/category"
+//android:layout_width="0dp"
+//android:layout_height="wrap_content"
+//android:layout_marginStart="16dp"
+//android:layout_marginEnd="8dp"
+//android:ellipsize="end"
+//android:singleLine="true"
 //
+//android:textColor="@color/teal_700"
+//android:textSize="18sp"
+//app:layout_constraintEnd_toEndOf="parent"
+//app:layout_constraintStart_toStartOf="parent"
+//app:layout_constraintTop_toBottomOf="@id/recipeName"
 //
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
+//tools:ignore="MissingConstraints,SmallSp"
+//tools:layout_editor_absoluteX="16dp"
+//tools:text="Средиземноморская" />
 //
-//        viewModel.sharePostContent.observe(this) { postContent ->
-//            val intent = Intent().apply {
-//                action = Intent.ACTION_SEND
-//                putExtra(Intent.EXTRA_TEXT, postContent)
-//                type = "text/plain"
-//            }
-//            val shareIntent = Intent.createChooser(intent, getString(R.string.chooser_share_post))
-//            startActivity(shareIntent)
-//        }
+//<androidx.appcompat.widget.AppCompatTextView
+//android:id="@+id/author"
+//android:layout_width="wrap_content"
+//android:layout_height="wrap_content"
+//android:layout_marginStart="16dp"
+//android:layout_marginEnd="8dp"
+//android:ellipsize="end"
+//android:singleLine="true"
+//android:text="@string/author"
+//android:textSize="14sp"
+//app:layout_constraintEnd_toStartOf="@id/authorName"
+//app:layout_constraintStart_toStartOf="parent"
+//app:layout_constraintTop_toBottomOf="@id/category" />
 //
-//        viewModel.videoLinkPlay.observe(this) { videoLink ->
-//            val intent = Intent(Intent.ACTION_VIEW).apply {
-//                val uri = Uri.parse(videoLink)
-//                data = uri
-//            }
-//            val openVideoIntent =
-//                Intent.createChooser(intent, getString(R.string.chooser_play_video))
-//            startActivity(openVideoIntent)
-//        }
-//
-//
-//        viewModel.navigateToPostContentScreenEvent.observe(this) { initialContent ->
-//            val direction = PostShowContentFragmentDirections.toPostContentFragment(initialContent)
-//            findNavController().navigate(direction)
-//        }
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//
-//        setFragmentResultListener(requestKey = RecipeChangeContentFragment.REQUEST_KEY) { requestKey, bundle ->
-//            if (requestKey != RecipeChangeContentFragment.REQUEST_KEY) return@setFragmentResultListener
-//            val newPostContent =
-//                bundle.getString(RecipeChangeContentFragment.RESULT_KEY) ?: return@setFragmentResultListener
-//            viewModel.onSaveButtonClicked(newPostContent)
-//        }
-//
-//    }
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ) = PostShowContentDetailFragmentBinding.inflate(inflater, container, false).also { binding ->
-//        val viewHolder = PostsAdapter.ViewHolder(binding.postContentDetail, viewModel)
-//        viewModel.data.observe(viewLifecycleOwner) { posts ->
-//            val post = posts.find { it.id == args.idPost } ?: run {
-//                findNavController().navigateUp() // the post was deleted, close the fragment
-//                return@observe
-//            }
-//            viewHolder.bind(post)
-//        }
-//    }.root
-//}
+//<androidx.appcompat.widget.AppCompatTextView
+//android:id="@+id/authorName"
+//android:layout_width="0dp"
+//android:layout_height="wrap_content"
+//android:layout_marginStart="4dp"
+//android:layout_marginEnd="8dp"
+//android:ellipsize="end"
+//android:singleLine="true"
+//android:textSize="14sp"
+//app:layout_constraintEnd_toEndOf="parent"
+//app:layout_constraintStart_toEndOf="@id/author"
+//app:layout_constraintTop_toBottomOf="@id/category"
+//tools:text="Student of netology" />
