@@ -56,7 +56,7 @@ internal class RecipeAdapter(
         init {
 //            binding.like.setOnClickListener { listener.onLikeClicked(post) }
 //            binding.reposts.setOnClickListener { listener.onRepostClicked(post) }
-//            binding.menu.setOnClickListener { popupMenu.show() }
+            binding.menu.setOnClickListener { popupMenu.show() }
 //            binding.videoPreview.setOnClickListener { listener.onPlayVideoClicked(post) }
 //            binding.videoPreviewButtonPlay.setOnClickListener { listener.onPlayVideoClicked(post) }
 //            binding.date.setOnClickListener { listener.onShowPostClicked(post) }

@@ -3,6 +3,7 @@ package ru.netology.nerecipe.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
+import androidx.room.Query
 import ru.netology.nerecipe.db.*
 import ru.netology.nerecipe.dto.*
 import ru.netology.nmedia.data.RecipeRepository
@@ -15,14 +16,12 @@ class RecipeRepositoryImpl(
     override val data: LiveData<List<RecipeWithInfo>> = dao.getAll().map{it.map{it2 -> it2.toModel()}}
 
 
-    override fun delete(recipeId: Long) {
-        TODO("Not yet implemented")
-    }
+    override fun delete(recipeId: Long) = dao.removeRecipe(recipeId)
 
 
-    override fun saveRecipeSteps(recipe: Recipe, steps: List<Steps>) {
-        dao.insertRecipeSteps(recipe.toEntity(), steps.map{it.toEntity()})
-    }
+//    override fun saveRecipeSteps(recipe: Recipe, steps: List<Steps>) {
+//        dao.insertRecipeSteps(recipe.toEntity(), steps.map{it.toEntity()})
+//    }
 
     override fun save(recipe: Recipe): Long {
        val idrec =  dao.insert(recipe.toEntity())
@@ -48,6 +47,8 @@ class RecipeRepositoryImpl(
     override fun getCurrentUser(userName: String): User = dao.getMeUsers(userName).toModel()
 
     //else dao.updateContentById(recipe.recipeId, recipe.recipeName)
+
+
 
 }
 

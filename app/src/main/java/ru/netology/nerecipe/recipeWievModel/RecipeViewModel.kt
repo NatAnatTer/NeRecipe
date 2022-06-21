@@ -56,9 +56,6 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
 
 
     fun onSaveButtonClicked(
-//        recipeName: String,
-//        authorId: Long,
-//        categoryId: Long,
         recipe: Recipe,
         steps: List<Steps>
     ) {
@@ -76,13 +73,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
         )
          val recipeNewId = repository.save(newRecipe)
         steps.forEach {
-//            Steps(
-//                stepId = 0L,
-//                numberOfStep = it.numberOfStep,
-//                contentOfStep = it.contentOfStep,
-//                recipeId = recipeNewId,
-//                imageUrl = it.imageUrl
-//            )
+
               repository.saveSteps(Steps(
                   stepId = 0L,
                   numberOfStep = it.numberOfStep,
@@ -92,9 +83,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
               ))
 
         }
-          //  repository.saveRecipeSteps(newRecipe, steps)
-
-            currentRecipe.value = null
+        currentRecipe.value = null
 
     }
 }
