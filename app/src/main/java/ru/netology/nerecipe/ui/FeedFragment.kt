@@ -10,6 +10,7 @@ import ru.netology.nerecipe.databinding.FeedFragmentBinding
 import ru.netology.nerecipe.dto.CategoryOfRecipe
 import ru.netology.nerecipe.dto.Recipe
 import ru.netology.nerecipe.dto.Steps
+import ru.netology.nerecipe.dto.User
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
 import ru.netology.nmedia.adapter.RecipeAdapter
 import ru.netology.nmedia.data.RecipeRepository
@@ -56,13 +57,17 @@ class FeedFragment : Fragment() {
         )
         viewModel.createCategory(categoryList)
 
+        viewModel.createUser(User(userId = RecipeRepository.NEW_RECIPE_ID,
+        userName = "Me"))
 
         ////// Zaglushka
+
+        val currentUser = viewModel.getCurrentUser("Me")
         val recipe = Recipe(
             recipeId = RecipeRepository.NEW_RECIPE_ID,
             recipeName = "First recipe",
             categoryId = 1L,
-            authorId = 0L
+            authorId = currentUser.userId
 
         )
         val stepsList = listOf(

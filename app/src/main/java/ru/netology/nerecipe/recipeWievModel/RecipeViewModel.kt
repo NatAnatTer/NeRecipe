@@ -8,6 +8,7 @@ import ru.netology.nerecipe.db.AppDb
 import ru.netology.nerecipe.dto.CategoryOfRecipe
 import ru.netology.nerecipe.dto.Recipe
 import ru.netology.nerecipe.dto.Steps
+import ru.netology.nerecipe.dto.User
 import ru.netology.nerecipe.util.SingleLiveEvent
 import ru.netology.nmedia.adapter.RecipeInteractionListener
 import ru.netology.nmedia.data.RecipeRepository
@@ -17,7 +18,8 @@ import ru.netology.nmedia.data.RecipeRepository.Companion.NEW_RECIPE_ID
 class RecipeViewModel(application: Application) : AndroidViewModel(application),
     RecipeInteractionListener {
     private val repository: RecipeRepository = RecipeRepositoryImpl(
-        dao = AppDb.getInstance(context = application).recipeDao
+        dao = AppDb.getInstance(context = application).recipeDao,
+           //     daoRecipeSteps = AppDb.getInstance(context = application).recipeStepDao
     )
     val data by repository::data
     private val currentRecipe = MutableLiveData<Recipe?>(null)
@@ -44,9 +46,14 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
         navigateToRecipeContentScreenEvent.call()
     }
 
-    fun createCategory(category: List<CategoryOfRecipe>){
+    fun createCategory(category: List<CategoryOfRecipe>) {
         repository.createCategory(category)
     }
+    fun createUser(user: User){
+        repository.createUser(user)
+    }
+    fun getCurrentUser(userName: String) = repository.getCurrentUser(userName)
+
 
     fun onSaveButtonClicked(
 //        recipeName: String,
@@ -67,19 +74,27 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
             categoryId = recipe.categoryId,
             authorId = recipe.authorId
         )
-       val recipeNewId = repository.save(newRecipe)
+         val recipeNewId = repository.save(newRecipe)
         steps.forEach {
-            Steps(
-                stepId = 0L,
-                numberOfStep = it.numberOfStep,
-                contentOfStep = it.contentOfStep,
-                recipeId = recipeNewId,
-                imageUrl = it.imageUrl
-            )
-            repository.saveSteps(it)
-        }
-        // repository.saveSteps(steps)
+//            Steps(
+//                stepId = 0L,
+//                numberOfStep = it.numberOfStep,
+//                contentOfStep = it.contentOfStep,
+//                recipeId = recipeNewId,
+//                imageUrl = it.imageUrl
+//            )
+              repository.saveSteps(Steps(
+                  stepId = 0L,
+                  numberOfStep = it.numberOfStep,
+                  contentOfStep = it.contentOfStep,
+                  recipeId = recipeNewId,
+                  imageUrl = it.imageUrl
+              ))
 
-        currentRecipe.value = null
+        }
+          //  repository.saveRecipeSteps(newRecipe, steps)
+
+            currentRecipe.value = null
+
     }
 }

@@ -1,20 +1,13 @@
 package ru.netology.nerecipe.db
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import ru.netology.nerecipe.dto.RecipeWithInfo
-import ru.netology.nerecipe.dto.Steps
+import androidx.room.*
 
 
 @Dao
 interface RecipeDao {
 
-    //@Query("SELECT recipe.recipe_id, recipe.recipe_name, recipe.author_id, recipe.category_id, user.user_name, category_of_recipe.category_name" +
-//        " FROM recipe, user, category_of_recipe" +
-//    " where recipe.author_id = user.user_id AND recipe.category_id = category_of_recipe.category_id")
+
     @Query("SELECT * FROM recipe")
     fun getAll(): LiveData<List<RecipeWithInfoEntity>>
 
@@ -22,7 +15,17 @@ interface RecipeDao {
     fun insert(recipe: RecipeEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSteps(steps: StepsEntity)
+    fun insertSteps(steps: List<StepsEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertStepsTry(steps: StepsEntity)
+
+
+    @Transaction
+    fun insertRecipeSteps(recipe: RecipeEntity, steps: List<StepsEntity>){
+        insert(recipe)
+        insertSteps(steps)
+    }
 
     @Query("UPDATE recipe SET recipe_name = :recipeName WHERE recipe_id = :id")
     fun updateContentById(id: Long, recipeName: String)
@@ -40,6 +43,9 @@ interface RecipeDao {
 
     @Query("SELECT * FROM user")
     fun getAllUsers(): List<UserEntity>
+
+    @Query("SELECT * FROM user WHERE user_name = :userName")
+    fun getMeUsers(userName: String): UserEntity
 
 //
 //    @Query("SELECT * FROM posts WHERE id = :id")
@@ -71,3 +77,5 @@ interface RecipeDao {
 //    fun repost(id: Long)
 
 }
+
+

@@ -14,9 +14,13 @@ interface RecipeRepository {
     fun save(recipe: Recipe):Long
     fun saveSteps(step: Steps)
 
+    fun saveRecipeSteps(recipe: Recipe, steps: List<Steps>)
+
     fun createCategory(category: List<CategoryOfRecipe>)
 
     fun createUser(user: User)
+
+    fun getCurrentUser(userName: String): User
 
     companion object {
         const val NEW_RECIPE_ID = 0L
