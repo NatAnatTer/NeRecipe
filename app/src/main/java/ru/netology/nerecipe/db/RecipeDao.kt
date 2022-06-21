@@ -16,7 +16,7 @@ interface RecipeDao {
 //        " FROM recipe, user, category_of_recipe" +
 //    " where recipe.author_id = user.user_id AND recipe.category_id = category_of_recipe.category_id")
     @Query("SELECT * FROM recipe")
-    fun getAll(): LiveData<List<RecipeWithInfo>>
+    fun getAll(): LiveData<List<RecipeWithInfoEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(recipe: RecipeEntity)
@@ -28,14 +28,19 @@ interface RecipeDao {
     fun updateContentById(id: Long, recipeName: String)
 
 
-// ____________________________---
-//    @Dao
-//    interface DepartmentDao {
-//        // ...
-//        @get:Query("SELECT id, name from department")
-//        val departmentsWithEmployees: List<Any?>?
-//    }
-//    ________________________________
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertCategory(category: List<CategoryOfRecipeEntity>)
+
+
+    @Query("SELECT * FROM category_of_recipe")
+    fun getAllCategory(): List<CategoryOfRecipeEntity>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertUser(user: UserEntity)
+
+    @Query("SELECT * FROM user")
+    fun getAllUsers(): List<UserEntity>
+
 //
 //    @Query("SELECT * FROM posts WHERE id = :id")
 //    fun getById(id: Long): PostEntity

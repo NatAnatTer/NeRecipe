@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import ru.netology.nerecipe.databinding.FeedFragmentBinding
+import ru.netology.nerecipe.dto.CategoryOfRecipe
+import ru.netology.nerecipe.dto.Recipe
+import ru.netology.nerecipe.dto.Steps
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
 import ru.netology.nmedia.adapter.RecipeAdapter
+import ru.netology.nmedia.data.RecipeRepository
 
 class FeedFragment : Fragment() {
 
@@ -20,6 +22,81 @@ class FeedFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val categoryList = listOf(
+            CategoryOfRecipe(
+                categoryId = RecipeRepository.NEW_RECIPE_ID,
+                categoryName = "Европейская"
+            ),
+            CategoryOfRecipe(
+                categoryId = RecipeRepository.NEW_RECIPE_ID,
+                categoryName = "Азиатская"
+            ),
+            CategoryOfRecipe(
+                categoryId = RecipeRepository.NEW_RECIPE_ID,
+                categoryName = "Паназиатская"
+            ),
+            CategoryOfRecipe(
+                categoryId = RecipeRepository.NEW_RECIPE_ID,
+                categoryName = "Восточная"
+            ),
+            CategoryOfRecipe(
+                categoryId = RecipeRepository.NEW_RECIPE_ID,
+                categoryName = "Американская"
+            ),
+            CategoryOfRecipe(
+                categoryId = RecipeRepository.NEW_RECIPE_ID,
+                categoryName = "Русская"
+            ),
+            CategoryOfRecipe(
+                categoryId = RecipeRepository.NEW_RECIPE_ID,
+                categoryName = "Средиземноморская"
+            )
+        )
+        viewModel.createCategory(categoryList)
+
+
+        ////// Zaglushka
+        val recipe = Recipe(
+            recipeId = RecipeRepository.NEW_RECIPE_ID,
+            recipeName = "Firs",
+            categoryId = 0L,
+            authorId = 0L
+
+        )
+
+        fun onSaveButtonClicked(
+            recipeName: String,
+            authorId: Long,
+            categoryId: Long,
+            steps: Array<Steps>
+        ) {
+            if (steps.isEmpty()) return
+
+            val newRecipe = currentRecipe.value?.copy(
+                recipeName = recipeName,
+                categoryId = categoryId,
+
+                ) ?: Recipe(
+                recipeId = RecipeRepository.NEW_RECIPE_ID,
+                recipeName = recipeName,
+                categoryId = categoryId,
+                authorId = authorId
+            )
+            steps.forEach {
+                Steps(
+                    stepId = 0L,
+                    numberOfStep = it.numberOfStep,
+                    contentOfStep = it.contentOfStep,
+                    recipeId = it.recipeId,
+                    imageUrl = it.imageUrl
+                )
+                repository.saveSteps(it)
+            }
+            // repository.saveSteps(steps)
+            repository.save(newRecipe)
+            currentRecipe.value = null
+        }
+        ///// Zaglushka
 
     }
 

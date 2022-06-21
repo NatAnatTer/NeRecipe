@@ -67,9 +67,21 @@ fun CategoryOfRecipe.toEntity() = CategoryOfRecipeEntity(
     categoryName = categoryName
 )
 
-//fun RecipeWithInfo.tiModel() = RecipeWithInfo(
-//
-//
-//)
+
+
+fun RecipeWithInfoEntity.toModel(): RecipeWithInfo {
+
+
+    val recipeTarget: Recipe = recipe.toModel()
+    val categoryTarget: CategoryOfRecipe = category.toModel()
+   val stepsTarget: List<Steps> = steps.map { it.toModel() }
+    val userTarget: User = user.toModel()
+   return RecipeWithInfo(
+        recipe = recipeTarget,
+        category = categoryTarget,
+        steps = stepsTarget,
+        user = userTarget
+        )
+}
 
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nerecipe.data.RecipeRepositoryImpl
 import ru.netology.nerecipe.db.AppDb
+import ru.netology.nerecipe.dto.CategoryOfRecipe
 import ru.netology.nerecipe.dto.Recipe
 import ru.netology.nerecipe.dto.Steps
 import ru.netology.nerecipe.util.SingleLiveEvent
@@ -41,6 +42,10 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
 
     fun onAddButtonClicked() {
         navigateToRecipeContentScreenEvent.call()
+    }
+
+    fun createCategory(category: List<CategoryOfRecipe>){
+        repository.createCategory(category)
     }
 
     fun onSaveButtonClicked(

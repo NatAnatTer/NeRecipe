@@ -1,18 +1,24 @@
 package ru.netology.nerecipe.data
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import ru.netology.nerecipe.db.RecipeDao
+import ru.netology.nerecipe.db.RecipeWithInfoEntity
 import ru.netology.nerecipe.db.toEntity
-import ru.netology.nerecipe.dto.Recipe
-import ru.netology.nerecipe.dto.RecipeWithInfo
-import ru.netology.nerecipe.dto.Steps
+import ru.netology.nerecipe.db.toModel
+import ru.netology.nerecipe.dto.*
 import ru.netology.nmedia.data.RecipeRepository
 
 
 class RecipeRepositoryImpl(
     private val dao: RecipeDao
 ) : RecipeRepository {
-    override val data: LiveData<List<RecipeWithInfo>> = dao.getAll()
+    override val data: LiveData<List<RecipeWithInfo>> = dao.getAll().map{it.map{it2 -> it2.toModel()}}
+
+
+
+
     override fun delete(recipeId: Long) {
         TODO("Not yet implemented")
     }
@@ -22,9 +28,21 @@ class RecipeRepositoryImpl(
         if (recipe.recipeId == RecipeRepository.NEW_RECIPE_ID) dao.insert(recipe.toEntity())
        // steps.forEach { dao.insertSteps(it.toEntity()) }
     }
-    fun saveSteps(step: Steps){
+    override fun saveSteps(step: Steps){
         dao.insertSteps(step.toEntity())
     }
+
+
+    override fun createCategory(category: List<CategoryOfRecipe>){
+        val categoryList = dao.getAllCategory().map{it.toModel()}
+
+        if (categoryList.isEmpty()) dao.insertCategory(category.map{it.toEntity()})
+    }
+
+    override fun createUser(user: User){
+
+    }
+
     //else dao.updateContentById(recipe.recipeId, recipe.recipeName)
 
 }

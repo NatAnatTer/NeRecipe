@@ -101,26 +101,13 @@ internal class RecipeAdapter(
 
     }
 
-    private object DiffCallBack : DiffUtil.ItemCallback<Recipe>() {
-        override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe) =
-            oldItem.recipeId == newItem.recipeId
+    private object DiffCallBack : DiffUtil.ItemCallback<RecipeWithInfo>() {
+        override fun areItemsTheSame(oldItem: RecipeWithInfo, newItem: RecipeWithInfo) =
+            oldItem.recipe.recipeId == newItem.recipe.recipeId
 
-        override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe) =
+        override fun areContentsTheSame(oldItem: RecipeWithInfo, newItem: RecipeWithInfo) =
             oldItem == newItem
 
-    }
-}
-
-fun getTextViewCount(count: Int): String {
-    val df1 = DecimalFormat("#.#")
-    return when (count) {
-        in 0..999 -> count.toString()
-        in 1000..1099 -> (count / 1000).toString() + "K"
-        in 1100..9999 -> (df1.format((count / 100).toDouble() / 10.0)).toString() + "K"
-        in 10_000..999_999 -> (count / 1000).toString() + "K"
-        in 1_000_000..1_099_999 -> (count / 1_000_000).toString() + "M"
-        in 1_100_000..999_999_999 -> (df1.format((count / 100_000).toDouble() / 10.0)).toString() + "M"
-        else -> "1B"
     }
 }
 
