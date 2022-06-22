@@ -93,7 +93,7 @@ class FeedFragment : Fragment() {
 
         //
         viewModel.navigateToRecipeChangeContentScreenEvent.observe(this) { recipeId ->
-            val direction = recipeId?.let { FeedFragmentDirections.toRecipeShowDetailFragment(it) }
+            val direction = recipeId?.let { FeedFragmentDirections.toChangeContentFragmet(it) }
             if (direction != null) {
                 findNavController().navigate(direction)
             }

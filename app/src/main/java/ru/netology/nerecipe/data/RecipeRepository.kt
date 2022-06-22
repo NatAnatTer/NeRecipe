@@ -23,11 +23,9 @@ interface RecipeRepository {
 
     fun getStepsByRecipeId(recipeId: Long): List<Steps>
 
-//    fun createUser(user: User)
-//
-//
-//
-//    fun getCurrentUser(userName: String): User
+    fun getRecipeById(recipeI: Long): Recipe
+
+    fun getAllCategory(): List<CategoryOfRecipe>
 
     companion object {
         const val NEW_RECIPE_ID = 0L

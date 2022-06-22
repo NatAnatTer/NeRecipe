@@ -18,4 +18,5 @@
     <string name="add_step">Add step</string>
     <string name="recipe_step_description_hint">Enter recipe step</string>
     <string name="save">Save</string>
+    <string name="select_category">Select category:</string>
 </resources>

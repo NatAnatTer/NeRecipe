@@ -1,4 +1,4 @@
-package ru.netology.nmedia.adapter
+package ru.netology.nerecipe.adapter
 
 import ru.netology.nerecipe.dto.Recipe
 
@@ -9,8 +9,3 @@ interface RecipeInteractionListener {
     fun onEditClicked(recipe: Recipe)
     fun onShowRecipeClicked(recipe: Recipe)
 }
-
-
-//  fun onRepostClicked(post: Post)
-
-//  fun onPlayVideoClicked(post: Post)

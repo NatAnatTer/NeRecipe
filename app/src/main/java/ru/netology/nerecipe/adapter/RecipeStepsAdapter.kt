@@ -35,7 +35,6 @@ internal class RecipeStepsAdapter(
         private lateinit var steps: Steps
 
 
-
         fun bind(steps: Steps) {
             this.steps = steps
             with(binding) {
@@ -43,19 +42,11 @@ internal class RecipeStepsAdapter(
                 descriptionOfStep.text = steps.contentOfStep
                 if (steps.imageUrl != null) {
 
-                    val picasso =
-                        Picasso.Builder(imageOfStep.context)
-                            .listener { picasso, uri, exception ->
-                                println(exception.message)
-                            }
-                            .build()
-                    picasso
+                    Picasso.with(imageOfStep.context)
                         .load(steps.imageUrl)
-                       // .resize(700, 500)
+                        .resize(900, 700)
                         .error(R.drawable.ic_baseline_error_outline_24)
-
                         .into(imageOfStep)
-;
                 } else {
                     imageOfStep.visibility = View.GONE
 

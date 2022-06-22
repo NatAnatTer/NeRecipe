@@ -77,6 +77,14 @@ interface RecipeDao {
     @Query("SELECT * FROM steps WHERE recipe_id = :id")
     fun getStepsByRecipeId(id: Long): List<StepsEntity>
 
+    @Query("SELECT * FROM recipe WHERE recipe_id = :id")
+    fun getRecipeById(id: Long): RecipeEntity
+
+//    @Query("SELECT * FROM category_of_recipe")
+//    fun getAllCategory(): List<CategoryOfRecipeEntity>
+//
+
+
 //
 //    @Query("SELECT * FROM posts WHERE id = :id")
 //    fun getById(id: Long): PostEntity

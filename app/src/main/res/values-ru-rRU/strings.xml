@@ -18,4 +18,5 @@
     <string name="add_step">Добавить шаг</string>
     <string name="recipe_step_description_hint">Введите шаг рецепта</string>
     <string name="save">Сохранить</string>
+    <string name="select_category">Выберите категорию:</string>
 </resources>
