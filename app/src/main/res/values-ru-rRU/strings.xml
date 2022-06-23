@@ -19,4 +19,8 @@
     <string name="recipe_step_description_hint">Введите шаг рецепта</string>
     <string name="save">Сохранить</string>
     <string name="select_category">Выберите категорию:</string>
+    <string name="number_of_step_description_hint">Введите номер шага</string>
+    <string name="recipe_step_url_hint">Введите ссылку на изображение</string>
+    <string name="save_step">Сохранить шаг</string>
+    <string name="title_add_edit_recipe">Создание/редактирование рецерпта</string>
 </resources>

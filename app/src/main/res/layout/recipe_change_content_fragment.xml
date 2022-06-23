@@ -102,7 +102,21 @@
         tools:layout_editor_absoluteY="126dp" />
 
     <EditText
-        android:id="@+id/insert_step_description"
+        android:id="@+id/add_number_of_step"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="@string/number_of_step_description_hint"
+        android:hint="@string/number_of_step_description_hint"
+        android:inputType="textMultiLine"
+        android:lineSpacingExtra="8dp"
+        android:padding="@dimen/common_spacing"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier"
+        tools:ignore="TextFields" />
+    <EditText
+        android:id="@+id/add_step_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autofillHints="@string/recipe_step_description_hint"
@@ -113,7 +127,30 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/author" />
+        app:layout_constraintTop_toBottomOf="@id/add_number_of_step" />
+    <EditText
+        android:id="@+id/add_step_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="@string/recipe_step_url_hint"
+        android:hint="@string/recipe_step_url_hint"
+        android:inputType="textMultiLine"
+        android:lineSpacingExtra="8dp"
+        android:padding="@dimen/common_spacing"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_step_description" />
+    <Button
+        android:id="@+id/save_step_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_step_url"
+        android:text="@string/save_step"
+
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipeListRecyclerView"
@@ -121,32 +158,23 @@
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintTop_toBottomOf="@id/insert_step_description"
+        app:layout_constraintTop_toBottomOf="@id/save_step_button"
         tools:ignore="NotSibling"
         tools:listitem="@layout/recipe_steps">
 
     </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/save_recipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:contentDescription="@string/add_step"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_detail_recipe"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_add_24dp" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation_detail_recipe"
-        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_navigation_edit_recipe"
-        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

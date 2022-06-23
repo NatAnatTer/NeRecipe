@@ -1,6 +1,7 @@
 package ru.netology.nerecipe.adapter
 
 import ru.netology.nerecipe.dto.Recipe
+import ru.netology.nerecipe.dto.Steps
 
 
 interface RecipeInteractionListener {
@@ -8,4 +9,5 @@ interface RecipeInteractionListener {
     fun onRemoveClicked(recipe: Recipe)
     fun onEditClicked(recipe: Recipe)
     fun onShowRecipeClicked(recipe: Recipe)
+    fun onStepClicked(step: Steps)
 }

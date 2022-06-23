@@ -21,7 +21,7 @@ class RecipeShowDetailFragment : Fragment() {
 
 
         viewModel.navigateToRecipeChangeContentScreenEvent.observe(this) { recipeId ->
-            val direction = recipeId?.let { FeedFragmentDirections.toRecipeShowDetailFragment(it) }
+            val direction = recipeId?.let { RecipeShowDetailFragmentDirections.toChangeContentFragmet(it) }
             if (direction != null) {
                 findNavController().navigate(direction)
             }
@@ -60,7 +60,7 @@ class RecipeShowDetailFragment : Fragment() {
                     viewHolder.bind(recipeCurrent)
                 }
 
-                val adapter = RecipeStepsAdapter()
+                val adapter = RecipeStepsAdapter(viewModel)
                 binding.recipeStepsListRecyclerView.adapter = adapter
                 viewModel.data.observe(viewLifecycleOwner) {
                     val stepsOfRecipe = viewModel.getStepsByRecipeId(args.initialContent)

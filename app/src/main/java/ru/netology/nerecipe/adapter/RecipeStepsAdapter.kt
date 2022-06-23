@@ -13,13 +13,13 @@ import ru.netology.nerecipe.dto.Steps
 
 
 internal class RecipeStepsAdapter(
-
+    private val interactionListener: RecipeInteractionListener
 ) : ListAdapter<Steps, RecipeStepsAdapter.ViewHolderSteps>(DiffCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderSteps {
         val inflater = LayoutInflater.from(parent.context)
         val binding = RecipeStepsBinding.inflate(inflater, parent, false)
-        return ViewHolderSteps(binding)
+        return ViewHolderSteps(binding, interactionListener)
     }
 
 
@@ -28,11 +28,12 @@ internal class RecipeStepsAdapter(
     }
 
     class ViewHolderSteps(
-        private val binding: RecipeStepsBinding
-
+        private val binding: RecipeStepsBinding,
+        private val listener: RecipeInteractionListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var steps: Steps
+
 
 
         fun bind(steps: Steps) {
@@ -51,6 +52,11 @@ internal class RecipeStepsAdapter(
                     imageOfStep.visibility = View.GONE
 
                 }
+                nameOfStep.setOnClickListener { listener.onStepClicked(steps) }
+                numberOfStep.setOnClickListener { listener.onStepClicked(steps) }
+                descriptionOfStep.setOnClickListener { listener.onStepClicked(steps) }
+                imageOfStep.setOnClickListener { listener.onStepClicked(steps) }
+
             }
 
         }

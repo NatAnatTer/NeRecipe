@@ -25,6 +25,9 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     val navigateToRecipeChangeContentScreenEvent = SingleLiveEvent<Long>()
     val navigateToShowRecipe = SingleLiveEvent<Long>()
 
+     val currentStep = MutableLiveData<Steps?>(null)
+    val currentSteps = MutableLiveData<List<Steps?>>(null)
+
 
     override fun onFavoriteClicked(recipe: Recipe) {
         repository.favoritesByMe(recipe.recipeId)
@@ -33,11 +36,16 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     override fun onRemoveClicked(recipe: Recipe) = repository.delete(recipe.recipeId)
     override fun onEditClicked(recipe: Recipe) {
         currentRecipe.value = recipe
+        currentSteps.value = getStepsByRecipeId(recipe.recipeId)
         navigateToRecipeChangeContentScreenEvent.value = recipe.recipeId
     }
 
     override fun onShowRecipeClicked(recipe: Recipe) {
         navigateToShowRecipe.value = recipe.recipeId
+    }
+
+    override fun onStepClicked(step: Steps) {
+        currentStep.value = step
     }
 
     fun onAddButtonClicked() {
@@ -53,6 +61,8 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     fun getRecipeById(recipeId: Long): Recipe = repository.getRecipeById(recipeId)
 
     fun getAllCategory(): List<CategoryOfRecipe> = repository.getAllCategory()
+
+    fun getCategoryById(categoryId: Long): CategoryOfRecipe = repository.getCategoryById(categoryId)
 
     fun onSaveButtonClicked(
         recipe: Recipe,

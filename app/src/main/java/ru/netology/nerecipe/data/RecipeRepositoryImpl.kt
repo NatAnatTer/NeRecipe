@@ -49,7 +49,7 @@ class RecipeRepositoryImpl(
 
     override fun getAllCategory(): List<CategoryOfRecipe> = dao.getAllCategory().map { it.toModel() }
 
-
+    override fun getCategoryById(categoryId: Long): CategoryOfRecipe = dao.getCategoryById(categoryId).toModel()
 }
 
 

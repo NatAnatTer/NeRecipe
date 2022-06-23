@@ -40,6 +40,10 @@ interface RecipeDao {
     @Query("SELECT * FROM category_of_recipe")
     fun getAllCategory(): List<CategoryOfRecipeEntity>
 
+    @Query("SELECT * FROM category_of_recipe WHERE category_id = :categoryId")
+    fun getCategoryById(categoryId: Long): CategoryOfRecipeEntity
+
+
 
 
 //    @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -79,6 +83,8 @@ interface RecipeDao {
 
     @Query("SELECT * FROM recipe WHERE recipe_id = :id")
     fun getRecipeById(id: Long): RecipeEntity
+
+
 
 //    @Query("SELECT * FROM category_of_recipe")
 //    fun getAllCategory(): List<CategoryOfRecipeEntity>
