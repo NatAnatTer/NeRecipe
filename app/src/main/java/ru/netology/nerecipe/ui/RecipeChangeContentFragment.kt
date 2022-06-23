@@ -10,8 +10,8 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import jdk.javadoc.internal.doclets.toolkit.util.DocPath.parent
 import ru.netology.nerecipe.databinding.RecipeChangeContentFragmentBinding
-import ru.netology.nerecipe.dto.CategoryOfRecipe
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
 
 
@@ -32,50 +32,44 @@ class RecipeChangeContentFragment : Fragment() {
         with(binding) {
             insertRecipeName.setText(currentRecipe.recipeName)
             insertRecipeName.requestFocus()
-            // category.
             authorName.text = currentRecipe.authorName
 
 
             //-------ADAPTER__________
 
-
-            //Инициализируем элемент Spinner:
-            category
-
             val categoryList = viewModel.getAllCategory()
-
-            //Настраиваем слушатель нажатий Spinner(Click Listener в смысле):
-            category.setOnItemSelectedListener(this)
+            val categoryNameString: List<String> = categoryList.map { it.categoryName }
 
             val adapter: ArrayAdapter<String> =
-                ArrayAdapter(this, R.layout.simple_spinner_item, categoryList)
+                ArrayAdapter(
+                    this,
+                    0,
+                    categoryNameString
+                )
 
-            // адаптер
-//            val adapter1: ArrayAdapter<String> =
-//                ArrayAdapter(this, android.R.layout.simple_spinner_item, categoryList)
-
+            category.onItemSelectedListener
             adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-
-            // val spinner = findViewById(R.id.spinner) as Spinner
             category.adapter = adapter
-            // заголовок
-            // заголовок
-            category.prompt = "Title"
-            // выделяем элемент
+            // category.prompt = "Title"
             // выделяем элемент
             category.setSelection(2)
             // устанавливаем обработчик нажатия
-            // устанавливаем обработчик нажатия
-            category.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            category.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?, view: View?,
                     position: Int, id: Long
                 ) {
+                    val item =
+                        jdk.javadoc.internal.doclets.toolkit.util.DocPath.parent.getItemAtPosition(
+                            position
+                        ) as String
+                    selection.text = item
 
+//                    String item = (String)parent.getItemAtPosition(position);
+//                    selection.setText(item);
                 }
-
                 override fun onNothingSelected(arg0: AdapterView<*>?) {}
-            })
+            }
 
 
 //        binding.edit.requestFocus()
@@ -93,12 +87,14 @@ class RecipeChangeContentFragment : Fragment() {
         }
     }.root
 
-    private fun <T> ArrayAdapter(
-        recipeChangeContentFragmentBinding: RecipeChangeContentFragmentBinding,
-        simpleSpinnerItem: Int,
-        categoryList: List<CategoryOfRecipe>
-    ) {
-    }
+
+//    private fun <T> ArrayAdapter(
+//        recipeChangeContentFragmentBinding: RecipeChangeContentFragmentBinding,
+//        simpleSpinnerItem: Int,
+//        categoryList: List<CategoryOfRecipe>
+//    ):ArrayAdapter<String> {
+//
+//    }
 
 
     companion object {
