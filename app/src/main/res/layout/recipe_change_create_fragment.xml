@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="@string/title_add_edit_recipe"
+
             app:menu="@menu/top_navigation_edit_recipe"
             app:navigationIcon="@drawable/ic_menu_24"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
