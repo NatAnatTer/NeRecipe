@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import ru.netology.nerecipe.adapter.RecipeStepsAdapter
 import ru.netology.nerecipe.databinding.RecipeChangeCreateFragmentBinding
+import ru.netology.nerecipe.dto.CategoryOfRecipe
 import ru.netology.nerecipe.dto.Recipe
 import ru.netology.nerecipe.dto.Steps
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
@@ -53,7 +54,7 @@ class RecipeChangeContentFragment : Fragment() {
                 category.onItemSelectedListener
                 adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
                 category.adapter = adapter
-                category.setSelection(2)  // выделяем элемент
+                category.setSelection(1)  // выделяем элемент
                 category.onItemSelectedListener =
                     object :
                         AdapterView.OnItemSelectedListener {    // устанавливаем обработчик нажатия
@@ -70,7 +71,7 @@ class RecipeChangeContentFragment : Fragment() {
 
                         override fun onNothingSelected(arg0: AdapterView<*>?) {
                             if (currentRecipe == null) {
-                                selection.text = "Categorynot selected"
+                                selection.text = "Category not selected"
                             } else {
                                 val categoryString =
                                     viewModel.getCategoryById(currentRecipe.categoryId).categoryName
@@ -79,9 +80,7 @@ class RecipeChangeContentFragment : Fragment() {
                         }
                     }
 
-//                binding.recipeChangeContentFragmentInclude.saveRecipe.setOnClickListener {
-//                    //     onSaveRecipeButtonClicked(binding) TODO
-//                }
+
 //
 
 
@@ -108,93 +107,46 @@ class RecipeChangeContentFragment : Fragment() {
                                 addNumberOfStep.requestFocus()
 
                                 saveStepButton.setOnClickListener {
-
+                                    val savedStep = onSaveStepClicked(
+                                        binding,
+                                        currentStepChoose,
+                                        currentRecipe
+                                    )
 
                                     if (currentStepChoose != null) {
 
                                         if (viewModel.currentSteps.value?.contains(currentStepChoose) == true) {
-                                            val savedStep = onSaveStepClicked(
-                                                binding,
-                                                currentStepChoose,
-                                                currentRecipe
-                                            )
+
                                             viewModel.currentSteps.value?.find {
                                                 it?.stepId == currentStepChoose.stepId
-                                            }
-                                                ?.copy(
-                                                    contentOfStep = savedStep.contentOfStep,
-                                                    numberOfStep = savedStep.numberOfStep,
-                                                    imageUrl = savedStep.imageUrl
-                                                )
-
+                                            }?.copy(
+                                                contentOfStep = savedStep.contentOfStep,
+                                                numberOfStep = savedStep.numberOfStep,
+                                                imageUrl = savedStep.imageUrl
+                                            ) //TODO no rerender exists step
+                                            // TODO При создании все ID=0L
+                                            //currentStepChoose = null
                                         } else viewModel.currentSteps.value =
                                             viewModel.currentSteps.value?.plus(
-                                                onSaveStepClicked(
-                                                    binding,
-                                                    currentStepChoose,
-                                                    currentRecipe
-                                                )
+                                                savedStep
                                             )
-
-//                                        viewModel.currentSteps.value?.forEach {
-//
-//                                            if (it != null) {
-//                                                if (it.stepId == currentStepChoose.stepId) {
-//                                                    val savedStep = onSaveStepClicked(
-//                                                        binding,
-//                                                        currentStepChoose,
-//                                                        currentRecipe
-//                                                    )
-//                                                    it.copy(
-//                                                        contentOfStep = savedStep.contentOfStep,
-//                                                        numberOfStep = savedStep.numberOfStep,
-//                                                        imageUrl = savedStep.imageUrl
-//                                                    )
-//                                                }// else{
-//                                                    it +=
-//                                            onSaveStepClicked(
-//                                                binding,
-//                                                currentStepChoose,
-//                                                currentRecipe
-//                                            )
-//                                                }
-
-
-//                                        } ?:  viewModel.currentSteps.value = viewModel.currentSteps.value.plus(
-//                                            onSaveStepClicked(
-//                                                binding,
-//                                                currentStepChoose,
-//                                                currentRecipe
-//                                            )
 
                                     } else {
                                         viewModel.currentSteps.value =
                                             viewModel.currentSteps.value?.plus(
-                                                onSaveStepClicked(
-                                                    binding,
-                                                    currentStepChoose,
-                                                    currentRecipe
-                                                )
+                                                savedStep
                                             ) ?: listOf(
-                                                onSaveStepClicked(
-                                                    binding,
-                                                    currentStepChoose,
-                                                    currentRecipe
-                                                )
+                                                savedStep
                                             )
-//                                        viewModel.currentSteps.value = listOf(
-//                                                onSaveStepClicked(
-//                                                    binding,
-//                                                    currentStepChoose,
-//                                                    currentRecipe
-//                                                )
-//                                        ) https://d2j6dbq0eux0bg.cloudfront.net/default-store/00005-sq.jpg
                                     }
                                     //TODO clear field
                                 }
                             }
                         }
                     }
+                }
+                binding.recipeChangeContentFragmentInclude.saveRecipe.setOnClickListener {
+                    onSaveRecipeButtonClicked(binding, currentRecipe, viewModel.currentSteps.value, categoryList) //TODO
                 }
             }
 
@@ -244,10 +196,10 @@ private fun onSaveStepClicked(
     currentRecipe: Recipe?
 ): Steps {
     val newNumberStep =
-        binding.recipeChangeContentFragmentInclude.addNumberOfStep.getText().toString()
+        binding.recipeChangeContentFragmentInclude.addNumberOfStep.text.toString()
             .toInt()
     val newContentOfStep =
-        binding.recipeChangeContentFragmentInclude.addStepDescription.getText().toString()
+        binding.recipeChangeContentFragmentInclude.addStepDescription.text.toString()
     val newImageURL =
         if (binding.recipeChangeContentFragmentInclude.addStepUrl.text.toString() == "") null else binding.recipeChangeContentFragmentInclude.addStepUrl.text.toString()
     return Steps(
@@ -257,6 +209,40 @@ private fun onSaveStepClicked(
         recipeId = currentRecipe?.recipeId ?: 0L,
         imageUrl = newImageURL
     )
+}
+
+private fun onSaveRecipeButtonClicked(
+    binding: RecipeChangeCreateFragmentBinding,
+    currentRecipe: Recipe?,
+    currentSteps: List<Steps?>?,
+    categoryList: List<CategoryOfRecipe>
+) {
+    val newRecipeDescription = binding.recipeChangeContentFragmentInclude.insertRecipeName.text.toString()
+    val newRecipeCategory = categoryList.find {
+        binding.recipeChangeContentFragmentInclude.category.adapter.toString() == it.categoryName
+    }
+
+    val recipe: Recipe
+    if(currentRecipe == null){
+        if (newRecipeCategory != null) {
+           recipe = Recipe(
+                recipeId = 0L,
+                recipeName = newRecipeDescription,
+                categoryId = newRecipeCategory.categoryId,
+                authorName = "Me",
+                isFavorites = false
+            )
+        }
+    } else {
+        if (newRecipeCategory != null) {
+            recipe = currentRecipe.copy(
+                recipeName = newRecipeDescription,
+                categoryId = newRecipeCategory.categoryId,
+            )
+        }
+
+    }
+
 }
 
 
