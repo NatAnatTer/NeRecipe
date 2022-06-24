@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ru.netology.nerecipe.adapter.RecipeStepsAdapter
 import ru.netology.nerecipe.databinding.RecipeChangeCreateFragmentBinding
@@ -16,6 +18,8 @@ import ru.netology.nerecipe.dto.CategoryOfRecipe
 import ru.netology.nerecipe.dto.Recipe
 import ru.netology.nerecipe.dto.Steps
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
+import ru.netology.nerecipe.ui.RecipeChangeContentFragment.Companion.REQUEST_KEY
+import ru.netology.nerecipe.ui.RecipeChangeContentFragment.Companion.RESULT_KEY
 
 
 class RecipeChangeContentFragment : Fragment() {
@@ -117,13 +121,13 @@ class RecipeChangeContentFragment : Fragment() {
 
                                         if (viewModel.currentSteps.value?.contains(currentStepChoose) == true) {
 
-                                            viewModel.currentSteps.value?.find {
+                                            listOf(viewModel.currentSteps.value?.find {
                                                 it?.stepId == currentStepChoose.stepId
                                             }?.copy(
                                                 contentOfStep = savedStep.contentOfStep,
                                                 numberOfStep = savedStep.numberOfStep,
                                                 imageUrl = savedStep.imageUrl
-                                            ) //TODO no rerender exists step
+                                            ))+ viewModel.currentSteps.value //TODO no rerender exists step
                                             // TODO При создании все ID=0L
                                             //currentStepChoose = null
                                         } else viewModel.currentSteps.value =
@@ -146,7 +150,12 @@ class RecipeChangeContentFragment : Fragment() {
                     }
                 }
                 binding.recipeChangeContentFragmentInclude.saveRecipe.setOnClickListener {
-                    onSaveRecipeButtonClicked(binding, currentRecipe, viewModel.currentSteps.value, categoryList) //TODO
+                    onSaveRecipeButtonClicked(
+                        binding,
+                        currentRecipe,
+                        viewModel.currentSteps.value,
+                        categoryList
+                    ) //TODO
                 }
             }
 
@@ -188,61 +197,70 @@ class RecipeChangeContentFragment : Fragment() {
         const val REQUEST_KEY = "requestKey"
 
     }
-}
 
-private fun onSaveStepClicked(
-    binding: RecipeChangeCreateFragmentBinding,
-    editedStep: Steps?,
-    currentRecipe: Recipe?
-): Steps {
-    val newNumberStep =
-        binding.recipeChangeContentFragmentInclude.addNumberOfStep.text.toString()
-            .toInt()
-    val newContentOfStep =
-        binding.recipeChangeContentFragmentInclude.addStepDescription.text.toString()
-    val newImageURL =
-        if (binding.recipeChangeContentFragmentInclude.addStepUrl.text.toString() == "") null else binding.recipeChangeContentFragmentInclude.addStepUrl.text.toString()
-    return Steps(
-        stepId = editedStep?.stepId ?: 0L,
-        numberOfStep = newNumberStep,
-        contentOfStep = newContentOfStep,
-        recipeId = currentRecipe?.recipeId ?: 0L,
-        imageUrl = newImageURL
-    )
-}
 
-private fun onSaveRecipeButtonClicked(
-    binding: RecipeChangeCreateFragmentBinding,
-    currentRecipe: Recipe?,
-    currentSteps: List<Steps?>?,
-    categoryList: List<CategoryOfRecipe>
-) {
-    val newRecipeDescription = binding.recipeChangeContentFragmentInclude.insertRecipeName.text.toString()
-    val newRecipeCategory = categoryList.find {
-        binding.recipeChangeContentFragmentInclude.category.adapter.toString() == it.categoryName
+    private fun onSaveStepClicked(
+        binding: RecipeChangeCreateFragmentBinding,
+        editedStep: Steps?,
+        currentRecipe: Recipe?
+    ): Steps {
+        val newNumberStep =
+            binding.recipeChangeContentFragmentInclude.addNumberOfStep.text.toString()
+                .toInt()
+        val newContentOfStep =
+            binding.recipeChangeContentFragmentInclude.addStepDescription.text.toString()
+        val newImageURL =
+            if (binding.recipeChangeContentFragmentInclude.addStepUrl.text.toString() == "") null else binding.recipeChangeContentFragmentInclude.addStepUrl.text.toString()
+        return Steps(
+            stepId = editedStep?.stepId ?: 0L,
+            numberOfStep = newNumberStep,
+            contentOfStep = newContentOfStep,
+            recipeId = currentRecipe?.recipeId ?: 0L,
+            imageUrl = newImageURL
+        )
     }
 
-    val recipe: Recipe
-    if(currentRecipe == null){
-        if (newRecipeCategory != null) {
-           recipe = Recipe(
-                recipeId = 0L,
-                recipeName = newRecipeDescription,
-                categoryId = newRecipeCategory.categoryId,
-                authorName = "Me",
-                isFavorites = false
-            )
-        }
-    } else {
-        if (newRecipeCategory != null) {
-            recipe = currentRecipe.copy(
-                recipeName = newRecipeDescription,
-                categoryId = newRecipeCategory.categoryId,
-            )
+    private fun onSaveRecipeButtonClicked(
+        binding: RecipeChangeCreateFragmentBinding,
+        currentRecipe: Recipe?,
+        currentSteps: List<Steps?>?,
+        categoryList: List<CategoryOfRecipe>
+    ) {
+        val newRecipeDescription =
+            binding.recipeChangeContentFragmentInclude.insertRecipeName.text.toString()
+        val newRecipeCategory = categoryList.find {
+            binding.recipeChangeContentFragmentInclude.category.adapter.toString() == it.categoryName
         }
 
+        var recipe: Recipe? = null
+        if (currentRecipe == null) {
+            if (newRecipeCategory != null) {
+                recipe = Recipe(
+                    recipeId = 0L,
+                    recipeName = newRecipeDescription,
+                    categoryId = newRecipeCategory.categoryId,
+                    authorName = "Me",
+                    isFavorites = false
+                )
+            }
+        } else {
+            if (newRecipeCategory != null) {
+                recipe = currentRecipe.copy(
+                    recipeName = newRecipeDescription,
+                    categoryId = newRecipeCategory.categoryId,
+                )
+            }
+
+        }
+        if (recipe != null) {
+            val resultBundle = Bundle(2)
+            val contentNew = ""//TODO
+            resultBundle.putString(RESULT_KEY, contentNew)
+            setFragmentResult(REQUEST_KEY, resultBundle)
+        }
+
+        findNavController().popBackStack()
     }
-
 }
 
 

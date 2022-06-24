@@ -48,7 +48,7 @@ internal class RecipeStepsAdapter(
                         .error(R.drawable.ic_baseline_error_outline_24)
                         .into(imageOfStep)
                 } else {
-                    imageOfStep.visibility = View.GONE
+                    imageOfStep.visibility = View.GONE //not working
 
                 }
                 nameOfStep.setOnClickListener { listener.onStepClicked(steps) }

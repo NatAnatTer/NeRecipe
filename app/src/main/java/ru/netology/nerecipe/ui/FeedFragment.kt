@@ -31,31 +31,31 @@ class FeedFragment : Fragment() {
 //        //_________Zaglushka
         val categoryList = listOf(
             CategoryOfRecipe(
-                categoryId = RecipeRepository.NEW_RECIPE_ID,
+                categoryId = 1L,
                 categoryName = "Европейская"
             ),
             CategoryOfRecipe(
-                categoryId = RecipeRepository.NEW_RECIPE_ID,
+                categoryId = 2L,
                 categoryName = "Азиатская"
             ),
             CategoryOfRecipe(
-                categoryId = RecipeRepository.NEW_RECIPE_ID,
+                categoryId = 3L,
                 categoryName = "Паназиатская"
             ),
             CategoryOfRecipe(
-                categoryId = RecipeRepository.NEW_RECIPE_ID,
+                categoryId = 4L,
                 categoryName = "Восточная"
             ),
             CategoryOfRecipe(
-                categoryId = RecipeRepository.NEW_RECIPE_ID,
+                categoryId = 5L,
                 categoryName = "Американская"
             ),
             CategoryOfRecipe(
-                categoryId = RecipeRepository.NEW_RECIPE_ID,
+                categoryId = 6L,
                 categoryName = "Русская"
             ),
             CategoryOfRecipe(
-                categoryId = RecipeRepository.NEW_RECIPE_ID,
+                categoryId = 7L,
                 categoryName = "Средиземноморская"
             )
         )
