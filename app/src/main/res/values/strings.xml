@@ -16,11 +16,11 @@
     <string name="insertRecipeName">Insert recipe name</string>
     <string name="recipe_name_hint">enter recipe name</string>
     <string name="add_step">Add step</string>
-    <string name="recipe_step_description_hint">Enter recipe step</string>
+    <string name="recipe_step_description_hint">Enter recipe step description</string>
     <string name="save">Save</string>
     <string name="select_category">Select category:</string>
     <string name="number_of_step_description_hint">Enter number of step</string>
     <string name="recipe_step_url_hint">Enter URL of image</string>
     <string name="save_step">Add step</string>
-    <string name="title_add_edit_recipe">Create/eidt recipe</string>
+    <string name="title_add_edit_recipe">Create/edit</string>
 </resources>

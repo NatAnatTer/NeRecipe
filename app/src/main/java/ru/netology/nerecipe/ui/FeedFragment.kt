@@ -82,7 +82,7 @@ class FeedFragment : Fragment() {
                 numberOfStep = 2,
                 contentOfStep = "secondStep",
                 recipeId = 0L,
-                imageUrl = "https://img1.freepng.ru/20171220/ide/donut-png-5a3ac1b8c33b25.9691611515138001207997.jpg"
+                imageUrl = null //"https://img1.freepng.ru/20171220/ide/donut-png-5a3ac1b8c33b25.9691611515138001207997.jpg"
             )
         )
         viewModel.onSaveButtonClicked(recipe, stepsList)

@@ -16,11 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="@string/title_add_edit_recipe"
-
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
             app:menu="@menu/top_navigation_edit_recipe"
-            app:navigationIcon="@drawable/ic_menu_24"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             />
+
 
     </com.google.android.material.appbar.AppBarLayout>
 

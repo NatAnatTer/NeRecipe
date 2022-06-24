@@ -41,8 +41,7 @@ internal class RecipeStepsAdapter(
             with(binding) {
                 numberOfStep.text = steps.numberOfStep.toString()
                 descriptionOfStep.text = steps.contentOfStep
-                if (steps.imageUrl != null) {
-
+                if (steps.imageUrl != null || steps.imageUrl !="") {
                     Picasso.with(imageOfStep.context)
                         .load(steps.imageUrl)
                         .resize(900, 700)

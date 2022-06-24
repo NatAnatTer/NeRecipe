@@ -2,13 +2,16 @@ package ru.netology.nerecipe.ui
 
 import android.R
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import ru.netology.nerecipe.adapter.RecipeStepsAdapter
+import ru.netology.nerecipe.databinding.RecipeChangeContentFragmentBinding
 import ru.netology.nerecipe.databinding.RecipeChangeCreateFragmentBinding
 import ru.netology.nerecipe.dto.Recipe
 import ru.netology.nerecipe.dto.Steps
@@ -19,6 +22,32 @@ class RecipeChangeContentFragment : Fragment() {
 
     private val args by navArgs<RecipeChangeContentFragmentArgs>()
     private val viewModel by viewModels<RecipeViewModel>(ownerProducer = ::requireParentFragment)
+
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//
+//
+//        binding.topAppBar.setOnClickListener {
+////                    findNavController().popBackStack()
+////                } //TODO not working
+////
+////                binding.topAppBar.setNavigationOnClickListener {
+////                    // Handle navigation icon press
+////                }
+////
+////                binding.topAppBarOptions.setOnMenuItemClickListener{menuItem ->
+////                    when (menuItem.itemId) {
+////                        R.id. -> {
+////                      //      onSaveRecipeButtonClicked(binding)
+////                            // Handle favorite icon press
+////                            true
+////                        }
+////                        else -> false
+////                    }
+////                }
+//        }
+//    }
+
 
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
@@ -89,17 +118,30 @@ class RecipeChangeContentFragment : Fragment() {
                         }
                     }
 
-                binding.recipeChangeContentFragmentInclude.saveRecipe.setOnClickListener {
-                    //     onSaveRecipeButtonClicked(binding) TODO
-                }
+//                binding.recipeChangeContentFragmentInclude.saveRecipe.setOnClickListener {
+//                    //     onSaveRecipeButtonClicked(binding) TODO
+//                }
+//
+//                <com.google.android.material.floatingactionbutton.FloatingActionButton
+//                android:id="@+id/save_recipe"
+//                android:layout_width="wrap_content"
+//                android:layout_height="wrap_content"
+//                android:layout_margin="@dimen/fab_margin"
+//                android:contentDescription="@string/add_step"
+//                app:layout_constraintBottom_toBottomOf="parent"
+//                app:layout_constraintEnd_toEndOf="parent"
+//                app:layout_constraintStart_toStartOf="parent"
+//                app:srcCompat="@drawable/ic_add_24dp" />
+
 //--------Add Step -------
 
                 val adapterSteps = RecipeStepsAdapter(viewModel)
                 binding.recipeChangeContentFragmentInclude.recipeListRecyclerView.adapter =
                     adapterSteps
-                viewModel.currentSteps.observe(viewLifecycleOwner) {
-                viewModel.data.observe(viewLifecycleOwner) {
-                    adapterSteps.submitList(viewModel.currentSteps.value) // this
+
+                    viewModel.data.observe(viewLifecycleOwner) {
+                        viewModel.currentSteps.observe(viewLifecycleOwner) {
+                        adapterSteps.submitList(viewModel.currentSteps.value) // this
 
                         viewModel.currentStep.observe(viewLifecycleOwner) {
                             with(binding.recipeChangeContentFragmentInclude) {
@@ -119,22 +161,15 @@ class RecipeChangeContentFragment : Fragment() {
 
                                             if (it != null) {
                                                 if (it.stepId == currentStepChoose.stepId) {
+                                                    val savedStep = onSaveStepClicked(
+                                                        binding,
+                                                        currentStepChoose,
+                                                        currentRecipe
+                                                    )
                                                     it.copy(
-                                                        contentOfStep = onSaveStepClicked(
-                                                            binding,
-                                                            currentStepChoose,
-                                                            currentRecipe
-                                                        ).contentOfStep,
-                                                        numberOfStep = onSaveStepClicked(
-                                                            binding,
-                                                            currentStepChoose,
-                                                            currentRecipe
-                                                        ).numberOfStep,
-                                                        imageUrl = onSaveStepClicked(
-                                                            binding,
-                                                            currentStepChoose,
-                                                            currentRecipe
-                                                        ).imageUrl
+                                                        contentOfStep = savedStep.contentOfStep,
+                                                        numberOfStep = savedStep.numberOfStep,
+                                                        imageUrl = savedStep.imageUrl
                                                     )
                                                 }
                                             }
@@ -150,6 +185,7 @@ class RecipeChangeContentFragment : Fragment() {
                                                 )
                                             )
                                     }
+                                    //TODO clear field
                                 }
 
                             }
@@ -161,11 +197,33 @@ class RecipeChangeContentFragment : Fragment() {
 
 //currentStepChoose = Steps(binding.recipeChangeContentFragmentInclude.addNumberOfStep.text., )
 
+//
 
-//            binding.returnFromCreatePost.setOnClickListener {
-//                findNavController().popBackStack() TODO
-//            }
             }
+
+            //----top appbar------
+//            binding.topAppBar.setOnClickListener {
+//                    findNavController().popBackStack()
+//                } //TODO not working
+//
+//                binding.topAppBar.setNavigationOnClickListener {
+//                    // Handle navigation icon press
+//                }
+//
+//                binding.topAppBarOptions.setOnMenuItemClickListener {
+//                    when (it.itemId) {
+//                        R.id.saveRecipe -> {
+//                            //      onSaveRecipeButtonClicked(binding)
+//                            // Handle favorite icon press
+//                            true
+//                        }
+//                        else -> false
+//                    }
+//
+//                }
+            //------Top Appbar-------
+
+
         }.root
 
     companion object {
@@ -179,15 +237,20 @@ private fun onSaveStepClicked(
     binding: RecipeChangeCreateFragmentBinding,
     editedStep: Steps?,
     currentRecipe: Recipe?
-) =
-    Steps(
+): Steps{
+    val newNumberStep = binding.recipeChangeContentFragmentInclude.addNumberOfStep.getText().toString()
+        .toInt()
+    val newContentOfStep = binding.recipeChangeContentFragmentInclude.addStepDescription.getText().toString()
+    val newImageURL = if (binding.recipeChangeContentFragmentInclude.addStepUrl.text.toString() == "") null else binding.recipeChangeContentFragmentInclude.addStepUrl.text.toString()
+  return  Steps(
         stepId = editedStep?.stepId ?: 0L,
-        numberOfStep = binding.recipeChangeContentFragmentInclude.addNumberOfStep.text.toString()
-            .toInt(),
-        contentOfStep = binding.recipeChangeContentFragmentInclude.addStepDescription.text.toString(),
+        numberOfStep = newNumberStep,
+        contentOfStep = newContentOfStep,
         recipeId = currentRecipe?.recipeId ?: 0L,
-        imageUrl = binding.recipeChangeContentFragmentInclude.addStepUrl.text.toString()
+        imageUrl = newImageURL
     )
+}
+
 
 //
 //    private fun onOkButtonClicked(binding: PostContentFragmentBinding) {
@@ -208,3 +271,6 @@ private fun onSaveStepClicked(
 //    }
 //}
 //
+
+
+//app:menu="@menu/top_navigation_edit_recipe"
