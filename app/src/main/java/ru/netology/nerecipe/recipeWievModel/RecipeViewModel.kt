@@ -48,7 +48,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
         currentStep.value = step
     }
 
-    fun onAddButtonClicked() {
+    override fun onAddButtonClicked() {
         navigateToRecipeChangeContentScreenEvent.call()
     }
 
@@ -58,7 +58,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
 
     fun getStepsByRecipeId(recipeId: Long): List<Steps> = repository.getStepsByRecipeId(recipeId)
 
-    fun getRecipeById(recipeId: Long): Recipe = repository.getRecipeById(recipeId)
+    fun getRecipeById(recipeId: Long): Recipe? = repository.getRecipeById(recipeId)
 
     fun getAllCategory(): List<CategoryOfRecipe> = repository.getAllCategory()
 

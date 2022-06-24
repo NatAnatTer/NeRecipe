@@ -23,7 +23,7 @@ interface RecipeRepository {
 
     fun getStepsByRecipeId(recipeId: Long): List<Steps>
 
-    fun getRecipeById(recipeI: Long): Recipe
+    fun getRecipeById(recipeI: Long): Recipe?
 
     fun getAllCategory(): List<CategoryOfRecipe>
 

@@ -14,7 +14,7 @@
             android:id="@+id/to_recipeShowDetailFragment"
             app:destination="@id/recipe_show_detail_fragment" />
         <action
-            android:id="@+id/to_change_content_fragmet"
+            android:id="@+id/to_change_content_fragment"
             app:destination="@id/recipe_change_content_fragment" />
 
     </fragment>
@@ -39,7 +39,7 @@
         <argument
             android:name="idRecipe"
             app:argType="long"
-            app:nullable="false" />
+            app:nullable="false"/>
         <action
             android:id="@+id/to_feedFragment"
             app:destination="@id/feedFragment" />

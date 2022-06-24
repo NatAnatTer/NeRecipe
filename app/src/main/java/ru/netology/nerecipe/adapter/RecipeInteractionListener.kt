@@ -10,4 +10,5 @@ interface RecipeInteractionListener {
     fun onEditClicked(recipe: Recipe)
     fun onShowRecipeClicked(recipe: Recipe)
     fun onStepClicked(step: Steps)
+    fun onAddButtonClicked()
 }

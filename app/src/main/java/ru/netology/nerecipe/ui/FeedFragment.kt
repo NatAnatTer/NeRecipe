@@ -8,12 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import ru.netology.nerecipe.R
 import ru.netology.nerecipe.databinding.FeedFragmentBinding
 import ru.netology.nerecipe.dto.CategoryOfRecipe
 import ru.netology.nerecipe.dto.Recipe
 import ru.netology.nerecipe.dto.Steps
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
 import ru.netology.nerecipe.adapter.RecipeAdapter
+import ru.netology.nerecipe.adapter.RecipeInteractionListener
 import ru.netology.nerecipe.data.RecipeRepository
 
 class FeedFragment : Fragment() {
@@ -91,16 +94,18 @@ class FeedFragment : Fragment() {
         ///// Zaglushka
 
 
-        //
-        viewModel.navigateToRecipeChangeContentScreenEvent.observe(this) { recipeId ->
-            val direction = recipeId?.let { FeedFragmentDirections.toChangeContentFragmet(it) }
+
+
+
+        viewModel.navigateToRecipeChangeContentScreenEvent.observe(this) {idRecipe ->
+            val direction = idRecipe?.let { FeedFragmentDirections.toChangeContentFragment(it) }?: FeedFragmentDirections.toChangeContentFragment(0L)
             if (direction != null) {
                 findNavController().navigate(direction)
             }
 
         }
-        viewModel.navigateToShowRecipe.observe(this) { idPost ->
-            val direction = idPost?.let { FeedFragmentDirections.toRecipeShowDetailFragment(it) }
+        viewModel.navigateToShowRecipe.observe(this) { recipeId ->
+            val direction = recipeId?.let { FeedFragmentDirections.toRecipeShowDetailFragment(it) }
             if (direction != null) {
                 findNavController().navigate(direction)
             }
@@ -133,6 +138,33 @@ class FeedFragment : Fragment() {
         binding.recipeListRecyclerView.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) { recipe ->
             adapter.submitList(recipe)
+        }
+
+
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.recipe_list -> {
+                    // Respond to navigation item 1 click
+                    true
+                }
+                R.id.favorites_list -> {
+                    // Respond to navigation item 2 click
+                    true
+                }
+                R.id.add_recipe -> {
+                    viewModel.onAddButtonClicked()
+                    true
+                }
+                R.id.search_recipe -> {
+                    // Respond to navigation item 2 click
+                    true
+                }
+                R.id.filter_recipe -> {
+                    // Respond to navigation item 2 click
+                    true
+                }
+                else -> false
+            }
         }
 
 //        binding.fab.setOnClickListener {

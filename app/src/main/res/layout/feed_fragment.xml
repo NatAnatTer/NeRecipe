@@ -8,27 +8,27 @@
     tools:ignore="MissingDefaultResource">
 
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipeListRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/recipe_list_item"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation">
+        tools:ignore="MissingConstraints">
 
     </androidx.recyclerview.widget.RecyclerView>
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:menu="@menu/bottom_navigation_menu"
-            tools:ignore="MissingConstraints" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_navigation_menu"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
