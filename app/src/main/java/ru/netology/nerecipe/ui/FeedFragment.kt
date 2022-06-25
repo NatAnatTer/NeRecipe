@@ -8,7 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import ru.netology.nerecipe.R
 import ru.netology.nerecipe.databinding.FeedFragmentBinding
 import ru.netology.nerecipe.dto.CategoryOfRecipe
@@ -16,8 +17,8 @@ import ru.netology.nerecipe.dto.Recipe
 import ru.netology.nerecipe.dto.Steps
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
 import ru.netology.nerecipe.adapter.RecipeAdapter
-import ru.netology.nerecipe.adapter.RecipeInteractionListener
 import ru.netology.nerecipe.data.RecipeRepository
+import ru.netology.nerecipe.dto.RecipeWithInfo
 
 class FeedFragment : Fragment() {
 
@@ -88,7 +89,7 @@ class FeedFragment : Fragment() {
                 imageUrl = null //"https://img1.freepng.ru/20171220/ide/donut-png-5a3ac1b8c33b25.9691611515138001207997.jpg"
             )
         )
-        viewModel.onSaveButtonClicked(recipe, stepsList)
+
 
 
         ///// Zaglushka
@@ -116,12 +117,16 @@ class FeedFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        val mapper = ObjectMapper().registerKotlinModule()
+
         setFragmentResultListener(requestKey = RecipeChangeContentFragment.REQUEST_KEY) { requestKey, bundle ->
             if (requestKey != RecipeChangeContentFragment.REQUEST_KEY) return@setFragmentResultListener
-            val newPostContent =
+            val newRecipeContentString =
                 bundle.getString(RecipeChangeContentFragment.RESULT_KEY)
                     ?: return@setFragmentResultListener
-          //  viewModel.onSaveButtonClicked(newPostContent)
+            val newRecipeContent = mapper.readValue(newRecipeContentString, RecipeWithInfo::class.java)
+
+            viewModel.onSaveButtonClicked(newRecipeContent)
         }
 
 

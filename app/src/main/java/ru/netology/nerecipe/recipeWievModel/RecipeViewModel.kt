@@ -12,6 +12,7 @@ import ru.netology.nerecipe.dto.Steps
 import ru.netology.nerecipe.util.SingleLiveEvent
 import ru.netology.nerecipe.data.RecipeRepository
 import ru.netology.nerecipe.data.RecipeRepository.Companion.NEW_RECIPE_ID
+import ru.netology.nerecipe.dto.RecipeWithInfo
 
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application),
@@ -26,7 +27,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     val navigateToShowRecipe = SingleLiveEvent<Long>()
 
      val currentStep = MutableLiveData<Steps?>(null)
-    val currentSteps = MutableLiveData<List<Steps?>>(null)
+    val currentSteps = MutableLiveData<List<Steps>?>(null)
 
 
     override fun onFavoriteClicked(recipe: Recipe) {
@@ -65,24 +66,23 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     fun getCategoryById(categoryId: Long): CategoryOfRecipe = repository.getCategoryById(categoryId)
 
     fun onSaveButtonClicked(
-        recipe: Recipe,
-        steps: List<Steps>
+        newRecipeContent: RecipeWithInfo
     ) {
-        if (steps.isEmpty()) return
+        if (newRecipeContent.steps.isEmpty()) return
 
         val newRecipe = currentRecipe.value?.copy(
-            recipeName = recipe.recipeName,
-            categoryId = recipe.categoryId,
+            recipeName = newRecipeContent.recipe.recipeName,
+            categoryId = newRecipeContent.recipe.categoryId,
 
             ) ?: Recipe(
             recipeId = NEW_RECIPE_ID,
-            recipeName = recipe.recipeName,
-            categoryId = recipe.categoryId,
-            authorName = recipe.authorName,
+            recipeName = newRecipeContent.recipe.recipeName,
+            categoryId = newRecipeContent.recipe.categoryId,
+            authorName = newRecipeContent.recipe.authorName,
             isFavorites = false
         )
          val recipeNewId = repository.save(newRecipe)
-        steps.forEach {
+        newRecipeContent.steps.forEach {
 
               repository.saveSteps(Steps(
                   stepId = 0L,

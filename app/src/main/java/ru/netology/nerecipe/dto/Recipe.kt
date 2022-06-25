@@ -1,9 +1,13 @@
 package ru.netology.nerecipe.dto
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class Recipe(
     val recipeId: Long,
     val recipeName: String,
     val categoryId: Long,
     val authorName: String,
-    val isFavorites: Boolean
-)
+    @JsonProperty("favorites") val isFavorites: Boolean
+){
+   // constructor() : this(0L, "", 0L, "", false)
+}
