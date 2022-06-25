@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -96,9 +97,6 @@ class FeedFragment : Fragment() {
         ///// Zaglushka
 
 
-
-
-
         viewModel.navigateToRecipeChangeContentScreenEvent.observe(this) {idRecipe ->
             val direction = idRecipe?.let { FeedFragmentDirections.toChangeContentFragment(it) }?: FeedFragmentDirections.toChangeContentFragment(0L)
             if (direction != null) {
@@ -140,6 +138,7 @@ class FeedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = FeedFragmentBinding.inflate(layoutInflater, container, false).also { binding ->
+
         val adapter = RecipeAdapter(viewModel)
         binding.recipeListRecyclerView.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) { recipe ->
@@ -147,6 +146,25 @@ class FeedFragment : Fragment() {
         }
 binding.searchBar.visibility = View.GONE
 
+
+
+        //-------search
+        fun setUpSearchView() {
+            binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    adapter.getFilter().filter(query)
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    adapter.getFilter().filter(newText);
+                    return true
+                }
+
+            })
+        }
+
+//---------search
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.recipe_list -> {
