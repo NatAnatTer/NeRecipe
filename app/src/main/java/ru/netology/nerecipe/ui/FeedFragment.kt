@@ -3,6 +3,7 @@ package ru.netology.nerecipe.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -144,7 +145,7 @@ class FeedFragment : Fragment() {
         viewModel.data.observe(viewLifecycleOwner) { recipe ->
             adapter.submitList(recipe)
         }
-
+binding.searchBar.visibility = View.GONE
 
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when(item.itemId) {
@@ -161,7 +162,7 @@ class FeedFragment : Fragment() {
                     true
                 }
                 R.id.search_recipe -> {
-                    // Respond to navigation item 2 click
+                    binding.searchBar.visibility = View.VISIBLE
                     true
                 }
                 R.id.filter_recipe -> {
