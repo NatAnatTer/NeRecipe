@@ -50,6 +50,9 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     }
 
     override fun onAddButtonClicked() {
+        currentStep.value = null
+        currentSteps.value = null
+        currentRecipe.value = null
         navigateToRecipeChangeContentScreenEvent.call()
     }
 
