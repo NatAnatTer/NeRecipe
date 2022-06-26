@@ -6,41 +6,28 @@
     android:layout_height="wrap_content"
     tools:context=".ui.RecipeShowDetailFragment">
 
-    <include
-        android:id="@+id/recipe_content_detail"
-        layout="@layout/recipe_list_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        />
 
-
-
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="recipe_content_detail"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="40dp"
-        tools:layout_editor_absoluteY="126dp" />
+        <include
+            android:id="@+id/recipe_content_detail"
+            layout="@layout/recipe_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipeStepsListRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/barrier"
-        tools:ignore="NotSibling"
+        app:layout_constraintTop_toBottomOf="@id/recipe_content_detail"
+        app:layout_constraintBottom_toBottomOf="parent"
+
         tools:listitem="@layout/recipe_steps"/>
 
 
 
 
 
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>

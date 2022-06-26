@@ -107,7 +107,7 @@
         android:layout_height="wrap_content"
         android:autofillHints="@string/number_of_step_description_hint"
         android:hint="@string/number_of_step_description_hint"
-        android:inputType="textMultiLine"
+        android:inputType="number"
         android:lineSpacingExtra="8dp"
         android:padding="@dimen/common_spacing"
         android:textSize="20sp"
@@ -164,8 +164,6 @@
         tools:listitem="@layout/recipe_steps">
 
     </androidx.recyclerview.widget.RecyclerView>
-
-
 
 
 

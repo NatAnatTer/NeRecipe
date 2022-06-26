@@ -77,9 +77,6 @@ class RecipeShowDetailFragment : Fragment() {
 
 
             }.root
-
-
-
 }
 
 

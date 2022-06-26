@@ -70,6 +70,9 @@ internal class RecipeAdapter(
 
     //--------search
 
+
+
+
     class ViewHolder(
         private val binding: RecipeListItemBinding,
         private val listener: RecipeInteractionListener
