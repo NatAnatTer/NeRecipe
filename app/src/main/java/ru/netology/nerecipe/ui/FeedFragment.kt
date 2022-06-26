@@ -167,8 +167,7 @@ class FeedFragment : Fragment() {
                     return true
                 }
 
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    if (newText.isNullOrEmpty()){
+                override fun onQueryTextChange(newText: String?): Boolean { if (newText.isNullOrEmpty()){
                         adapter.submitList(viewModel.data.value) //TODO
                         return true
                     }

@@ -163,7 +163,7 @@ class RecipeChangeContentFragment : Fragment() {
         editedStep: Steps?,
         currentRecipe: Recipe?
     ) {
-        if(!validate(binding))
+        if(!validateSaveStep(binding))
             return
         val newNumberStep =
             binding.recipeChangeContentFragmentInclude.addNumberOfStep.text.toString()
@@ -210,21 +210,32 @@ class RecipeChangeContentFragment : Fragment() {
         viewModel.currentStep.value = null
     }
 
-    private fun validate(binding:RecipeChangeCreateFragmentBinding): Boolean {
+    private fun validateSaveStep(binding:RecipeChangeCreateFragmentBinding): Boolean {
+
+        if(binding.recipeChangeContentFragmentInclude.addNumberOfStep.text.toString() == ""){
+            binding.recipeChangeContentFragmentInclude.addNumberOfStep.error = "Не задан номер шага"
+            return false
+        }
+        if (binding.recipeChangeContentFragmentInclude.addStepDescription.text.toString() == ""){
+            binding.recipeChangeContentFragmentInclude.addStepDescription.error = "Не задано описание шага"
+            return false
+        }
+        return true
+    }
+
+
+    private fun validateRecipe (binding:RecipeChangeCreateFragmentBinding): Boolean {
         if(viewModel.currentSteps.value.isNullOrEmpty()) {
-            Toast.makeText(
+            val toast =  Toast.makeText(
                 viewModel.getApplication(),
                 "Отсутвует описание процесса приготовления",
                 10
             )
-            return false
-        }
-        if(binding.recipeChangeContentFragmentInclude.addNumberOfStep.text.toString() == ""){
-            binding.recipeChangeContentFragmentInclude.addNumberOfStep.error = "Неверно задан номер шага"
+            toast.show()
             return false
         }
         if (binding.recipeChangeContentFragmentInclude.addStepDescription.text.toString() == ""){
-            binding.recipeChangeContentFragmentInclude.addStepDescription.error = "Не задано название шага"
+            binding.recipeChangeContentFragmentInclude.addStepDescription.error = "Не задано название рецепта"
             return false
         }
         return true
@@ -236,6 +247,9 @@ class RecipeChangeContentFragment : Fragment() {
         currentSteps: List<Steps>?,
         selectedCategory: CategoryOfRecipe
     ) {
+        if(!validateRecipe(binding))
+            return
+
         val newRecipeDescription =
             binding.recipeChangeContentFragmentInclude.insertRecipeName.text.toString()
 
