@@ -14,10 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import ru.netology.nerecipe.R
 import ru.netology.nerecipe.adapter.RecipeAdapter
-import ru.netology.nerecipe.data.RecipeRepository
 import ru.netology.nerecipe.databinding.FeedFragmentBinding
 import ru.netology.nerecipe.dto.CategoryOfRecipe
-import ru.netology.nerecipe.dto.Recipe
 import ru.netology.nerecipe.dto.RecipeWithInfo
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
 
@@ -29,8 +27,6 @@ class FeedFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-//        //_________Zaglushka
         val categoryList = listOf(
             CategoryOfRecipe(
                 categoryId = 0L,
@@ -67,52 +63,10 @@ class FeedFragment : Fragment() {
         )
         viewModel.createCategory(categoryList)
 
-
-        ////// Zaglushka
-
-        val recipe = Recipe(
-            recipeId = RecipeRepository.NEW_RECIPE_ID,
-            recipeName = "First recipe",
-            categoryId = 2L,
-            authorName = "Me",
-            isFavorites = false
-
-        )
-//        val stepsList = listOf(
-//            Steps(
-//                stepId = 0L,
-//                numberOfStep = 1,
-//                contentOfStep = "firstStep",
-//                recipeId = 0L,
-//                imageUrl = "https://coderlessons.com/wp-content/uploads/2019/07/sample_image-5.jpg"
-//            ),
-//            Steps(
-//                stepId = 0L,
-//                numberOfStep = 2,
-//                contentOfStep = "secondStep",
-//                recipeId = 0L,
-//                imageUrl = null //"https://img1.freepng.ru/20171220/ide/donut-png-5a3ac1b8c33b25.9691611515138001207997.jpg"
-//            )
-//        )
-//
-//        val recipeMock = RecipeWithInfo(
-//            recipe,
-//            CategoryOfRecipe(
-//                categoryId = 1L,
-//                categoryName = "Европейская"
-//            ),
-//            stepsList
-//        )
-//        viewModel.onSaveButtonClicked(recipeMock)
-
-        ///// Zaglushka
-
         viewModel.navigateToRecipeChangeContentScreenEvent.observe(this) { idRecipe ->
             val direction = idRecipe?.let { FeedFragmentDirections.toChangeContentFragment(it) }
                 ?: FeedFragmentDirections.toChangeContentFragment(0L)
-            if (direction != null) {
-                findNavController().navigate(direction)
-            }
+            findNavController().navigate(direction)
 
         }
         viewModel.navigateToShowRecipe.observe(this) { recipeId ->
@@ -128,7 +82,6 @@ class FeedFragment : Fragment() {
         super.onResume()
 
         val mapper = ObjectMapper().registerKotlinModule()
-
         setFragmentResultListener(requestKey = RecipeChangeContentFragment.REQUEST_KEY) { requestKey, bundle ->
             if (requestKey != RecipeChangeContentFragment.REQUEST_KEY) return@setFragmentResultListener
             val newRecipeContentString =
@@ -136,11 +89,8 @@ class FeedFragment : Fragment() {
                     ?: return@setFragmentResultListener
             val newRecipeContent =
                 mapper.readValue(newRecipeContentString, RecipeWithInfo::class.java)
-
             viewModel.onSaveButtonClicked(newRecipeContent)
         }
-
-
     }
 
 
@@ -155,20 +105,19 @@ class FeedFragment : Fragment() {
         viewModel.data.observe(viewLifecycleOwner) { recipe ->
             adapter.submitList(recipe)
         }
-
         binding.searchBar.visibility = View.GONE
 
 
 
-        //-------search
         fun setUpSearchView() {
             binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     return true
                 }
 
-                override fun onQueryTextChange(newText: String?): Boolean { if (newText.isNullOrEmpty()){
-                        adapter.submitList(viewModel.data.value) //TODO
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (newText.isNullOrEmpty()) {
+                        adapter.submitList(viewModel.data.value)
                         return true
                     }
                     var ls = adapter.currentList
@@ -186,15 +135,26 @@ class FeedFragment : Fragment() {
             })
 
         }
-//---------search
+
+        fun onFavoriteClicked(){//: List<RecipeWithInfo>? {
+          //  var newListRecipe: List<RecipeWithInfo>? = null
+            viewModel.data.observe(viewLifecycleOwner){
+               adapter.submitList(viewModel.data.value?.filter {
+                    it.recipe.isFavorites
+                })
+            }
+            //return newListRecipe
+        }
+
+
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.recipe_list -> {
-                    // Respond to navigation item 1 click
+                    adapter.submitList(viewModel.data.value)
                     true
                 }
                 R.id.favorites_list -> {
-                    // Respond to navigation item 2 click
+                    adapter.submitList(onFavoriteClicked())
                     true
                 }
                 R.id.add_recipe -> {
