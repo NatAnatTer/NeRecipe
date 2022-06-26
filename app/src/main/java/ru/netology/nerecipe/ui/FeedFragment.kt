@@ -13,14 +13,14 @@ import androidx.navigation.fragment.findNavController
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import ru.netology.nerecipe.R
+import ru.netology.nerecipe.adapter.RecipeAdapter
+import ru.netology.nerecipe.data.RecipeRepository
 import ru.netology.nerecipe.databinding.FeedFragmentBinding
 import ru.netology.nerecipe.dto.CategoryOfRecipe
 import ru.netology.nerecipe.dto.Recipe
+import ru.netology.nerecipe.dto.RecipeWithInfo
 import ru.netology.nerecipe.dto.Steps
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
-import ru.netology.nerecipe.adapter.RecipeAdapter
-import ru.netology.nerecipe.data.RecipeRepository
-import ru.netology.nerecipe.dto.RecipeWithInfo
 
 class FeedFragment : Fragment() {
 
@@ -92,13 +92,22 @@ class FeedFragment : Fragment() {
             )
         )
 
-
+        val recipeMock = RecipeWithInfo(
+            recipe,
+            CategoryOfRecipe(
+                categoryId = 1L,
+                categoryName = "Европейская"
+            ),
+            stepsList
+        )
+        viewModel.onSaveButtonClicked(recipeMock)
 
         ///// Zaglushka
 
 
-        viewModel.navigateToRecipeChangeContentScreenEvent.observe(this) {idRecipe ->
-            val direction = idRecipe?.let { FeedFragmentDirections.toChangeContentFragment(it) }?: FeedFragmentDirections.toChangeContentFragment(0L)
+        viewModel.navigateToRecipeChangeContentScreenEvent.observe(this) { idRecipe ->
+            val direction = idRecipe?.let { FeedFragmentDirections.toChangeContentFragment(it) }
+                ?: FeedFragmentDirections.toChangeContentFragment(0L)
             if (direction != null) {
                 findNavController().navigate(direction)
             }
@@ -123,11 +132,11 @@ class FeedFragment : Fragment() {
             val newRecipeContentString =
                 bundle.getString(RecipeChangeContentFragment.RESULT_KEY)
                     ?: return@setFragmentResultListener
-            val newRecipeContent = mapper.readValue(newRecipeContentString, RecipeWithInfo::class.java)
+            val newRecipeContent =
+                mapper.readValue(newRecipeContentString, RecipeWithInfo::class.java)
 
             viewModel.onSaveButtonClicked(newRecipeContent)
         }
-
 
 
     }
@@ -144,29 +153,30 @@ class FeedFragment : Fragment() {
         viewModel.data.observe(viewLifecycleOwner) { recipe ->
             adapter.submitList(recipe)
         }
-binding.searchBar.visibility = View.GONE
+
+        binding.searchBar.visibility = View.GONE
 
 
 
         //-------search
-        fun setUpSearchView() {
-            binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    adapter.getFilter().filter(query)
-                    return true
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    adapter.getFilter().filter(newText);
-                    return true
-                }
-
-            })
-        }
-
+//        fun setUpSearchView() {
+//            binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//                override fun onQueryTextSubmit(query: String?): Boolean {
+//                    adapter.getFilter().filter(query)
+//                    return true
+//                }
+//
+//                override fun onQueryTextChange(newText: String?): Boolean {
+//                    adapter.getFilter().filter(newText);
+//                    return true
+//                }
+//
+//            })
+//
+//        }
 //---------search
         binding.bottomNavigation.setOnItemSelectedListener { item ->
-            when(item.itemId) {
+            when (item.itemId) {
                 R.id.recipe_list -> {
                     // Respond to navigation item 1 click
                     true
@@ -181,6 +191,7 @@ binding.searchBar.visibility = View.GONE
                 }
                 R.id.search_recipe -> {
                     binding.searchBar.visibility = View.VISIBLE
+                  //  setUpSearchView()
                     true
                 }
                 R.id.filter_recipe -> {

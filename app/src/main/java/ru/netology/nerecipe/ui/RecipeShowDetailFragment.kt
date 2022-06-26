@@ -6,10 +6,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.*
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import ru.netology.nerecipe.databinding.RecipeShowDetailFragmentBinding
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
 import ru.netology.nerecipe.adapter.RecipeAdapter
 import ru.netology.nerecipe.adapter.RecipeStepsAdapter
+import ru.netology.nerecipe.dto.RecipeWithInfo
 
 
 class RecipeShowDetailFragment : Fragment() {
@@ -34,12 +37,17 @@ class RecipeShowDetailFragment : Fragment() {
         override fun onResume() {
             super.onResume()
 
+            val mapper = ObjectMapper().registerKotlinModule()
+
             setFragmentResultListener(requestKey = RecipeChangeContentFragment.REQUEST_KEY) { requestKey, bundle ->
                 if (requestKey != RecipeChangeContentFragment.REQUEST_KEY) return@setFragmentResultListener
-                val newPostContent =
+                val newRecipeContentString =
                     bundle.getString(RecipeChangeContentFragment.RESULT_KEY)
                         ?: return@setFragmentResultListener
-               //   viewModel.onSaveButtonClicked(newPostContent)
+                val newRecipeContent =
+                    mapper.readValue(newRecipeContentString, RecipeWithInfo::class.java)
+
+                viewModel.onSaveButtonClicked(newRecipeContent)
             }
 
         }

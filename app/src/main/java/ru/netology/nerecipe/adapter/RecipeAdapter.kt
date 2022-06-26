@@ -18,7 +18,7 @@ internal class RecipeAdapter(
     private val interactionListener: RecipeInteractionListener
 ) : ListAdapter<RecipeWithInfo, RecipeAdapter.ViewHolder>(DiffCallBack) {
 
-    val initialRecipeDataList = ArrayList<RecipeWithInfo>()
+ //   val initialRecipeDataList = ArrayList<RecipeWithInfo>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,41 +31,41 @@ internal class RecipeAdapter(
         holder.bind(getItem(position))
     }
 //-----------add search
-
-    override fun getItemCount(): Int {
-        return initialRecipeDataList.size
-    }
-
-    fun getFilter(): Filter {
-        return recipeFilter
-    }
-
-    private val recipeFilter = object : Filter() {
-        override fun performFiltering(constraint: CharSequence?): FilterResults {
-            val filteredList: ArrayList<RecipeWithInfo> = ArrayList()
-            if (constraint == null || constraint.isEmpty()) {
-                initialRecipeDataList.let { filteredList.addAll(it) }
-            } else {
-                val query = constraint.toString().trim().lowercase(Locale.getDefault())
-                initialRecipeDataList.forEach {
-                    if (it.recipe.recipeName.lowercase(Locale.ROOT).contains(query)) {
-                        filteredList.add(it)
-                    }
-                }
-            }
-            val results = FilterResults()
-            results.values = filteredList
-            return results
-        }
-
-        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-            if (results?.values is ArrayList<*>) {
-                initialRecipeDataList.clear() //TODO how to clear main list
-                initialRecipeDataList.addAll(results.values as ArrayList<RecipeWithInfo>)
-                notifyDataSetChanged()
-            }
-        }
-    }
+//
+//    override fun getItemCount(): Int {
+//        return initialRecipeDataList.size
+//    }
+//
+//    fun getFilter(): Filter {
+//        return recipeFilter
+//    }
+//
+//    private val recipeFilter = object : Filter() {
+//        override fun performFiltering(constraint: CharSequence?): FilterResults {
+//            val filteredList: ArrayList<RecipeWithInfo> = ArrayList()
+//            if (constraint == null || constraint.isEmpty()) {
+//                initialRecipeDataList.let { filteredList.addAll(it) }
+//            } else {
+//                val query = constraint.toString().trim().lowercase(Locale.getDefault())
+//                initialRecipeDataList.forEach {
+//                    if (it.recipe.recipeName.lowercase(Locale.ROOT).contains(query)) {
+//                        filteredList.add(it)
+//                    }
+//                }
+//            }
+//            val results = FilterResults()
+//            results.values = filteredList
+//            return results
+//        }
+//
+//        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+//            if (results?.values is ArrayList<*>) {
+//                initialRecipeDataList.clear() //TODO how to clear main list
+//                initialRecipeDataList.addAll(results.values as ArrayList<RecipeWithInfo>)
+//                notifyDataSetChanged()
+//            }
+//        }
+//    }
 
 
     //--------search
