@@ -3,9 +3,11 @@ package ru.netology.nerecipe.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import ru.netology.nerecipe.R
 import ru.netology.nerecipe.databinding.RecipeStepsBinding
@@ -47,7 +49,18 @@ internal class RecipeStepsAdapter(
                         .load(steps.imageUrl)
                         .resize(900, 700)
                         .error(R.drawable.ic_baseline_error_outline_24)
-                        .into(imageOfStep)
+                        .into(imageOfStep, object : Callback {
+                            override fun onSuccess() {
+                            }
+                            override fun onError() {
+                                Toast.makeText(
+                                    imageOfStep.context,
+                                    "Не удалось загрузить изображение",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        })
+
                 }
                 nameOfStep.setOnClickListener { listener.onStepClicked(steps) }
                 numberOfStep.setOnClickListener { listener.onStepClicked(steps) }
@@ -70,3 +83,5 @@ internal class RecipeStepsAdapter(
 
 
 }
+
+

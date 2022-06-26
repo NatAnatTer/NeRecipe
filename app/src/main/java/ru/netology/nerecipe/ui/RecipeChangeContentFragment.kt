@@ -214,10 +214,12 @@ class RecipeChangeContentFragment : Fragment() {
 
         if(binding.recipeChangeContentFragmentInclude.addNumberOfStep.text.toString() == ""){
             binding.recipeChangeContentFragmentInclude.addNumberOfStep.error = "Не задан номер шага"
+            binding.recipeChangeContentFragmentInclude.addNumberOfStep.requestFocus()
             return false
         }
         if (binding.recipeChangeContentFragmentInclude.addStepDescription.text.toString() == ""){
             binding.recipeChangeContentFragmentInclude.addStepDescription.error = "Не задано описание шага"
+            binding.recipeChangeContentFragmentInclude.addStepDescription.requestFocus()
             return false
         }
         return true
@@ -234,8 +236,9 @@ class RecipeChangeContentFragment : Fragment() {
             toast.show()
             return false
         }
-        if (binding.recipeChangeContentFragmentInclude.addStepDescription.text.toString() == ""){
-            binding.recipeChangeContentFragmentInclude.addStepDescription.error = "Не задано название рецепта"
+        if (binding.recipeChangeContentFragmentInclude.insertRecipeName.text.toString() == ""){
+            binding.recipeChangeContentFragmentInclude.insertRecipeName.error = "Не задано название рецепта"
+            binding.recipeChangeContentFragmentInclude.insertRecipeName.requestFocus()
             return false
         }
         return true
