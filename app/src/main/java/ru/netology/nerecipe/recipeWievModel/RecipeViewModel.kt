@@ -94,6 +94,8 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
 
         }
         currentRecipe.value = null
+        currentStep.value = null
+        currentSteps.value = null
 
     }
 }

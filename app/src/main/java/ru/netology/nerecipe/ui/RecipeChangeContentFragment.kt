@@ -35,31 +35,34 @@ class RecipeChangeContentFragment : Fragment() {
     ) = RecipeChangeCreateFragmentBinding.inflate(layoutInflater)
         .also { binding ->
             val currentRecipe = viewModel.getRecipeById(args.idRecipe)
+            val currentCategory = currentRecipe?.categoryId?.toInt()?.minus(1) ?: 0
+
 
             //   val currentSteps = viewModel.getStepsByRecipeId(args.idRecipe).toMutableList()
             //____________experiment---------
-            var newSteps: List<Steps>? = null
+            //     var newSteps: List<Steps>? = null
 
             with(binding.recipeChangeContentFragmentInclude) {
                 insertRecipeName.setText(currentRecipe?.recipeName ?: "")
                 insertRecipeName.requestFocus()
                 authorName.text = currentRecipe?.authorName ?: "Me"
 
+
+                //ADAPTER:
                 val categoryList = viewModel.getAllCategory()
-                val categoryNameString: List<String> = categoryList.map { it.categoryName }
+                val categoryListString: List<String> = categoryList.map { it.categoryName }
 
                 val adapter: ArrayAdapter<String> =
                     ArrayAdapter(
                         viewModel.getApplication(),
                         R.layout.simple_spinner_dropdown_item,
-                        categoryNameString
+                        categoryListString
                     ) //Create Adapter
-
-
-                category.onItemSelectedListener
-                adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
                 category.adapter = adapter
-                category.setSelection(1)  // выделяем элемент
+                category.setSelection(currentCategory)  // выделяем элемент
+
+                var selectedCategory: CategoryOfRecipe? = null
+
                 category.onItemSelectedListener =
                     object :
                         AdapterView.OnItemSelectedListener {    // устанавливаем обработчик нажатия
@@ -72,15 +75,17 @@ class RecipeChangeContentFragment : Fragment() {
                                 position
                             ) as String
                             selection.text = item
+
+                            selectedCategory = categoryList.find { it.categoryName == item }
                         }
 
                         override fun onNothingSelected(arg0: AdapterView<*>?) {
                             if (currentRecipe == null) {
-                                selection.text = "Category not selected"
+                                binding.recipeChangeContentFragmentInclude.selection.text = "Category not selected"
                             } else {
                                 val categoryString =
                                     viewModel.getCategoryById(currentRecipe.categoryId).categoryName
-                                selection.text = categoryString
+                                binding.recipeChangeContentFragmentInclude.selection.text = categoryString
                             }
                         }
                     }
@@ -214,12 +219,14 @@ class RecipeChangeContentFragment : Fragment() {
 
                 }
                 binding.recipeChangeContentFragmentInclude.saveRecipe.setOnClickListener {
-                    onSaveRecipeButtonClicked(
-                        binding,
-                        currentRecipe,
-                        viewModel.currentSteps.value,
-                        categoryList
-                    ) //TODO
+                    selectedCategory?.let { it1 ->
+                        onSaveRecipeButtonClicked(
+                            binding,
+                            currentRecipe,
+                            viewModel.currentSteps.value,
+                            it1
+                        )
+                    } //TODO
                     //TODO on save step get method above save recipe
                 }
             }
@@ -285,45 +292,47 @@ class RecipeChangeContentFragment : Fragment() {
         binding: RecipeChangeCreateFragmentBinding,
         currentRecipe: Recipe?,
         currentSteps: List<Steps>?,
-        categoryList: List<CategoryOfRecipe>
+        selectedCategory: CategoryOfRecipe
     ) {
         val newRecipeDescription =
             binding.recipeChangeContentFragmentInclude.insertRecipeName.text.toString()
-        val newRecipeCategory = categoryList.find { it.categoryName == "Паназиатская" }
-//            categoryList.find {
-//            binding.recipeChangeContentFragmentInclude.category.adapter.toString() == it.categoryName
-//        }
+
 
         var recipe: Recipe? = null
         if (currentRecipe == null) {
-            if (newRecipeCategory != null) {
+            if (selectedCategory != null) {
                 recipe = Recipe(
                     recipeId = 0L,
                     recipeName = newRecipeDescription,
-                    categoryId = newRecipeCategory.categoryId,
+                    categoryId = selectedCategory.categoryId,
                     authorName = "Me",
                     isFavorites = false
                 )
             }
         } else {
-            if (newRecipeCategory != null) {
+            if (selectedCategory != null) {
                 recipe = currentRecipe.copy(
                     recipeName = newRecipeDescription,
-                    categoryId = newRecipeCategory.categoryId,
+                    categoryId = selectedCategory.categoryId,
                 )
             }
 
         }
         val resultRecipe: RecipeWithInfo
-        if (recipe != null && newRecipeCategory != null && currentSteps != null && !currentSteps.isNullOrEmpty()) {
+        if (recipe != null && selectedCategory != null && currentSteps != null && !currentSteps.isNullOrEmpty()) {
             resultRecipe =
-                RecipeWithInfo(recipe, newRecipeCategory, currentSteps)//recipe = recipe, category = newRecipeCategory, currentSteps)
+                RecipeWithInfo(
+                    recipe,
+                    selectedCategory,
+                    currentSteps
+                )//recipe = recipe, category = newRecipeCategory, currentSteps)
             val resultBundle = Bundle(2)
             val contentNew = ObjectMapper().writeValueAsString(resultRecipe)//TODO
             resultBundle.putString(RESULT_KEY, contentNew)
             setFragmentResult(REQUEST_KEY, resultBundle)
 
-
+            viewModel.currentStep.value = null
+            viewModel.currentSteps.value = null
             findNavController().popBackStack()
 
         } else return

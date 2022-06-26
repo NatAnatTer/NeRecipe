@@ -34,31 +34,35 @@ class FeedFragment : Fragment() {
 //        //_________Zaglushka
         val categoryList = listOf(
             CategoryOfRecipe(
-                categoryId = 1L,
+                categoryId = 0L,
+                categoryName = "Не выбрано"
+            ),
+            CategoryOfRecipe(
+                categoryId = 0L,
                 categoryName = "Европейская"
             ),
             CategoryOfRecipe(
-                categoryId = 2L,
+                categoryId = 0L,
                 categoryName = "Азиатская"
             ),
             CategoryOfRecipe(
-                categoryId = 3L,
+                categoryId = 0L,
                 categoryName = "Паназиатская"
             ),
             CategoryOfRecipe(
-                categoryId = 4L,
+                categoryId = 0L,
                 categoryName = "Восточная"
             ),
             CategoryOfRecipe(
-                categoryId = 5L,
+                categoryId = 0L,
                 categoryName = "Американская"
             ),
             CategoryOfRecipe(
-                categoryId = 6L,
+                categoryId = 0L,
                 categoryName = "Русская"
             ),
             CategoryOfRecipe(
-                categoryId = 7L,
+                categoryId = 0L,
                 categoryName = "Средиземноморская"
             )
         )
@@ -70,7 +74,7 @@ class FeedFragment : Fragment() {
         val recipe = Recipe(
             recipeId = RecipeRepository.NEW_RECIPE_ID,
             recipeName = "First recipe",
-            categoryId = 1L,
+            categoryId = 2L,
             authorName = "Me",
             isFavorites = false
 
