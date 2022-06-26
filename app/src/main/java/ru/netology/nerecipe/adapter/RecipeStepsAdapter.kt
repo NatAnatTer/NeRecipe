@@ -35,21 +35,19 @@ internal class RecipeStepsAdapter(
         private lateinit var steps: Steps
 
 
-
         fun bind(steps: Steps) {
             this.steps = steps
             with(binding) {
                 numberOfStep.text = steps.numberOfStep.toString()
                 descriptionOfStep.text = steps.contentOfStep
-                if (steps.imageUrl != null || steps.imageUrl !="") {
+                if (steps.imageUrl == null || steps.imageUrl == "") {
+                    imageOfStep.visibility = View.GONE //TODO not working
+                } else {
                     Picasso.with(imageOfStep.context)
                         .load(steps.imageUrl)
                         .resize(900, 700)
                         .error(R.drawable.ic_baseline_error_outline_24)
                         .into(imageOfStep)
-                } else {
-                    imageOfStep.visibility = View.GONE //not working
-
                 }
                 nameOfStep.setOnClickListener { listener.onStepClicked(steps) }
                 numberOfStep.setOnClickListener { listener.onStepClicked(steps) }
