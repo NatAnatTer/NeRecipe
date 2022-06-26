@@ -103,6 +103,7 @@ class FeedFragment : Fragment() {
         val adapter = RecipeAdapter(viewModel)
         binding.recipeListRecyclerView.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) { recipe ->
+           if(!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility = View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
             adapter.submitList(recipe)
         }
         binding.searchBar.visibility = View.GONE
@@ -136,25 +137,37 @@ class FeedFragment : Fragment() {
 
         }
 
-        fun onFavoriteClicked(){//: List<RecipeWithInfo>? {
-          //  var newListRecipe: List<RecipeWithInfo>? = null
-            viewModel.data.observe(viewLifecycleOwner){
-               adapter.submitList(viewModel.data.value?.filter {
+        fun onFavoriteClicked() {
+            var newListRecipe: List<RecipeWithInfo>?
+            viewModel.data.observe(viewLifecycleOwner) {
+
+                newListRecipe = viewModel.data.value?.filter {
                     it.recipe.isFavorites
-                })
+                }
+                adapter.submitList(newListRecipe)
+                if(newListRecipe.isNullOrEmpty()) binding.emptyStatesImage.visibility = View.VISIBLE else binding.emptyStatesImage.visibility = View.GONE
             }
-            //return newListRecipe
         }
+
+        fun onRecipeListClicked(){
+            viewModel.data.observe(viewLifecycleOwner) {
+                if(viewModel.data.value.isNullOrEmpty()) binding.emptyStatesImage.visibility = View.VISIBLE else binding.emptyStatesImage.visibility = View.GONE
+                adapter.submitList(viewModel.data.value)
+
+            }
+        }
+
+
 
 
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.recipe_list -> {
-                    adapter.submitList(viewModel.data.value)
+                    onRecipeListClicked()
                     true
                 }
                 R.id.favorites_list -> {
-                    adapter.submitList(onFavoriteClicked())
+                    onFavoriteClicked()
                     true
                 }
                 R.id.add_recipe -> {

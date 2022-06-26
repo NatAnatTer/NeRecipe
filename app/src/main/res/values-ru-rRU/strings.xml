@@ -23,4 +23,5 @@
     <string name="recipe_step_url_hint">Введите ссылку на изображение</string>
     <string name="save_step">Сохранить шаг</string>
     <string name="title_add_edit_recipe">Создание/редактирование рецерпта</string>
+    <string name="select_all">Выбрать все</string>
 </resources>

@@ -23,4 +23,6 @@
     <string name="recipe_step_url_hint">Enter URL of image</string>
     <string name="save_step">Save step</string>
     <string name="title_add_edit_recipe">Create/edit</string>
+    <string name="select_all">Select all</string>
+
 </resources>

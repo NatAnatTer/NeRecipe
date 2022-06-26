@@ -35,7 +35,7 @@ class RecipeRepositoryImpl(
 
     override fun getStepsByRecipeId(recipeId: Long): List<Steps> = dao.getStepsByRecipeId(recipeId).map{it.toModel()}
 
-    override fun getRecipeById(recipeI: Long): Recipe = dao.getRecipeById(recipeI).toModel()
+    override fun getRecipeById(recipeI: Long): Recipe? = dao.getRecipeById(recipeI)?.toModel()
 
     override fun getAllCategory(): List<CategoryOfRecipe> = dao.getAllCategory().map { it.toModel() }
 
