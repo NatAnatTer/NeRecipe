@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -77,10 +76,10 @@ class FeedFragment : Fragment() {
             }
         }
 
-//        viewModel.navigateToFilter.observe(this) {
-//            val direction = FeedFragmentDirections.toFilterFragment()
-//            findNavController().navigate(direction)
-//        }
+        viewModel.navigateToFilter.observe(this){
+            val direction = FeedFragmentDirections.toFilterFragment()
+            findNavController().navigate(direction)
+        }
 
     }
 
@@ -97,18 +96,23 @@ class FeedFragment : Fragment() {
                 mapper.readValue(newRecipeContentString, RecipeWithInfo::class.java)
             viewModel.onSaveButtonClicked(newRecipeContent)
         }
+
+        val mapperFilter = ObjectMapper().registerKotlinModule()
+        
+        setFragmentResultListener(requestKey = FilterFragment.REQUEST_KEY) { requestKey, bundle ->
+            if (requestKey != FilterFragment.REQUEST_KEY) return@setFragmentResultListener
+            val newCategoryListString =
+                bundle.getString(FilterFragment.RESULT_KEY)
+                    ?: return@setFragmentResultListener
+            val newCategoryList =
+                mapperFilter.readValue(newCategoryListString, CategoryOfRecipe::class.java)
+
+            onFilterClicked(listOf(newCategoryList))
+
+
+        }
+
     }
-
-    private fun onFilterButtonClickedTransformData(categoryToFilter: List<CategoryOfRecipe>) {
-        val resultBundle = Bundle(2)
-        val contentNew = ObjectMapper().writeValueAsString(categoryToFilter)
-        resultBundle.putString(RESULT_KEY, contentNew)
-        setFragmentResult(REQUEST_KEY, resultBundle)
-        val direction = FeedFragmentDirections.toFilterFragment()
-        findNavController().navigate(direction)
-    }
-
-
 
 
     override fun onCreateView(
@@ -116,7 +120,6 @@ class FeedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = FeedFragmentBinding.inflate(layoutInflater, container, false).also { binding ->
-        val categoryOfRecipeToFilter: List<CategoryOfRecipe> = viewModel.getAllCategory()
 
         val adapter = RecipeAdapter(viewModel)
         binding.recipeListRecyclerView.adapter = adapter
@@ -126,8 +129,6 @@ class FeedFragment : Fragment() {
             adapter.submitList(recipe)
         }
         binding.searchBar.visibility = View.GONE
-
-
 
         fun setUpSearchView() {
             binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -148,12 +149,9 @@ class FeedFragment : Fragment() {
                             false
                     }
                     adapter.submitList(ls)
-
                     return true
                 }
-
             })
-
         }
 
         fun onFavoriteClicked() {
@@ -178,7 +176,21 @@ class FeedFragment : Fragment() {
             }
         }
 
-
+        //!!!!!!!!!!!!!!!!!!!!!!!
+//        fun onFilterClicked(filteredList: List<CategoryOfRecipe>?) {
+//            var newListRecipe: List<RecipeWithInfo>?
+//            viewModel.data.observe(viewLifecycleOwner) {
+//                if (filteredList != null) {
+//                    newListRecipe = viewModel.data.value?.filter {
+//                        filteredList.contains(it.category)
+//                    }
+//                } else newListRecipe = viewModel.data.value
+//
+//
+//                adapter.submitList(newListRecipe)
+//
+//            }
+//        }
 
 
         binding.bottomNavigation.setOnItemSelectedListener { item ->
@@ -202,7 +214,7 @@ class FeedFragment : Fragment() {
                 }
                 R.id.filter_recipe -> {
                     viewModel.onFilterButtonClicked()
-                    onFilterButtonClickedTransformData(categoryOfRecipeToFilter)
+                    //  onFilterButtonClickedTransformData(categoryOfRecipeToFilter)
                     true
                 }
                 else -> false
@@ -211,6 +223,22 @@ class FeedFragment : Fragment() {
 
 
     }.root
+
+    private fun onFilterClicked(filteredList: List<CategoryOfRecipe>?) {
+        var newListRecipe: List<RecipeWithInfo>?
+        val adapter = RecipeAdapter(viewModel)
+        viewModel.data.observe(viewLifecycleOwner) {
+            newListRecipe = if (filteredList != null) {
+                viewModel.data.value?.filter {
+                    filteredList.contains(it.category)
+                }
+            } else viewModel.data.value
+
+
+            adapter.submitList(newListRecipe)
+
+        }
+    }
 
     companion object {
         const val RESULT_KEY = "CategoryFilter"

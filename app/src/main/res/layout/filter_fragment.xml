@@ -44,9 +44,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categoryListRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        
         app:layout_constraintTop_toBottomOf="@id/cb_select_all"
         tools:listitem="@layout/check_box_list_item">
 

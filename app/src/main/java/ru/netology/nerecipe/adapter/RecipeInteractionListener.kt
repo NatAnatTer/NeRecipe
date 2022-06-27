@@ -16,4 +16,6 @@ interface RecipeInteractionListener {
 
     fun getCheckedCategory(): List<CategoryOfRecipe>?
     fun onFilterCheckBoxClicked(categoryRecipe: CategoryOfRecipe, flag: Boolean)
+    fun checkedAllCategory(flag: Boolean)
+
 }

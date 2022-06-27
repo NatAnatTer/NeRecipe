@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -25,25 +26,26 @@ class FilterFragment : Fragment() {
         savedInstanceState: Bundle?
     ) = FilterFragmentBinding.inflate(inflater, container, false)
         .also { binding ->
-
-            val allCategory = viewModel.getAllCategory()
-            var checkedCategory: List<CategoryOfRecipe>? =
-                null //TODO класть данные из json from feedFragment
-
-            if (checkedCategory != null) {
-                binding.cbSelectAll.isChecked = allCategory.size == checkedCategory.size + 1
-            } else {
-                binding.cbSelectAll.isChecked = true
-                checkedCategory = allCategory
-            }
-
-
-            val adapter = FilterAdapter(viewModel)
+            var flag = true
+            binding.cbSelectAll.isChecked = flag
+            val adapter = FilterAdapter(viewModel, flag)
             binding.categoryListRecyclerView.adapter = adapter
             viewModel.allCategoryOfRecipe.observe(viewLifecycleOwner) {
                 adapter.submitList(it)
-                //  adapter.setCheckedCategoryList(checkedCategory)
             }
+
+            binding.cbSelectAll.setOnClickListener {
+                flag = binding.cbSelectAll.isChecked
+                val adapter = FilterAdapter(viewModel, flag)
+                binding.categoryListRecyclerView.adapter = adapter
+                viewModel.allCategoryOfRecipe.observe(viewLifecycleOwner) {
+                    adapter.submitList(it)
+                }
+                viewModel.checkedAllCategory(flag)
+            }
+
+
+
             binding.bottomNavigationApplyFilter.setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.back -> {
@@ -51,6 +53,7 @@ class FilterFragment : Fragment() {
                         true
                     }
                     R.id.apply_filter -> {
+                        viewModel.getCheckedCategory()?.let { filteredList(it) }
                         //TODO
                         true
                     }
@@ -60,27 +63,36 @@ class FilterFragment : Fragment() {
 
         }.root
 
-    override fun onResume() {
-        super.onResume()
+//    override fun onResume() {
+//        super.onResume()
+//
+//        val mapper = ObjectMapper().registerKotlinModule()
+//
+//        setFragmentResultListener(requestKey = FeedFragment.REQUEST_KEY) { requestKey, bundle ->
+//            if (requestKey != FeedFragment.REQUEST_KEY) return@setFragmentResultListener
+//            val newCategoryListString =
+//                bundle.getString(FeedFragment.RESULT_KEY)
+//                    ?: return@setFragmentResultListener
+//            val newCategoryList =
+//                mapper.readValue(newCategoryListString, CategoryOfRecipe::class.java)
+//
+//            viewModel.setCheckedCategory(listOf(newCategoryList))
+//        }
+//
+//    }
 
-        val mapper = ObjectMapper().registerKotlinModule()
+    private fun filteredList(categoryToFilter: List<CategoryOfRecipe>) {
+        val resultBundle = Bundle(2)
+        val contentNew = ObjectMapper().writeValueAsString(categoryToFilter)
+        resultBundle.putString(RESULT_KEY, contentNew)
+        setFragmentResult(REQUEST_KEY, resultBundle)
 
-        setFragmentResultListener(requestKey = FeedFragment.REQUEST_KEY) { requestKey, bundle ->
-            if (requestKey != FeedFragment.REQUEST_KEY) return@setFragmentResultListener
-            val newCategoryListString =
-                bundle.getString(FeedFragment.RESULT_KEY)
-                    ?: return@setFragmentResultListener
-            val newCategoryList =
-                mapper.readValue(newCategoryListString, CategoryOfRecipe::class.java)
-
-            viewModel.setFilteredCategory(listOf(newCategoryList))
-        }
-
+        findNavController().popBackStack()
     }
 
     companion object {
-        const val RESULT_FILTER_KEY = "CategoryFilter"
-        const val REQUEST_KEY = "requestKey"
+        const val RESULT_KEY = "CategoryFilter"
+        const val REQUEST_KEY = "requestKeyFilter"
 
     }
 }
