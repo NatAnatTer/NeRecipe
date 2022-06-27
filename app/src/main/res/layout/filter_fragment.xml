@@ -41,6 +41,28 @@
         tools:ignore="MissingConstraints"
         android:text="@string/select_all" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categoryListRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_apply_filter"
+        app:layout_constraintTop_toBottomOf="@id/cb_select_all"
+        tools:listitem="@layout/check_box_list_item">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation_apply_filter"
+        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:menu="@menu/filter_nenu"
+        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

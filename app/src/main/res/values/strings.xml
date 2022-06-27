@@ -24,5 +24,6 @@
     <string name="save_step">Save step</string>
     <string name="title_add_edit_recipe">Create/edit</string>
     <string name="select_all">Select all</string>
+    <string name="apply" >Apply</string>
 
 </resources>

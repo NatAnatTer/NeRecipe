@@ -24,7 +24,6 @@ internal class RecipeStepsAdapter(
         return ViewHolderSteps(binding, interactionListener)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolderSteps, position: Int) {
         holder.bind(getItem(position))
     }
@@ -35,15 +34,13 @@ internal class RecipeStepsAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var steps: Steps
-
-
         fun bind(steps: Steps) {
             this.steps = steps
             with(binding) {
                 numberOfStep.text = steps.numberOfStep.toString()
                 descriptionOfStep.text = steps.contentOfStep
                 if (steps.imageUrl == null || steps.imageUrl == "") {
-                    imageOfStep.visibility = View.GONE //TODO not working
+                    imageOfStep.visibility = View.GONE
                 } else {
                     Picasso.with(imageOfStep.context)
                         .load(steps.imageUrl)
@@ -52,6 +49,7 @@ internal class RecipeStepsAdapter(
                         .into(imageOfStep, object : Callback {
                             override fun onSuccess() {
                             }
+
                             override fun onError() {
                                 Toast.makeText(
                                     imageOfStep.context,
@@ -60,15 +58,12 @@ internal class RecipeStepsAdapter(
                                 ).show()
                             }
                         })
-
                 }
                 nameOfStep.setOnClickListener { listener.onStepClicked(steps) }
                 numberOfStep.setOnClickListener { listener.onStepClicked(steps) }
                 descriptionOfStep.setOnClickListener { listener.onStepClicked(steps) }
                 imageOfStep.setOnClickListener { listener.onStepClicked(steps) }
-
             }
-
         }
     }
 

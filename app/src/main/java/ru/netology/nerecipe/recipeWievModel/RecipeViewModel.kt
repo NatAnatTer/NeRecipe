@@ -29,6 +29,13 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
      val currentStep = MutableLiveData<Steps?>(null)
     val currentSteps = MutableLiveData<List<Steps>?>(null)
 
+ //   val filteredCategory = MutableLiveData<List<CategoryOfRecipe?>>(null)
+
+//    override fun onFilterCheckBoxClicked(categoryRecipe: CategoryOfRecipe){
+//
+//        filteredCategory.value = filteredCategory.value?.plus(categoryRecipe)?: listOf(categoryRecipe)
+//    }
+
 
     override fun onFavoriteClicked(recipe: Recipe) {
         repository.favoritesByMe(recipe.recipeId)
