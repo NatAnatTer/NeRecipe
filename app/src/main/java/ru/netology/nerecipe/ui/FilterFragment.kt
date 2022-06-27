@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import ru.netology.nerecipe.R
 import ru.netology.nerecipe.adapter.FilterAdapter
 import ru.netology.nerecipe.databinding.FilterFragmentBinding
@@ -58,32 +61,27 @@ class FilterFragment : Fragment() {
 
         }.root
 
+    override fun onResume() {
+        super.onResume()
 
+        val mapper = ObjectMapper().registerKotlinModule()
+
+        setFragmentResultListener(requestKey = FeedFragment.REQUEST_KEY) { requestKey, bundle ->
+            if (requestKey != RecipeChangeContentFragment.REQUEST_KEY) return@setFragmentResultListener
+            val newRecipeContentString =
+                bundle.getString(RecipeChangeContentFragment.RESULT_KEY)
+                    ?: return@setFragmentResultListener
+            val newRecipeContent =
+                mapper.readValue(newRecipeContentString, RecipeWithInfo::class.java)
+
+            viewModel.onSaveButtonClicked(newRecipeContent)
+        }
+
+    }
 }
 
-//
-//class RecipeShowDetailFragmentExample : Fragment() {
-//    private val args by navArgs<RecipeShowDetailFragmentArgs>()
-//    private val viewModel by viewModels<RecipeViewModel>(ownerProducer = ::requireParentFragment)
-//
-//
-//    override fun onResume() {
-//        super.onResume()
-//
-//        val mapper = ObjectMapper().registerKotlinModule()
-//
-//        setFragmentResultListener(requestKey = RecipeChangeContentFragment.REQUEST_KEY) { requestKey, bundle ->
-//            if (requestKey != RecipeChangeContentFragment.REQUEST_KEY) return@setFragmentResultListener
-//            val newRecipeContentString =
-//                bundle.getString(RecipeChangeContentFragment.RESULT_KEY)
-//                    ?: return@setFragmentResultListener
-//            val newRecipeContent =
-//                mapper.readValue(newRecipeContentString, RecipeWithInfo::class.java)
-//
-//            viewModel.onSaveButtonClicked(newRecipeContent)
-//        }
-//
-//    }
+
+
 //
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)

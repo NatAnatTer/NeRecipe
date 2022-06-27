@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -76,10 +77,10 @@ class FeedFragment : Fragment() {
             }
         }
 
-        viewModel.navigateToFilter.observe(this){
-            val direction = FeedFragmentDirections.toFilterFragment()
-            findNavController().navigate(direction)
-        }
+//        viewModel.navigateToFilter.observe(this) {
+//            val direction = FeedFragmentDirections.toFilterFragment()
+//            findNavController().navigate(direction)
+//        }
 
     }
 
@@ -98,17 +99,28 @@ class FeedFragment : Fragment() {
         }
     }
 
+    private fun onFilterButtonClickedTransformData(categoryToFilter: List<CategoryOfRecipe>) {
+        val resultBundle = Bundle(2)
+        val contentNew = ObjectMapper().writeValueAsString(categoryToFilter)
+        resultBundle.putString(RecipeChangeContentFragment.RESULT_KEY, contentNew)
+        setFragmentResult(RecipeChangeContentFragment.REQUEST_KEY, resultBundle)
+        val direction = FeedFragmentDirections.toFilterFragment()
+        findNavController().navigate(direction)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = FeedFragmentBinding.inflate(layoutInflater, container, false).also { binding ->
+        val categoryOfRecipeToFilter: List<CategoryOfRecipe> = viewModel.getAllCategory()
 
         val adapter = RecipeAdapter(viewModel)
         binding.recipeListRecyclerView.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) { recipe ->
-           if(!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility = View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
+            if (!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility =
+                View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
             adapter.submitList(recipe)
         }
         binding.searchBar.visibility = View.GONE
@@ -150,13 +162,15 @@ class FeedFragment : Fragment() {
                     it.recipe.isFavorites
                 }
                 adapter.submitList(newListRecipe)
-                if(newListRecipe.isNullOrEmpty()) binding.emptyStatesImage.visibility = View.VISIBLE else binding.emptyStatesImage.visibility = View.GONE
+                if (newListRecipe.isNullOrEmpty()) binding.emptyStatesImage.visibility =
+                    View.VISIBLE else binding.emptyStatesImage.visibility = View.GONE
             }
         }
 
-        fun onRecipeListClicked(){
+        fun onRecipeListClicked() {
             viewModel.data.observe(viewLifecycleOwner) {
-                if(viewModel.data.value.isNullOrEmpty()) binding.emptyStatesImage.visibility = View.VISIBLE else binding.emptyStatesImage.visibility = View.GONE
+                if (viewModel.data.value.isNullOrEmpty()) binding.emptyStatesImage.visibility =
+                    View.VISIBLE else binding.emptyStatesImage.visibility = View.GONE
                 adapter.submitList(viewModel.data.value)
 
             }
@@ -185,7 +199,8 @@ class FeedFragment : Fragment() {
                     true
                 }
                 R.id.filter_recipe -> {
-                    // Respond to navigation item 2 click
+                  //  viewModel.onFilterButtonClicked()
+                    onFilterButtonClickedTransformData(categoryOfRecipeToFilter)
                     true
                 }
                 else -> false
