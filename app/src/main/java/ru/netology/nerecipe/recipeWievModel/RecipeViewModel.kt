@@ -30,7 +30,11 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
      val currentStep = MutableLiveData<Steps?>(null)
     val currentSteps = MutableLiveData<List<Steps>?>(null)
 
- //   val filteredCategory = MutableLiveData<List<CategoryOfRecipe?>>(null)
+    val filteredCategory = MutableLiveData<List<CategoryOfRecipe>?>(null)
+
+    fun setFilteredCategory(filteredList: List<CategoryOfRecipe>){
+        filteredCategory.value = filteredList
+    }
 
 //    override fun onFilterCheckBoxClicked(categoryRecipe: CategoryOfRecipe){
 //

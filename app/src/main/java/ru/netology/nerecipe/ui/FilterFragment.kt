@@ -67,15 +67,20 @@ class FilterFragment : Fragment() {
         val mapper = ObjectMapper().registerKotlinModule()
 
         setFragmentResultListener(requestKey = FeedFragment.REQUEST_KEY) { requestKey, bundle ->
-            if (requestKey != RecipeChangeContentFragment.REQUEST_KEY) return@setFragmentResultListener
-            val newRecipeContentString =
-                bundle.getString(RecipeChangeContentFragment.RESULT_KEY)
+            if (requestKey != FeedFragment.REQUEST_KEY) return@setFragmentResultListener
+            val newCategoryListString =
+                bundle.getString(FeedFragment.RESULT_KEY)
                     ?: return@setFragmentResultListener
-            val newRecipeContent = //TODO
-                mapper.readValue(newRecipeContentString, CategoryOfRecipe::class.java)
+            val newCategoryList =
+                mapper.readValue(newCategoryListString, CategoryOfRecipe::class.java)
 
-          //  viewModel.onSaveButtonClicked(newRecipeContent)
+            viewModel.setFilteredCategory(listOf(newCategoryList))
         }
+
+    }
+    companion object {
+        const val RESULT_FILTER_KEY = "CategoryFilter"
+        const val REQUEST_KEY = "requestKey"
 
     }
 }

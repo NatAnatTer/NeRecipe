@@ -102,11 +102,13 @@ class FeedFragment : Fragment() {
     private fun onFilterButtonClickedTransformData(categoryToFilter: List<CategoryOfRecipe>) {
         val resultBundle = Bundle(2)
         val contentNew = ObjectMapper().writeValueAsString(categoryToFilter)
-        resultBundle.putString(RecipeChangeContentFragment.RESULT_KEY, contentNew)
-        setFragmentResult(RecipeChangeContentFragment.REQUEST_KEY, resultBundle)
+        resultBundle.putString(RESULT_KEY, contentNew)
+        setFragmentResult(REQUEST_KEY, resultBundle)
         val direction = FeedFragmentDirections.toFilterFragment()
         findNavController().navigate(direction)
     }
+
+
 
 
     override fun onCreateView(
@@ -207,14 +209,11 @@ class FeedFragment : Fragment() {
             }
         }
 
-//        binding.fab.setOnClickListener {
-//            viewModel.onAddButtonClicked()
-//        }
 
     }.root
 
     companion object {
-        const val RESULT_KEY = "recipeNewContent"
+        const val RESULT_KEY = "CategoryFilter"
         const val REQUEST_KEY = "requestKey"
 
     }
