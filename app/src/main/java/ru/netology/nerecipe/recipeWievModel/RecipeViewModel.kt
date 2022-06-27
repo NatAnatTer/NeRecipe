@@ -4,15 +4,15 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nerecipe.adapter.RecipeInteractionListener
+import ru.netology.nerecipe.data.RecipeRepository
+import ru.netology.nerecipe.data.RecipeRepository.Companion.NEW_RECIPE_ID
 import ru.netology.nerecipe.data.RecipeRepositoryImpl
 import ru.netology.nerecipe.db.AppDb
 import ru.netology.nerecipe.dto.CategoryOfRecipe
 import ru.netology.nerecipe.dto.Recipe
+import ru.netology.nerecipe.dto.RecipeWithInfo
 import ru.netology.nerecipe.dto.Steps
 import ru.netology.nerecipe.util.SingleLiveEvent
-import ru.netology.nerecipe.data.RecipeRepository
-import ru.netology.nerecipe.data.RecipeRepository.Companion.NEW_RECIPE_ID
-import ru.netology.nerecipe.dto.RecipeWithInfo
 
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application),
@@ -27,23 +27,35 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     val navigateToShowRecipe = SingleLiveEvent<Long>()
     val navigateToFilter = SingleLiveEvent<Unit>() //TODO typeOfData
 
-     val currentStep = MutableLiveData<Steps?>(null)
+    val currentStep = MutableLiveData<Steps?>(null)
     val currentSteps = MutableLiveData<List<Steps>?>(null)
 
     val filteredCategory = MutableLiveData<List<CategoryOfRecipe>?>(null)
+    val allCategoryOfRecipe = MutableLiveData<List<CategoryOfRecipe>>(null)
 
-    fun setFilteredCategory(filteredList: List<CategoryOfRecipe>){
+//    fun getAllCategoryOfRecipe(){
+//        allCategoryOfRecipe.value = repository.getAllCategory()
+//    }
+
+    fun setFilteredCategory(filteredList: List<CategoryOfRecipe>) {
         filteredCategory.value = filteredList
     }
 
-//    override fun onFilterCheckBoxClicked(categoryRecipe: CategoryOfRecipe){
-//
-//        filteredCategory.value = filteredCategory.value?.plus(categoryRecipe)?: listOf(categoryRecipe)
-//    }
+    override fun getCheckedCategory() = filteredCategory.value
 
-  override fun onFilterButtonClicked(){
-      navigateToFilter.call()
-  }
+
+    override fun onFilterCheckBoxClicked(categoryRecipe: CategoryOfRecipe, flag: Boolean) {
+        if (flag) {
+            filteredCategory.value =
+                filteredCategory.value?.plus(categoryRecipe) ?: listOf(categoryRecipe)
+        } else filteredCategory.value =
+            filteredCategory.value?.filter { it.categoryId != categoryRecipe.categoryId }
+    }
+
+    override fun onFilterButtonClicked() {
+      //  navigateToFilter.call()
+        allCategoryOfRecipe.value = repository.getAllCategory()
+    }
 
     override fun onFavoriteClicked(recipe: Recipe) {
         repository.favoritesByMe(recipe.recipeId)
@@ -99,16 +111,18 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
             authorName = newRecipeContent.recipe.authorName,
             isFavorites = false
         )
-         val recipeNewId = repository.save(newRecipe)
+        val recipeNewId = repository.save(newRecipe)
         newRecipeContent.steps.forEach {
 
-              repository.saveSteps(Steps(
-                  stepId = 0L,
-                  numberOfStep = it.numberOfStep,
-                  contentOfStep = it.contentOfStep,
-                  recipeId = recipeNewId,
-                  imageUrl = it.imageUrl
-              ))
+            repository.saveSteps(
+                Steps(
+                    stepId = 0L,
+                    numberOfStep = it.numberOfStep,
+                    contentOfStep = it.contentOfStep,
+                    recipeId = recipeNewId,
+                    imageUrl = it.imageUrl
+                )
+            )
 
         }
         currentRecipe.value = null

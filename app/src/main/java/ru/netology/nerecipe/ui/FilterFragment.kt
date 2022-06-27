@@ -38,12 +38,11 @@ class FilterFragment : Fragment() {
             }
 
 
-            val adapter = FilterAdapter(checkedCategory)
+            val adapter = FilterAdapter(viewModel)
             binding.categoryListRecyclerView.adapter = adapter
-            viewModel.data.observe(viewLifecycleOwner) {
-                val categoryList = viewModel.getAllCategory()
-                adapter.submitList(categoryList)
-                adapter.setCheckedCategoryList(checkedCategory)
+            viewModel.allCategoryOfRecipe.observe(viewLifecycleOwner) {
+                adapter.submitList(it)
+                //  adapter.setCheckedCategoryList(checkedCategory)
             }
             binding.bottomNavigationApplyFilter.setOnItemSelectedListener { item ->
                 when (item.itemId) {
@@ -78,13 +77,13 @@ class FilterFragment : Fragment() {
         }
 
     }
+
     companion object {
         const val RESULT_FILTER_KEY = "CategoryFilter"
         const val REQUEST_KEY = "requestKey"
 
     }
 }
-
 
 
 //

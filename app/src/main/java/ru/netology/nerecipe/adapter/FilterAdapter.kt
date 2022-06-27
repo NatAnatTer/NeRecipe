@@ -10,9 +10,9 @@ import ru.netology.nerecipe.dto.CategoryOfRecipe
 
 
 internal class FilterAdapter(
-    private var checkedCategory: List<CategoryOfRecipe>?
-) :
-    ListAdapter<CategoryOfRecipe, FilterAdapter.ViewHolderCategory>(DiffCallBack) {
+  //  private var checkedCategory: List<CategoryOfRecipe>?
+    private val interactionListener: RecipeInteractionListener
+) : ListAdapter<CategoryOfRecipe, FilterAdapter.ViewHolderCategory>(DiffCallBack) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -20,7 +20,7 @@ internal class FilterAdapter(
     ): ViewHolderCategory {
         val inflater = LayoutInflater.from(parent.context)
         val binding = CheckBoxListItemBinding.inflate(inflater, parent, false)
-        return ViewHolderCategory(binding, checkedCategory)//, checkedCategory)
+        return ViewHolderCategory(binding, interactionListener)//, checkedCategory)
     }
 
     override fun onBindViewHolder(holder: ViewHolderCategory, position: Int) {
@@ -31,22 +31,26 @@ internal class FilterAdapter(
 
     class ViewHolderCategory(
         private val binding: CheckBoxListItemBinding,
-          checkedCategory: List<CategoryOfRecipe>?
+        private val listener: RecipeInteractionListener
+        //  checkedCategory: List<CategoryOfRecipe>?
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        private var checkedCategoryNewList = checkedCategory
+        private var checkedCategoryNewList = listener.getCheckedCategory() //checkedCategory
 
         private lateinit var categoryOfRecipe: CategoryOfRecipe
         fun bind(categoryOfRecipe: CategoryOfRecipe) {
             this.categoryOfRecipe = categoryOfRecipe
 
-            if (categoryOfRecipe.categoryId != 0L) {
-                binding.categoryToSelect.text = categoryOfRecipe.categoryName
+            if (categoryOfRecipe.categoryId != 1L) {
 
-                binding.cbSelectCategory.isChecked =
+                binding.cbSelectCategory.isChecked = false
                     checkedCategoryNewList?.contains(categoryOfRecipe) ?: false
 
-            } else return
+                binding.categoryToSelect.text = categoryOfRecipe.categoryName
+
+
+
+            }
 
             binding.categoryToSelect.setOnClickListener {
                 binding.cbSelectCategory.isChecked =
@@ -73,6 +77,8 @@ internal class FilterAdapter(
                         }
                         else -> false
                     }
+
+
             }
 
 
@@ -103,10 +109,10 @@ internal class FilterAdapter(
             }
         }
     }
-    fun setCheckedCategoryList(categoryList: List<CategoryOfRecipe>?): List<CategoryOfRecipe>? {
-        checkedCategory = categoryList
-        return checkedCategory
-    }
+//    fun setCheckedCategoryList(categoryList: List<CategoryOfRecipe>?): List<CategoryOfRecipe>? {
+//        checkedCategory = categoryList
+//        return checkedCategory
+//    }
   }
 
 private object DiffCallBack : DiffUtil.ItemCallback<CategoryOfRecipe>() {

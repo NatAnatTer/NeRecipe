@@ -13,5 +13,7 @@ interface RecipeInteractionListener {
     fun onStepClicked(step: Steps)
     fun onAddButtonClicked()
     fun onFilterButtonClicked()
-  //  fun onFilterCheckBoxClicked(categoryRecipe: CategoryOfRecipe)
+
+    fun getCheckedCategory(): List<CategoryOfRecipe>?
+    fun onFilterCheckBoxClicked(categoryRecipe: CategoryOfRecipe, flag: Boolean)
 }

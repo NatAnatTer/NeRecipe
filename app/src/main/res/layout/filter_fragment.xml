@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:textAlignment="center"
         android:text="@string/select_category"
+        android:textAlignment="center"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,21 +33,20 @@
         android:id="@+id/select_all"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textSize="20sp"
         android:layout_margin="10dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/select_all"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@id/cb_select_all"
         app:layout_constraintTop_toTopOf="@id/cb_select_all"
-        tools:ignore="MissingConstraints"
-        android:text="@string/select_all" />
+        tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categoryListRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_apply_filter"
+        
         app:layout_constraintTop_toBottomOf="@id/cb_select_all"
         tools:listitem="@layout/check_box_list_item">
 

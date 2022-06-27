@@ -201,7 +201,7 @@ class FeedFragment : Fragment() {
                     true
                 }
                 R.id.filter_recipe -> {
-                  //  viewModel.onFilterButtonClicked()
+                    viewModel.onFilterButtonClicked()
                     onFilterButtonClickedTransformData(categoryOfRecipeToFilter)
                     true
                 }
