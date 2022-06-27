@@ -25,6 +25,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
 
     val navigateToRecipeChangeContentScreenEvent = SingleLiveEvent<Long>()
     val navigateToShowRecipe = SingleLiveEvent<Long>()
+    val navigateToFilter = SingleLiveEvent<Unit>() //TODO typeOfData
 
      val currentStep = MutableLiveData<Steps?>(null)
     val currentSteps = MutableLiveData<List<Steps>?>(null)
@@ -36,6 +37,9 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
 //        filteredCategory.value = filteredCategory.value?.plus(categoryRecipe)?: listOf(categoryRecipe)
 //    }
 
+  override fun onFilterButtonClicked(){
+      navigateToFilter.call()
+  }
 
     override fun onFavoriteClicked(recipe: Recipe) {
         repository.favoritesByMe(recipe.recipeId)

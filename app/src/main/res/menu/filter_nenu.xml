@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_arrow_back_24"
         android:title="@string/back"/>
     <item
-        android:id="@+id/save_recipe"
+        android:id="@+id/apply_filter"
         android:enabled="true"
         android:icon="@drawable/ic_done_24"
         android:title="@string/apply"/>

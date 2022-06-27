@@ -16,6 +16,9 @@
         <action
             android:id="@+id/to_change_content_fragment"
             app:destination="@id/recipe_change_content_fragment" />
+        <action
+            android:id="@+id/to_filterFragment"
+            app:destination="@id/filter_fragment" />
 
     </fragment>
     <fragment
@@ -39,13 +42,20 @@
         <argument
             android:name="idRecipe"
             app:argType="long"
-            app:nullable="false"/>
+            app:nullable="false" />
         <action
             android:id="@+id/to_feedFragment"
             app:destination="@id/feedFragment" />
         <action
             android:id="@+id/to_recipe_show_detail_fragment"
             app:destination="@id/recipe_show_detail_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/filter_fragment"
+        android:name="ru.netology.nerecipe.ui.FilterFragment">
+        <action
+            android:id="@+id/to_feedFragment"
+            app:destination="@id/feedFragment" />
     </fragment>
 
 </navigation>

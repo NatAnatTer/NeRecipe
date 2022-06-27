@@ -76,6 +76,11 @@ class FeedFragment : Fragment() {
             }
         }
 
+        viewModel.navigateToFilter.observe(this){
+            val direction = FeedFragmentDirections.toFilterFragment()
+            findNavController().navigate(direction)
+        }
+
     }
 
     override fun onResume() {
