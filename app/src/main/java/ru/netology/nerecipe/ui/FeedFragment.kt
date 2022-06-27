@@ -212,4 +212,11 @@ class FeedFragment : Fragment() {
 //        }
 
     }.root
+
+    companion object {
+        const val RESULT_KEY = "recipeNewContent"
+        const val REQUEST_KEY = "requestKey"
+
+    }
+
 }

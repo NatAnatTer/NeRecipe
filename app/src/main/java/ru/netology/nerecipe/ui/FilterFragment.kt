@@ -71,10 +71,10 @@ class FilterFragment : Fragment() {
             val newRecipeContentString =
                 bundle.getString(RecipeChangeContentFragment.RESULT_KEY)
                     ?: return@setFragmentResultListener
-            val newRecipeContent =
-                mapper.readValue(newRecipeContentString, RecipeWithInfo::class.java)
+            val newRecipeContent = //TODO
+                mapper.readValue(newRecipeContentString, CategoryOfRecipe::class.java)
 
-            viewModel.onSaveButtonClicked(newRecipeContent)
+          //  viewModel.onSaveButtonClicked(newRecipeContent)
         }
 
     }
