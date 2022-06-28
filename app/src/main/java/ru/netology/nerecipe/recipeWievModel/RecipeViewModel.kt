@@ -3,7 +3,6 @@ package ru.netology.nerecipe.recipeWievModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import ru.netology.nerecipe.adapter.RecipeAdapter
 import ru.netology.nerecipe.adapter.RecipeInteractionListener
 import ru.netology.nerecipe.data.RecipeRepository
 import ru.netology.nerecipe.data.RecipeRepository.Companion.NEW_RECIPE_ID

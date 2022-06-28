@@ -45,8 +45,7 @@ class RecipeChangeContentFragment : Fragment() {
                 insertRecipeName.requestFocus()
                 authorName.text = currentRecipe?.authorName ?: "Me"
 
-
-                //ADAPTER:
+                //Adapter spinner:
                 val categoryList = viewModel.getAllCategory()
                 val categoryListString: List<String> = categoryList.map { it.categoryName }
 
@@ -55,14 +54,14 @@ class RecipeChangeContentFragment : Fragment() {
                         viewModel.getApplication(),
                         R.layout.simple_spinner_dropdown_item,
                         categoryListString
-                    ) //Create Adapter
+                    )
                 category.adapter = adapter
-                category.setSelection(currentCategory)  // выделяем элемент
+                category.setSelection(currentCategory)
 
 
                 category.onItemSelectedListener =
                     object :
-                        AdapterView.OnItemSelectedListener {    // устанавливаем обработчик нажатия
+                        AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(
                             parent: AdapterView<*>?,
                             view: View?,
@@ -125,10 +124,6 @@ class RecipeChangeContentFragment : Fragment() {
                     }
                 }
             }
-
-
-
-
             binding.bottomNavigationSaveContent.setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     ru.netology.nerecipe.R.id.back -> {
@@ -164,7 +159,7 @@ class RecipeChangeContentFragment : Fragment() {
         editedStep: Steps?,
         currentRecipe: Recipe?
     ) {
-        if(!validateSaveStep(binding))
+        if (!validateSaveStep(binding))
             return
         val newNumberStep =
             binding.recipeChangeContentFragmentInclude.addNumberOfStep.text.toString()
@@ -211,15 +206,16 @@ class RecipeChangeContentFragment : Fragment() {
         viewModel.currentStep.value = null
     }
 
-    private fun validateSaveStep(binding:RecipeChangeCreateFragmentBinding): Boolean {
+    private fun validateSaveStep(binding: RecipeChangeCreateFragmentBinding): Boolean {
 
-        if(binding.recipeChangeContentFragmentInclude.addNumberOfStep.text.toString() == ""){
+        if (binding.recipeChangeContentFragmentInclude.addNumberOfStep.text.toString() == "") {
             binding.recipeChangeContentFragmentInclude.addNumberOfStep.error = "Не задан номер шага"
             binding.recipeChangeContentFragmentInclude.addNumberOfStep.requestFocus()
             return false
         }
-        if (binding.recipeChangeContentFragmentInclude.addStepDescription.text.toString() == ""){
-            binding.recipeChangeContentFragmentInclude.addStepDescription.error = "Не задано описание шага"
+        if (binding.recipeChangeContentFragmentInclude.addStepDescription.text.toString() == "") {
+            binding.recipeChangeContentFragmentInclude.addStepDescription.error =
+                "Не задано описание шага"
             binding.recipeChangeContentFragmentInclude.addStepDescription.requestFocus()
             return false
         }
@@ -227,9 +223,9 @@ class RecipeChangeContentFragment : Fragment() {
     }
 
 
-    private fun validateRecipe (binding:RecipeChangeCreateFragmentBinding): Boolean {
-        if(viewModel.currentSteps.value.isNullOrEmpty()) {
-            val toast =  Toast.makeText(
+    private fun validateRecipe(binding: RecipeChangeCreateFragmentBinding): Boolean {
+        if (viewModel.currentSteps.value.isNullOrEmpty()) {
+            val toast = Toast.makeText(
                 viewModel.getApplication(),
                 "Отсутвует описание процесса приготовления",
                 LENGTH_SHORT
@@ -237,8 +233,9 @@ class RecipeChangeContentFragment : Fragment() {
             toast.show()
             return false
         }
-        if (binding.recipeChangeContentFragmentInclude.insertRecipeName.text.toString() == ""){
-            binding.recipeChangeContentFragmentInclude.insertRecipeName.error = "Не задано название рецепта"
+        if (binding.recipeChangeContentFragmentInclude.insertRecipeName.text.toString() == "") {
+            binding.recipeChangeContentFragmentInclude.insertRecipeName.error =
+                "Не задано название рецепта"
             binding.recipeChangeContentFragmentInclude.insertRecipeName.requestFocus()
             return false
         }
@@ -251,15 +248,38 @@ class RecipeChangeContentFragment : Fragment() {
         currentSteps: List<Steps>?,
         selectedCategory: CategoryOfRecipe
     ) {
-        if(!validateRecipe(binding))
+        if (!validateRecipe(binding))
             return
 
         val newRecipeDescription =
             binding.recipeChangeContentFragmentInclude.insertRecipeName.text.toString()
 
+        val recipe = newRecipe(currentRecipe, newRecipeDescription, selectedCategory)
 
-        val recipe: Recipe?
-        recipe = currentRecipe?.copy(
+        val resultRecipe: RecipeWithInfo
+        if (!currentSteps.isNullOrEmpty()) {
+            resultRecipe =
+                RecipeWithInfo(
+                    recipe,
+                    selectedCategory,
+                    currentSteps
+                )
+
+            putObjectIntoBundle(resultRecipe)
+
+            findNavController().popBackStack()
+            viewModel.currentStep.value = null
+            viewModel.currentSteps.value = null
+
+        } else return
+    }
+
+     fun newRecipe(
+        currentRecipe: Recipe?,
+        newRecipeDescription: String,
+        selectedCategory: CategoryOfRecipe
+    ) =
+        currentRecipe?.copy(
             recipeName = newRecipeDescription,
             categoryId = selectedCategory.categoryId,
         )
@@ -270,24 +290,12 @@ class RecipeChangeContentFragment : Fragment() {
                 authorName = "Me",
                 isFavorites = false
             )
-        val resultRecipe: RecipeWithInfo
-        if (!currentSteps.isNullOrEmpty()) {
-            resultRecipe =
-                RecipeWithInfo(
-                    recipe,
-                    selectedCategory,
-                    currentSteps
-                )
-            val resultBundle = Bundle(2)
-            val contentNew = ObjectMapper().writeValueAsString(resultRecipe)
-            resultBundle.putString(RESULT_KEY, contentNew)
-            setFragmentResult(REQUEST_KEY, resultBundle)
 
-
-            findNavController().popBackStack()
-            viewModel.currentStep.value = null
-            viewModel.currentSteps.value = null
-
-        } else return
+    private fun putObjectIntoBundle(resultRecipe: RecipeWithInfo) {
+        val resultBundle = Bundle(2)
+        val contentNew = ObjectMapper().writeValueAsString(resultRecipe)
+        resultBundle.putString(RESULT_KEY, contentNew)
+        setFragmentResult(REQUEST_KEY, resultBundle)
     }
+
 }
