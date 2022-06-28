@@ -10,15 +10,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import ru.netology.nerecipe.R
 import ru.netology.nerecipe.adapter.RecipeAdapter
+import ru.netology.nerecipe.adapter.helper.ItemTouchHelperAdapter
+import ru.netology.nerecipe.adapter.helper.SimpleItemTouchHelperCallback
 import ru.netology.nerecipe.databinding.FeedFragmentBinding
 import ru.netology.nerecipe.dto.CategoryOfRecipe
 import ru.netology.nerecipe.dto.RecipeWithInfo
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
+
 
 class FeedFragment : Fragment() {
 
@@ -138,43 +142,15 @@ class FeedFragment : Fragment() {
         binding.searchBar.visibility = View.GONE
 
 
-//
-//
-//        if (viewModel.filteredListOfRecipe.value.isNullOrEmpty()) {
-//            binding.recipeListRecyclerView.adapter = adapter
-//            viewModel.data.observe(viewLifecycleOwner) { recipe ->
-//                if (!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility =
-//                    View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
-//                adapter.submitList(recipe)
-//            }
-//            binding.searchBar.visibility = View.GONE
-//        } else {
-//            binding.recipeListRecyclerView.adapter = adapter
-//            viewModel.filteredListOfRecipe.observe(viewLifecycleOwner) { recipe ->
-//                if (!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility =
-//                    View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
-//                adapter.submitList(recipe)
-//            }
-//            binding.searchBar.visibility = View.GONE
-//        }
+        val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(adapter)
+        val mItemTouchHelper = ItemTouchHelper(callback)
+        mItemTouchHelper.attachToRecyclerView(binding.recipeListRecyclerView)
+      //  ====drug and drop
+//        val callback: ItemTouchHelper.Callback =  SimpleItemTouchHelperCallback(ItemTouchHelperAdapter)
+//        val touchHelper = ItemTouchHelper(callback)
+//        touchHelper.attachToRecyclerView(binding.recipeListRecyclerView)
 
 
-//        binding.recipeListRecyclerView.adapter = adapter
-//        viewModel.filteredListOfRecipe.observe(viewLifecycleOwner) { recipe ->
-//            if (!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility =
-//                View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
-//            adapter.submitList(recipe)
-//        }
-//        binding.searchBar.visibility = View.GONE
-
-
-//        binding.recipeListRecyclerView.adapter = adapter
-//        viewModel.data.observe(viewLifecycleOwner) { recipe ->
-//            if (!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility =
-//                View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
-//            adapter.submitList(recipe)
-//        }
-//        binding.searchBar.visibility = View.GONE
 
 
         fun setUpSearchView() {

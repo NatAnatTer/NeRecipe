@@ -2,12 +2,14 @@ package ru.netology.nerecipe.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.*
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import ru.netology.nerecipe.R
 import ru.netology.nerecipe.databinding.RecipeShowDetailFragmentBinding
 import ru.netology.nerecipe.recipeWievModel.RecipeViewModel
 import ru.netology.nerecipe.adapter.RecipeAdapter
@@ -58,14 +60,14 @@ class RecipeShowDetailFragment : Fragment() {
             savedInstanceState: Bundle?
         ) = RecipeShowDetailFragmentBinding.inflate(inflater, container, false)
             .also { binding ->
-
+                var recipeCurrent: RecipeWithInfo? = null
                 val viewHolder = RecipeAdapter.ViewHolder(binding.recipeContentDetail, viewModel)
                 viewModel.data.observe(viewLifecycleOwner) { recipe ->
-                    val recipeCurrent = recipe.find { it.recipe.recipeId == args.initialContent } ?: run {
+                     recipeCurrent = recipe.find { it.recipe.recipeId == args.initialContent } ?: run {
                         findNavController().navigateUp() // the post was deleted, close the fragment
                         return@observe
                     }
-                    viewHolder.bind(recipeCurrent)
+                    viewHolder.bind(recipeCurrent!!)
                 }
 
                 val adapter = RecipeStepsAdapter(viewModel)
@@ -75,6 +77,28 @@ class RecipeShowDetailFragment : Fragment() {
                     adapter.submitList(stepsOfRecipe)
                 }
 
+                binding.bottomNavigationShowContent.setOnItemSelectedListener { item ->
+                    when (item.itemId) {
+                        R.id.back -> {
+                            findNavController().popBackStack()
+                            true
+                        }
+                        R.id.favorites_button -> {
+                            recipeCurrent?.let { viewModel.onFavoriteClicked(it.recipe) }
+                            true
+                        }
+                        R.id.edit_recipe -> {
+                            recipeCurrent?.let { viewModel.onEditClicked(it.recipe) }
+                            true
+                        }
+                        R.id.remove_recipe -> {
+                            recipeCurrent?.let { viewModel.onRemoveClicked(it.recipe) }
+                            true
+                        }
+
+                        else -> false
+                    }
+                }
 
             }.root
 }
