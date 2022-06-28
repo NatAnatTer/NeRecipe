@@ -62,9 +62,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     }
 
 
-//    fun setCheckedCategory(filteredList: List<CategoryOfRecipe>) {
-//        checkedCategory.value = filteredList
-//    }
+
 
     override fun getCheckedCategory() = checkedCategory.value
 
