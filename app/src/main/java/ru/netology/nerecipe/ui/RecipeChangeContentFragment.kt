@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
@@ -231,7 +232,7 @@ class RecipeChangeContentFragment : Fragment() {
             val toast =  Toast.makeText(
                 viewModel.getApplication(),
                 "Отсутвует описание процесса приготовления",
-                10
+                LENGTH_SHORT
             )
             toast.show()
             return false
