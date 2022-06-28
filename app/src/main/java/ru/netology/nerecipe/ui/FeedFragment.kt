@@ -11,6 +11,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import ru.netology.nerecipe.R
 import ru.netology.nerecipe.adapter.RecipeAdapter
@@ -76,7 +77,7 @@ class FeedFragment : Fragment() {
             }
         }
 
-        viewModel.navigateToFilter.observe(this){
+        viewModel.navigateToFilter.observe(this) {
             val direction = FeedFragmentDirections.toFilterFragment()
             findNavController().navigate(direction)
         }
@@ -98,20 +99,17 @@ class FeedFragment : Fragment() {
         }
 
         val mapperFilter = ObjectMapper().registerKotlinModule()
-        
+
         setFragmentResultListener(requestKey = FilterFragment.REQUEST_KEY) { requestKey, bundle ->
             if (requestKey != FilterFragment.REQUEST_KEY) return@setFragmentResultListener
             val newCategoryListString =
                 bundle.getString(FilterFragment.RESULT_KEY)
                     ?: return@setFragmentResultListener
             val newCategoryList =
-                mapperFilter.readValue(newCategoryListString, CategoryOfRecipe::class.java)
+                mapperFilter.readValue<List<CategoryOfRecipe>>(newCategoryListString)
 
-            onFilterClicked(listOf(newCategoryList))
-
-
+            viewModel.onFilterClicked(newCategoryList)
         }
-
     }
 
 
@@ -120,15 +118,64 @@ class FeedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = FeedFragmentBinding.inflate(layoutInflater, container, false).also { binding ->
-
         val adapter = RecipeAdapter(viewModel)
+
         binding.recipeListRecyclerView.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) { recipe ->
-            if (!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility =
-                View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
-            adapter.submitList(recipe)
+            viewModel.filteredListOfRecipe.observe(viewLifecycleOwner) { recipeFiltered ->
+                if (recipeFiltered.isNullOrEmpty()) {
+                    if (!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility =
+                        View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
+                    adapter.submitList(recipe)
+                } else {
+                    if (!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility =
+                        View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
+                    adapter.submitList(recipeFiltered)
+
+                }
+            }
         }
         binding.searchBar.visibility = View.GONE
+
+
+//
+//
+//        if (viewModel.filteredListOfRecipe.value.isNullOrEmpty()) {
+//            binding.recipeListRecyclerView.adapter = adapter
+//            viewModel.data.observe(viewLifecycleOwner) { recipe ->
+//                if (!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility =
+//                    View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
+//                adapter.submitList(recipe)
+//            }
+//            binding.searchBar.visibility = View.GONE
+//        } else {
+//            binding.recipeListRecyclerView.adapter = adapter
+//            viewModel.filteredListOfRecipe.observe(viewLifecycleOwner) { recipe ->
+//                if (!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility =
+//                    View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
+//                adapter.submitList(recipe)
+//            }
+//            binding.searchBar.visibility = View.GONE
+//        }
+
+
+//        binding.recipeListRecyclerView.adapter = adapter
+//        viewModel.filteredListOfRecipe.observe(viewLifecycleOwner) { recipe ->
+//            if (!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility =
+//                View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
+//            adapter.submitList(recipe)
+//        }
+//        binding.searchBar.visibility = View.GONE
+
+
+//        binding.recipeListRecyclerView.adapter = adapter
+//        viewModel.data.observe(viewLifecycleOwner) { recipe ->
+//            if (!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility =
+//                View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
+//            adapter.submitList(recipe)
+//        }
+//        binding.searchBar.visibility = View.GONE
+
 
         fun setUpSearchView() {
             binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -176,21 +223,6 @@ class FeedFragment : Fragment() {
             }
         }
 
-        //!!!!!!!!!!!!!!!!!!!!!!!
-//        fun onFilterClicked(filteredList: List<CategoryOfRecipe>?) {
-//            var newListRecipe: List<RecipeWithInfo>?
-//            viewModel.data.observe(viewLifecycleOwner) {
-//                if (filteredList != null) {
-//                    newListRecipe = viewModel.data.value?.filter {
-//                        filteredList.contains(it.category)
-//                    }
-//                } else newListRecipe = viewModel.data.value
-//
-//
-//                adapter.submitList(newListRecipe)
-//
-//            }
-//        }
 
 
         binding.bottomNavigation.setOnItemSelectedListener { item ->
@@ -220,8 +252,17 @@ class FeedFragment : Fragment() {
                 else -> false
             }
         }
-
-
+//         fun onFilterClicked(filteredList: List<CategoryOfRecipe>?) {
+//            var newListRecipe: List<RecipeWithInfo>?
+//            viewModel.data.observe(viewLifecycleOwner) {
+//                newListRecipe = if (filteredList != null) {
+//                    viewModel.data.value?.filter {
+//                        filteredList.contains(it.category)
+//                    }
+//                } else viewModel.data.value
+//                adapter.submitList(newListRecipe)
+//            }
+//        }
     }.root
 
     private fun onFilterClicked(filteredList: List<CategoryOfRecipe>?) {
@@ -233,17 +274,20 @@ class FeedFragment : Fragment() {
                     filteredList.contains(it.category)
                 }
             } else viewModel.data.value
-
-
             adapter.submitList(newListRecipe)
-
         }
     }
 
-    companion object {
-        const val RESULT_KEY = "CategoryFilter"
-        const val REQUEST_KEY = "requestKey"
-
-    }
-
+//    private fun onFilterClicked(filteredList: List<CategoryOfRecipe>?) {
+//        var newListRecipe: List<RecipeWithInfo>?
+//        val adapter = RecipeAdapter(viewModel)
+//        viewModel.data.observe(viewLifecycleOwner) {
+//            newListRecipe = if (filteredList != null) {
+//                viewModel.data.value?.filter {
+//                    filteredList.contains(it.category)
+//                }
+//            } else viewModel.data.value
+//            adapter.submitList(newListRecipe)
+//        }
+//    }
 }

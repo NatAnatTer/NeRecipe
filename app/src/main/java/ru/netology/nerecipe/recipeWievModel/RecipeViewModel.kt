@@ -3,6 +3,7 @@ package ru.netology.nerecipe.recipeWievModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import ru.netology.nerecipe.adapter.RecipeAdapter
 import ru.netology.nerecipe.adapter.RecipeInteractionListener
 import ru.netology.nerecipe.data.RecipeRepository
 import ru.netology.nerecipe.data.RecipeRepository.Companion.NEW_RECIPE_ID
@@ -29,6 +30,15 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
 
     val currentStep = MutableLiveData<Steps?>(null)
     val currentSteps = MutableLiveData<List<Steps>?>(null)
+
+    var filteredListOfRecipe = MutableLiveData<List<RecipeWithInfo>?>(null)
+    fun onFilterClicked(filteredList: List<CategoryOfRecipe>?){
+        filteredListOfRecipe.value = if(filteredList != null) {
+            data.value?.filter {
+                filteredList.contains(it.category)
+            }
+        } else null
+}
 
 
     private val checkedCategory = MutableLiveData<List<CategoryOfRecipe>?>(null)
@@ -57,7 +67,6 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
 //    }
 
     override fun getCheckedCategory() = checkedCategory.value
-
 
 
 
