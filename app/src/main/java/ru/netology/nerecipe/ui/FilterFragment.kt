@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import ru.netology.nerecipe.R
 import ru.netology.nerecipe.adapter.FilterAdapter
 import ru.netology.nerecipe.databinding.FilterFragmentBinding
@@ -36,15 +34,13 @@ class FilterFragment : Fragment() {
 
             binding.cbSelectAll.setOnClickListener {
                 flag = binding.cbSelectAll.isChecked
-                val adapter = FilterAdapter(viewModel, flag)
-                binding.categoryListRecyclerView.adapter = adapter
+                val adapterNew = FilterAdapter(viewModel, flag)
+                binding.categoryListRecyclerView.adapter = adapterNew
                 viewModel.allCategoryOfRecipe.observe(viewLifecycleOwner) {
-                    adapter.submitList(it)
+                    adapterNew.submitList(it)
                 }
                 viewModel.checkedAllCategory(flag)
             }
-
-
 
             binding.bottomNavigationApplyFilter.setOnItemSelectedListener { item ->
                 when (item.itemId) {
@@ -54,7 +50,6 @@ class FilterFragment : Fragment() {
                     }
                     R.id.apply_filter -> {
                         viewModel.getCheckedCategory()?.let { filteredList(it) }
-                        //TODO
                         true
                     }
                     else -> false
@@ -62,24 +57,6 @@ class FilterFragment : Fragment() {
             }
 
         }.root
-
-//    override fun onResume() {
-//        super.onResume()
-//
-//        val mapper = ObjectMapper().registerKotlinModule()
-//
-//        setFragmentResultListener(requestKey = FeedFragment.REQUEST_KEY) { requestKey, bundle ->
-//            if (requestKey != FeedFragment.REQUEST_KEY) return@setFragmentResultListener
-//            val newCategoryListString =
-//                bundle.getString(FeedFragment.RESULT_KEY)
-//                    ?: return@setFragmentResultListener
-//            val newCategoryList =
-//                mapper.readValue(newCategoryListString, CategoryOfRecipe::class.java)
-//
-//            viewModel.setCheckedCategory(listOf(newCategoryList))
-//        }
-//
-//    }
 
     private fun filteredList(categoryToFilter: List<CategoryOfRecipe>) {
         val resultBundle = Bundle(2)
@@ -96,21 +73,3 @@ class FilterFragment : Fragment() {
 
     }
 }
-
-
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        viewModel.navigateToRecipeChangeContentScreenEvent.observe(this) { recipeId ->
-//            val direction =
-//                recipeId?.let { RecipeShowDetailFragmentDirections.toChangeContentFragmet(it) }
-//            if (direction != null) {
-//                findNavController().navigate(direction)
-//            }
-//
-//        }
-//
-//
-//    }
-//}
