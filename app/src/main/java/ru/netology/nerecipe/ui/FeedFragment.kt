@@ -211,48 +211,14 @@ class FeedFragment : Fragment() {
                 }
                 R.id.filter_recipe -> {
                     viewModel.onFilterButtonClicked()
-                    //  onFilterButtonClickedTransformData(categoryOfRecipeToFilter)
                     true
                 }
                 else -> false
             }
         }
-//         fun onFilterClicked(filteredList: List<CategoryOfRecipe>?) {
-//            var newListRecipe: List<RecipeWithInfo>?
-//            viewModel.data.observe(viewLifecycleOwner) {
-//                newListRecipe = if (filteredList != null) {
-//                    viewModel.data.value?.filter {
-//                        filteredList.contains(it.category)
-//                    }
-//                } else viewModel.data.value
-//                adapter.submitList(newListRecipe)
-//            }
-//        }
+
     }.root
 
-    private fun onFilterClicked(filteredList: List<CategoryOfRecipe>?) {
-        var newListRecipe: List<RecipeWithInfo>?
-        val adapter = RecipeAdapter(viewModel)
-        viewModel.data.observe(viewLifecycleOwner) {
-            newListRecipe = if (filteredList != null) {
-                viewModel.data.value?.filter {
-                    filteredList.contains(it.category)
-                }
-            } else viewModel.data.value
-            adapter.submitList(newListRecipe)
-        }
-    }
 
-//    private fun onFilterClicked(filteredList: List<CategoryOfRecipe>?) {
-//        var newListRecipe: List<RecipeWithInfo>?
-//        val adapter = RecipeAdapter(viewModel)
-//        viewModel.data.observe(viewLifecycleOwner) {
-//            newListRecipe = if (filteredList != null) {
-//                viewModel.data.value?.filter {
-//                    filteredList.contains(it.category)
-//                }
-//            } else viewModel.data.value
-//            adapter.submitList(newListRecipe)
-//        }
-//    }
+
 }
