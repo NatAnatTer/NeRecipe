@@ -16,7 +16,6 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import ru.netology.nerecipe.R
 import ru.netology.nerecipe.adapter.RecipeAdapter
-import ru.netology.nerecipe.adapter.helper.ItemTouchHelperAdapter
 import ru.netology.nerecipe.adapter.helper.SimpleItemTouchHelperCallback
 import ru.netology.nerecipe.databinding.FeedFragmentBinding
 import ru.netology.nerecipe.dto.CategoryOfRecipe
@@ -145,13 +144,6 @@ class FeedFragment : Fragment() {
         val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(adapter)
         val mItemTouchHelper = ItemTouchHelper(callback)
         mItemTouchHelper.attachToRecyclerView(binding.recipeListRecyclerView)
-      //  ====drug and drop
-//        val callback: ItemTouchHelper.Callback =  SimpleItemTouchHelperCallback(ItemTouchHelperAdapter)
-//        val touchHelper = ItemTouchHelper(callback)
-//        touchHelper.attachToRecyclerView(binding.recipeListRecyclerView)
-
-
-
 
         fun setUpSearchView() {
             binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -166,10 +158,7 @@ class FeedFragment : Fragment() {
                     }
                     var ls = adapter.currentList
                     ls = ls.filter { e ->
-                        if (newText != null) {
-                            e.recipe.recipeName.lowercase().contains(newText.lowercase())
-                        } else
-                            false
+                        e.recipe.recipeName.lowercase().contains(newText.lowercase())
                     }
                     adapter.submitList(ls)
                     return true
