@@ -24,7 +24,7 @@ class FilterFragment : Fragment() {
         savedInstanceState: Bundle?
     ) = FilterFragmentBinding.inflate(inflater, container, false)
         .also { binding ->
-            var flag = true
+            var flag = false
             binding.cbSelectAll.isChecked = flag
             val adapter = FilterAdapter(viewModel, flag)
             binding.categoryListRecyclerView.adapter = adapter
