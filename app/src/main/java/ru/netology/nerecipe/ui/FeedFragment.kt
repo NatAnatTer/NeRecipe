@@ -187,6 +187,7 @@ class FeedFragment : Fragment() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.recipe_list -> {
+                    viewModel.filteredListOfRecipe.value = null
                     onRecipeListClicked()
                     true
                 }
