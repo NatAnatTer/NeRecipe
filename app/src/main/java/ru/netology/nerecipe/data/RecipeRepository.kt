@@ -8,14 +8,11 @@ interface RecipeRepository {
 
     val data: LiveData<List<RecipeWithInfo>>
 
-  //  val dataSteps: LiveData<Steps>
-
     fun delete(recipeId: Long)
 
     fun save(recipe: Recipe):Long
-    fun saveSteps(step: Steps)
 
- //   fun saveRecipeSteps(recipe: Recipe, steps: List<Steps>)
+    fun saveSteps(step: Steps)
 
     fun createCategory(category: List<CategoryOfRecipe>)
 
@@ -31,6 +28,5 @@ interface RecipeRepository {
 
     companion object {
         const val NEW_RECIPE_ID = 0L
-
     }
 }

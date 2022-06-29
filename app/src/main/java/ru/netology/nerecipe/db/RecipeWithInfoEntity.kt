@@ -7,9 +7,6 @@ import androidx.room.Relation
 data class RecipeWithInfoEntity(
     @Embedded val recipe: RecipeEntity,
 
-//    @Relation(parentColumn = "author_id", entityColumn = "user_id")
-//    val user: UserEntity,
-
     @Relation(parentColumn = "category_id", entityColumn = "category_id")
     val category: CategoryOfRecipeEntity,
 

@@ -71,7 +71,6 @@ class FeedFragment : Fragment() {
             val direction = idRecipe?.let { FeedFragmentDirections.toChangeContentFragment(it) }
                 ?: FeedFragmentDirections.toChangeContentFragment(0L)
             findNavController().navigate(direction)
-
         }
         viewModel.navigateToShowRecipe.observe(this) { recipeId ->
             val direction = recipeId?.let { FeedFragmentDirections.toRecipeShowDetailFragment(it) }
@@ -79,12 +78,10 @@ class FeedFragment : Fragment() {
                 findNavController().navigate(direction)
             }
         }
-
         viewModel.navigateToFilter.observe(this) {
             val direction = FeedFragmentDirections.toFilterFragment()
             findNavController().navigate(direction)
         }
-
     }
 
     override fun onResume() {
@@ -102,7 +99,6 @@ class FeedFragment : Fragment() {
         }
 
         val mapperFilter = ObjectMapper().registerKotlinModule()
-
         setFragmentResultListener(requestKey = FilterFragment.REQUEST_KEY) { requestKey, bundle ->
             if (requestKey != FilterFragment.REQUEST_KEY) return@setFragmentResultListener
             val newCategoryListString =
@@ -188,8 +184,6 @@ class FeedFragment : Fragment() {
             }
         }
 
-
-
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.recipe_list -> {
@@ -218,7 +212,5 @@ class FeedFragment : Fragment() {
         }
 
     }.root
-
-
 
 }

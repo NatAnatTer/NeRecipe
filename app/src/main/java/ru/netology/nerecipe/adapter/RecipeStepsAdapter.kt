@@ -76,7 +76,6 @@ internal class RecipeStepsAdapter(
 
     }
 
-
 }
 
 

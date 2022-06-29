@@ -6,11 +6,4 @@ import com.google.android.material.appbar.MaterialToolbar
 import ru.netology.nerecipe.R
 import ru.netology.nerecipe.databinding.AppActivityBinding
 
-class AppActivity : AppCompatActivity(R.layout.app_activity) {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        supportActionBar?.hide()
-    }
-
-}
+class AppActivity : AppCompatActivity(R.layout.app_activity)

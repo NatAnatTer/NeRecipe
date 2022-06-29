@@ -13,7 +13,6 @@ import androidx.room.RoomDatabase
     version = 1
 )
 abstract class AppDb : RoomDatabase() {
-   // abstract val recipeStepDao: RecipeStepDao
     abstract val recipeDao: RecipeDao
 
     companion object {
@@ -31,6 +30,4 @@ abstract class AppDb : RoomDatabase() {
                 .allowMainThreadQueries()
                 .build()
     }
-
-
 }

@@ -25,29 +25,29 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
 
     val navigateToRecipeChangeContentScreenEvent = SingleLiveEvent<Long>()
     val navigateToShowRecipe = SingleLiveEvent<Long>()
-      val navigateToFilter = SingleLiveEvent<Unit>()
+    val navigateToFilter = SingleLiveEvent<Unit>()
 
     val currentStep = MutableLiveData<Steps?>(null)
     val currentSteps = MutableLiveData<List<Steps>?>(null)
 
+    private val checkedCategory = MutableLiveData<List<CategoryOfRecipe>?>(null)
+    val allCategoryOfRecipe = MutableLiveData<List<CategoryOfRecipe>>(null)
     var filteredListOfRecipe = MutableLiveData<List<RecipeWithInfo>?>(null)
-    fun onFilterClicked(filteredList: List<CategoryOfRecipe>?){
-        filteredListOfRecipe.value = if(filteredList != null) {
+
+    fun onFilterClicked(filteredList: List<CategoryOfRecipe>?) {
+        filteredListOfRecipe.value = if (filteredList != null) {
             data.value?.filter {
                 filteredList.contains(it.category)
             }
         } else null
-}
-
-
-    private val checkedCategory = MutableLiveData<List<CategoryOfRecipe>?>(null)
-    val allCategoryOfRecipe = MutableLiveData<List<CategoryOfRecipe>>(null)
+    }
 
     override fun onFilterButtonClicked() {
         navigateToFilter.call()
         allCategoryOfRecipe.value = repository.getAllCategory().filter { it.categoryId != 1L }
         checkedCategory.value = allCategoryOfRecipe.value
     }
+
     override fun onFilterCheckBoxClicked(categoryRecipe: CategoryOfRecipe, flag: Boolean) {
         if (flag) {
             checkedCategory.value =
@@ -55,25 +55,19 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
         } else checkedCategory.value =
             checkedCategory.value?.filter { it.categoryId != categoryRecipe.categoryId }
     }
+
     override fun checkedAllCategory(flag: Boolean) {
-        if(flag) checkedCategory.value = repository.getAllCategory().filter { it.categoryId != 1L }
+        if (flag) checkedCategory.value = repository.getAllCategory().filter { it.categoryId != 1L }
         else checkedCategory.value = listOf()
     }
 
-
-
-
     override fun getCheckedCategory() = checkedCategory.value
-
-
-
 
     fun getAllCategory(): List<CategoryOfRecipe> = repository.getAllCategory()
 
     override fun onFavoriteClicked(recipe: Recipe) {
         repository.favoritesByMe(recipe.recipeId)
     }
-
 
     override fun onRemoveClicked(recipe: Recipe) = repository.delete(recipe.recipeId)
     override fun onEditClicked(recipe: Recipe) {
@@ -104,7 +98,6 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     fun getStepsByRecipeId(recipeId: Long): List<Steps> = repository.getStepsByRecipeId(recipeId)
 
     fun getRecipeById(recipeId: Long): Recipe? = repository.getRecipeById(recipeId)
-
 
     fun getCategoryById(categoryId: Long): CategoryOfRecipe = repository.getCategoryById(categoryId)
 

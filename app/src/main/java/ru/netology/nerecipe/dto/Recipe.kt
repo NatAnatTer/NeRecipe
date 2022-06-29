@@ -8,6 +8,4 @@ data class Recipe(
     val categoryId: Long,
     val authorName: String,
     @JsonProperty("favorites") val isFavorites: Boolean
-){
-   // constructor() : this(0L, "", 0L, "", false)
-}
+)

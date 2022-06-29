@@ -1,13 +1,16 @@
 package ru.netology.nerecipe.db
 
-import ru.netology.nerecipe.dto.*
+import ru.netology.nerecipe.dto.CategoryOfRecipe
+import ru.netology.nerecipe.dto.Recipe
+import ru.netology.nerecipe.dto.RecipeWithInfo
+import ru.netology.nerecipe.dto.Steps
 
 fun RecipeEntity.toModel() = Recipe(
     recipeId = recipeId,
     recipeName = recipeName,
     authorName = authorName,
     categoryId = categoryId,
-isFavorites = isFavorites
+    isFavorites = isFavorites
 )
 
 fun Recipe.toEntity() = RecipeEntity(
@@ -18,24 +21,12 @@ fun Recipe.toEntity() = RecipeEntity(
     isFavorites = isFavorites
 )
 
-//fun UserEntity.toModel() = User(
-//    userId = userId,
-//    userName = userName
-//
-//)
-//
-//fun User.toEntity() = UserEntity(
-//    userId = userId,
-//    userName = userName
-//)
-
 fun StepsEntity.toModel() = Steps(
     stepId = stepId,
     numberOfStep = numberOfStep,
     contentOfStep = contentOfStep,
     recipeId = recipeId,
     imageUrl = imageUrl
-
 )
 
 fun Steps.toEntity() = StepsEntity(
@@ -46,21 +37,10 @@ fun Steps.toEntity() = StepsEntity(
     imageUrl = imageUrl
 )
 
-//fun FavoritesEntity.toModel() = Favorites(
-//    recipeId = recipeId,
-//    userId = userId
-//
-//)
-
-//fun Favorites.toEntity() = FavoritesEntity(
-//    recipeId = recipeId,
-//    userId = userId
-//)
 
 fun CategoryOfRecipeEntity.toModel() = CategoryOfRecipe(
     categoryId = categoryId,
     categoryName = categoryName
-
 )
 
 fun CategoryOfRecipe.toEntity() = CategoryOfRecipeEntity(
@@ -68,19 +48,15 @@ fun CategoryOfRecipe.toEntity() = CategoryOfRecipeEntity(
     categoryName = categoryName
 )
 
-
-
 fun RecipeWithInfoEntity.toModel(): RecipeWithInfo {
     val recipeTarget: Recipe = recipe.toModel()
     val categoryTarget: CategoryOfRecipe = category.toModel()
-   val stepsTarget: List<Steps> = steps.map { it.toModel() }
-    //val userTarget: User = user.toModel()
-   return RecipeWithInfo(
+    val stepsTarget: List<Steps> = steps.map { it.toModel() }
+    return RecipeWithInfo(
         recipe = recipeTarget,
         category = categoryTarget,
         steps = stepsTarget,
-      //  user = userTarget
-        )
+    )
 }
 
 

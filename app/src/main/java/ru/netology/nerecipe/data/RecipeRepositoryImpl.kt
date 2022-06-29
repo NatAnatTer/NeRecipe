@@ -23,7 +23,7 @@ class RecipeRepositoryImpl(
     override fun save(recipe: Recipe): Long = dao.insert(recipe.toEntity())
 
     override fun saveSteps(step: Steps) {
-        dao.insertStepsTry(step.toEntity())
+        dao.insertSteps(step.toEntity())
     }
 
     override fun createCategory(category: List<CategoryOfRecipe>) {
