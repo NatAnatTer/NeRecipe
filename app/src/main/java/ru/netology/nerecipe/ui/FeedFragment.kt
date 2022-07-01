@@ -122,7 +122,7 @@ class FeedFragment : Fragment() {
         binding.recipeListRecyclerView.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) { recipe ->
             viewModel.filteredListOfRecipe.observe(viewLifecycleOwner) { recipeFiltered ->
-                if (recipeFiltered.isNullOrEmpty()) {
+                if (recipeFiltered.isNullOrEmpty() && !viewModel.filterIsChecked) {
                     if (!recipe.isNullOrEmpty()) binding.emptyStatesImage.visibility =
                         View.GONE else binding.emptyStatesImage.visibility = View.VISIBLE
                     adapter.submitList(recipe)
@@ -188,6 +188,7 @@ class FeedFragment : Fragment() {
             when (item.itemId) {
                 R.id.recipe_list -> {
                     viewModel.filteredListOfRecipe.value = null
+                    viewModel.filterIsChecked = false
                     onRecipeListClicked()
                     true
                 }
@@ -196,6 +197,8 @@ class FeedFragment : Fragment() {
                     true
                 }
                 R.id.add_recipe -> {
+                    viewModel.filteredListOfRecipe.value = null
+                    viewModel.filterIsChecked = false
                     viewModel.onAddButtonClicked()
                     true
                 }

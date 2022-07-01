@@ -33,8 +33,10 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application),
     private val checkedCategory = MutableLiveData<List<CategoryOfRecipe>?>(null)
     val allCategoryOfRecipe = MutableLiveData<List<CategoryOfRecipe>>(null)
     var filteredListOfRecipe = MutableLiveData<List<RecipeWithInfo>?>(null)
+    var filterIsChecked = false
 
     fun onFilterClicked(filteredList: List<CategoryOfRecipe>?) {
+        filterIsChecked = true
         filteredListOfRecipe.value = if (filteredList != null) {
             data.value?.filter {
                 filteredList.contains(it.category)
